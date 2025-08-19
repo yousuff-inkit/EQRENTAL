@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	
+
+	<package name="equippickup" extends="struts-default">
+			
+			<action name="saveEquipPickup" class="com.dashboard.equipment.equippickup.ClsEquipPickUpAction" method="saveAction">
+				<interceptor-ref name="params"/>
+				<result name="success" >equipPickUp.jsp</result>
+				<result name="fail">equipPickUp.jsp</result>
+			</action>			
+			<action name="equipPickUpPrint" class="com.dashboard.equipment.equippickup.ClsEquipPickUpAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">${url}</result>
+			</action>
+		</package>	
+</struts>

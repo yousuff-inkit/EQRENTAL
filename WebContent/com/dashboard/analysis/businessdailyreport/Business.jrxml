@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2019-06-17T14:23:24 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Business" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15a00e59-fa4e-4231-963c-9ac32e762818">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="business"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="87e4a22e-7b67-405f-8660-53a2ef837f28">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="business"/>
+		<parameter name="fromdate" class="java.lang.String"/>
+		<parameter name="todate" class="java.lang.String"/>
+		<parameter name="branchcount" class="java.lang.String"/>
+		<parameter name="sqlfromdate" class="java.sql.Date"/>
+		<parameter name="sqltodate" class="java.sql.Date"/>
+		<queryString>
+			<![CDATA[select b.horizontotal,b.description,b.brcount,b.branch0,b.branch1,b.branch2, b.branch3,b.branch4,b.branch5,b.branch6,b.branch7,b.branch8,b.branch9 from (select a.orderstatus,3  brcount,a.description,sum(a.branch0) branch0,sum(a.branch1) branch1,sum(a.branch2) branch2,sum(a.branch3) branch3,sum(a.branch4) branch4,sum(a.branch5)  branch5,sum(a.branch6) branch6,sum(a.branch7) branch7,sum(a.branch8) branch8,sum(a.branch9) branch9,(sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6)+sum(a.branch7)+sum(a.branch8)+sum(a.branch9)) horizontotal from  (select case when tarif.rentaltype='Daily' then 'Rental Daily Open' when tarif.rentaltype='Weekly' then  'Rental Weekly Open' when tarif.rentaltype='Monthly' then 'Rental Monthly Open' when agmt.weekend=1 then 'Rental Weekend Open' else '' end description, case when tarif.rentaltype='Daily' then 1 when  tarif.rentaltype='Weekly' then 2 when tarif.rentaltype='Monthly' then 3 when agmt.weekend=1 then 4 else 0 end orderstatus, if(agmt.brhid=1,count(*),0) branch0,if(agmt.brhid=2,count(*),0) branch1, if(agmt.brhid=3,count(*),0)  branch2, if(agmt.brhid=4, count(*),0) branch3,if(agmt.brhid=5,count(*),0) branch4,if(agmt.brhid=6, count(*),0) branch5, if(agmt.brhid=7,count(*),0) branch6, if(agmt.brhid=8,count(*),0) branch7,if(agmt.brhid=9,count(*),0) branch8, if(agmt.brhid=10,count(*),0) branch9 from gl_ragmt agmt inner join  gl_rtarif tarif on (agmt.doc_no=tarif.rdocno and tarif.rstatus=5) where agmt.odate>=$P{sqlfromdate} and agmt.odate<=$P{sqltodate} and agmt.status=3 and agmt.clstatus=0 group by agmt.doc_no union all select case when tarif.rentaltype in ('Daily','Weekly','Monthly') or agmt.weekend=1 then 'Total Rental Open' else '' end description, case when tarif.rentaltype in ('Daily','Weekly','Monthly') or agmt.weekend=1 then 5 else 0 end orderstatus, if(agmt.brhid=1,count(*),0) branch0,if(agmt.brhid=2,count(*),0) branch1,if(agmt.brhid=3,count(*),0)  branch2, if(agmt.brhid=4, count(*),0) branch3,if(agmt.brhid=5,count(*),0) branch4,if(agmt.brhid=6,count(*),0) branch5, if(agmt.brhid=7,count(*),0) branch6, if(agmt.brhid=8,count(*),0) branch7,if(agmt.brhid=9,count(*),0) branch8, if(agmt.brhid=10,count(*),0) branch9 from gl_ragmt agmt inner join  gl_rtarif tarif on (agmt.doc_no=tarif.rdocno and tarif.rstatus=5) where agmt.odate>=$P{sqlfromdate} and  agmt.odate<=$P{sqltodate} and agmt.status=3 and agmt.clstatus=0 group by agmt.doc_no union all select case when tarif.rentaltype='Daily' then 'Rental Daily Close' when tarif.rentaltype='Weekly' then 'Rental Weekly Close' when tarif.rentaltype='Monthly' then 'Rental Monthly Close' when agmt.weekend=1 then 'Rental Weekend Close' else '' end description, case when tarif.rentaltype='Daily' then 6 when tarif.rentaltype='Weekly' then 7 when tarif.rentaltype='Monthly'  then 8 when agmt.weekend=1 then 9 else 0 end orderstatus,if(agmt.brhid=1,count(*),0) branch0, if(agmt.brhid=2,count(*),0) branch1,if(agmt.brhid=3,count(*),0)  branch2, if(agmt.brhid=4,count(*),0) branch3, if(agmt.brhid=5,count(*),0) branch4,if(agmt.brhid=6,count(*),0) branch5, if(agmt.brhid=7,count(*),0) branch6, if(agmt.brhid=8, count(*),0) branch7,if(agmt.brhid=9,count(*),0) branch8, if(agmt.brhid=10,count(*),0) branch9 from gl_ragmt agmt inner join gl_rtarif tarif on (agmt.doc_no=tarif.rdocno and tarif.rstatus=5) left join gl_ragmtclosem agmtclose on (agmt.doc_no=agmtclose.agmtno and agmt.clstatus=1) where agmtclose.indate>=$P{sqlfromdate} and agmtclose.indate<=$P{sqltodate} and agmt.status=3 and agmt.clstatus=1 group by agmt.doc_no union all select case when tarif.rentaltype in ('Daily','Weekly','Monthly') or agmt.weekend=1 then 'Total Rental Close' else '' end description, case when tarif.rentaltype in ('Daily','Weekly','Monthly') or agmt.weekend=1 then 10 else 0 end orderstatus,if(agmt.brhid=1,count(*),0) branch0, if(agmt.brhid=2,count(*),0) branch1, if(agmt.brhid=3,count(*),0)  branch2, if(agmt.brhid=4,count(*),0) branch3, if(agmt.brhid=5,count(*),0) branch4,if(agmt.brhid=6, count(*),0) branch5, if(agmt.brhid=7,count(*),0) branch6, if(agmt.brhid=8,count(*),0) branch7,if(agmt.brhid=9,count(*),0) branch8, if(agmt.brhid=10,count(*),0) branch9 from gl_ragmt agmt inner join  gl_rtarif tarif on (agmt.doc_no=tarif.rdocno and tarif.rstatus=5) left join gl_ragmtclosem agmtclose on (agmt.doc_no=agmtclose.agmtno and agmt.clstatus=1) where agmtclose.indate>=$P{sqlfromdate} and  agmtclose.indate<=$P{sqltodate} and agmt.status=3 and agmt.clstatus=1 group by agmt.doc_no) a group by a.description UNION ALL select a.orderstatus,6 brcount,a.description,sum(a.branch0) branch0,sum(a.branch1) branch1,sum(a.branch2) branch2,sum(a.branch3) branch3,sum(a.branch4) branch4,sum(a.branch5) branch5,sum(a.branch6) branch6,sum(a.branch7) branch7,sum(a.branch8) branch8, sum(a.branch9) branch9,(sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6) +sum(a.branch7)+sum(a.branch8)+sum(a.branch9)) horizontotal from ( select if(agmt.brhid=1,count(*),0) branch0,if(agmt.brhid=2, count(*),0) branch1,if(agmt.brhid=3,count(*),0) branch2, if(agmt.brhid=4,count(*),0) branch3,if(agmt.brhid=5,count(*),0) branch4, if(agmt.brhid=6,count(*),0) branch5, if(agmt.brhid=7,count(*),0) branch6, if(agmt.brhid=8,count(*),0) branch7,if(agmt.brhid=9, count(*),0) branch8, if(agmt.brhid=10,count(*),0) branch9,'Lease Open' description,11 orderstatus from gl_lagmt agmt where agmt.clstatus=0 and agmt.outdate>=$P{sqlfromdate} and agmt.outdate<=$P{sqltodate} and agmt.status=3 group by agmt.doc_no) a group by a.description  union all  select a.orderstatus,6 brcount,a.description,sum(a.branch0) branch0,sum(a.branch1) branch1,sum(a.branch2) branch2,sum(a.branch3) branch3,sum(a.branch4) branch4,sum(a.branch5) branch5,sum(a.branch6) branch6,sum(a.branch7) branch7,sum(a.branch8) branch8, sum(a.branch9) branch9,(sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6) +sum(a.branch7)+sum(a.branch8)+sum(a.branch9)) horizontotal from ( select if(agmt.brhid=1,count(*),0) branch0,if(agmt.brhid=2, count(*),0) branch1,if(agmt.brhid=3,count(*),0) branch2, if(agmt.brhid=4,count(*),0) branch3,if(agmt.brhid=5,count(*),0) branch4, if(agmt.brhid=6,count(*),0) branch5, if(agmt.brhid=7,count(*),0) branch6, if(agmt.brhid=8,count(*),0) branch7,if(agmt.brhid=9, count(*),0) branch8, if(agmt.brhid=10,count(*),0) branch9,'Lease Close' description,12 orderstatus from gl_lagmt agmt left join gl_lagmtclosem agmtclose on (agmt.doc_no=agmtclose.agmtno and agmt.clstatus=1) where agmt.clstatus=1 and  agmtclose.indate>=$P{sqlfromdate} and agmtclose.indate<=$P{sqltodate} and agmt.status=3 group by agmt.doc_no ) a group by a.description UNION ALL select a.orderstatus,$P{branchcount} brcount,'Replacements' description,coalesce(sum(a.branch0),0) branch0,coalesce(sum(a.branch1),0) branch1,coalesce(sum(a.branch2),0) branch2,coalesce(sum(a.branch3),0) branch3,coalesce(sum(a.branch4),0) branch4,coalesce(sum(a.branch5),0) branch5,coalesce(sum(a.branch6),0) branch6, coalesce(sum(a.branch7),0) branch7,coalesce(sum(a.branch8),0) branch8,coalesce(sum(a.branch9),0) branch9,(sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6)+sum(a.branch7)+sum(a.branch8)+sum(a.branch9)) horizontotal from ( select 13 orderstatus,if(rep.obrhid =1,count(*),0) branch0,if(rep.obrhid =2,count(*),0) branch1,if(rep.obrhid =3,count(*),0) branch2, if(rep.obrhid =4,count(*),0) branch3, if(rep.obrhid =5,count(*),0) branch4,if(rep.obrhid =6,count(*),0) branch5, if(rep.obrhid =7,count(*),0) branch6, if(rep.obrhid =8,count(*),0) branch7, if(rep.obrhid =9,count(*),0) branch8,if(rep.obrhid =10,count(*),0) branch9 from gl_vehreplace rep where  rep.date>=$P{sqlfromdate} and rep.date<=$P{sqltodate}  and rep.status=3 group by rep.doc_no) a union all select a.orderstatus,$P{branchcount} brcount,'Ready To Rent' description,coalesce(sum(a.branch0),0) branch0,  coalesce(sum(a.branch1),0) branch1,coalesce(sum(a.branch2),0) branch2,coalesce(sum(a.branch3),0) branch3,  coalesce(sum(a.branch4),0) branch4,coalesce(sum(a.branch5),0) branch5,coalesce(sum(a.branch6),0) branch6,  coalesce(sum(a.branch7),0) branch7,coalesce(sum(a.branch8),0) branch8,coalesce(sum(a.branch9),0) branch9,  (sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6)+sum(a.branch7)+  sum(a.branch8)+sum(a.branch9)) horizontotal from ( select 19 orderstatus,if(veh.a_br =1,count(*),0) branch0,  if(veh.a_br =2,count(*),0) branch1,if(veh.a_br =3,count(*),0) branch2, if(veh.a_br =4,count(*),0) branch3,  if(veh.a_br =5,count(*),0) branch4,if(veh.a_br =6,count(*),0) branch5, if(veh.a_br =7,count(*),0) branch6,  if(veh.a_br =8,count(*),0) branch7, if(veh.a_br =9,count(*),0) branch8,if(veh.a_br =10,count(*),0) branch9  from gl_vehmaster veh where veh.tran_code='RR' and veh.statu=3 and reg_exp>=curdate() and ins_exp>=curdate() group by veh.doc_no) a union all select a.orderstatus,$P{branchcount} brcount,'Unrentable' description,coalesce(sum(a.branch0),0) branch0,  coalesce(sum(a.branch1),0) branch1,coalesce(sum(a.branch2),0) branch2,coalesce(sum(a.branch3),0) branch3,  coalesce(sum(a.branch4),0) branch4,coalesce(sum(a.branch5),0) branch5,coalesce(sum(a.branch6),0) branch6,  coalesce(sum(a.branch7),0) branch7,coalesce(sum(a.branch8),0) branch8,coalesce(sum(a.branch9),0) branch9,  (sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6)+sum(a.branch7)+  sum(a.branch8)+sum(a.branch9)) horizontotal from ( select 20 orderstatus,if(veh.a_br =1,count(*),0) branch0,  if(veh.a_br =2,count(*),0) branch1,if(veh.a_br =3,count(*),0) branch2, if(veh.a_br =4,count(*),0) branch3,  if(veh.a_br =5,count(*),0) branch4,if(veh.a_br =6,count(*),0) branch5, if(veh.a_br =7,count(*),0) branch6,  if(veh.a_br =8,count(*),0) branch7, if(veh.a_br =9,count(*),0) branch8,if(veh.a_br =10,count(*),0) branch9  from gl_vehmaster veh where veh.tran_code='UR' and veh.statu=3 group by veh.doc_no) a  UNION ALL select a.orderstatus,$P{branchcount} brcount,a.description,sum(a.branch0) branch0,sum(a.branch1) branch1,sum(a.branch2) branch2,sum(a.branch3) branch3, sum(a.branch4) branch4, sum(a.branch5) branch5,sum(a.branch6) branch6,sum(a.branch7) branch7,sum(a.branch8) branch8, sum(a.branch9) branch9,(sum(a.branch0)+sum(a.branch1)+sum(a.branch2)+ sum(a.branch3)+sum(a.branch4)+sum(a.branch5)+sum(a.branch6)+sum(a.branch7)+sum(a.branch8)+sum(a.branch9)) horizontotal from (  select case when movtype='TR' then 14 when movtype='ST' then 15 when movtype='GA' then 16 when movtype='GM' then 17 when movtype='GS' then 18 else 0 end orderstatus,case when movtype='TR' then 'Movement Transfer' when movtype='ST' then 'Movement Staff' when movtype='GA' then 'Movement Garage Accident'  when movtype='GM' then 'Movement Garage Maintenance' when movtype='GS' then 'Movement Garage Service' else '' end description, if(nrm.brhid =1,count(*),0) branch0, if(nrm.brhid =2,count(*),0) branch1,if(nrm.brhid =3,count(*),0) branch2,if(nrm.brhid =4,count(*),0) branch3, if(nrm.brhid =5,count(*),0) branch4, if(nrm.brhid =6,count(*),0) branch5,if(nrm.brhid =7,count(*),0) branch6,if(nrm.brhid =8,count(*),0) branch7, if(nrm.brhid =9,count(*),0) branch8, if(nrm.brhid =10,count(*),0) branch9 from gl_nrm nrm where  nrm.date>=$P{sqlfromdate} and nrm.date<=$P{sqltodate}  and nrm.status=3 group by nrm.doc_no) a  group by a.description)  b order by b.orderstatus;]]>
+		</queryString>
+		<field name="horizontotal" class="java.math.BigDecimal"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="brcount" class="java.lang.Long"/>
+		<field name="branch0" class="java.math.BigDecimal"/>
+		<field name="branch1" class="java.math.BigDecimal"/>
+		<field name="branch2" class="java.math.BigDecimal"/>
+		<field name="branch3" class="java.math.BigDecimal"/>
+		<field name="branch4" class="java.math.BigDecimal"/>
+		<field name="branch5" class="java.math.BigDecimal"/>
+		<field name="branch6" class="java.math.BigDecimal"/>
+		<field name="branch7" class="java.math.BigDecimal"/>
+		<field name="branch8" class="java.math.BigDecimal"/>
+		<field name="branch9" class="java.math.BigDecimal"/>
+		<group name="horizontotal">
+			<groupExpression><![CDATA[$F{horizontotal}]]></groupExpression>
+		</group>
+		<group name="description">
+			<groupExpression><![CDATA[$F{description}]]></groupExpression>
+		</group>
+		<group name="brcount">
+			<groupExpression><![CDATA[$F{brcount}]]></groupExpression>
+		</group>
+		<group name="branch0">
+			<groupExpression><![CDATA[$F{branch0}]]></groupExpression>
+		</group>
+		<group name="branch1">
+			<groupExpression><![CDATA[$F{branch1}]]></groupExpression>
+		</group>
+		<group name="branch2">
+			<groupExpression><![CDATA[$F{branch2}]]></groupExpression>
+		</group>
+		<group name="branch3">
+			<groupExpression><![CDATA[$F{branch3}]]></groupExpression>
+		</group>
+		<group name="branch4">
+			<groupExpression><![CDATA[$F{branch4}]]></groupExpression>
+		</group>
+		<group name="branch5">
+			<groupExpression><![CDATA[$F{branch5}]]></groupExpression>
+		</group>
+		<group name="branch6">
+			<groupExpression><![CDATA[$F{branch6}]]></groupExpression>
+		</group>
+		<group name="branch7">
+			<groupExpression><![CDATA[$F{branch7}]]></groupExpression>
+		</group>
+		<group name="branch8">
+			<groupExpression><![CDATA[$F{branch8}]]></groupExpression>
+		</group>
+		<group name="branch9">
+			<groupExpression><![CDATA[$F{branch9}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Dataset2" uuid="abbbbe39-de08-4d09-b39c-32ace24dc2fa">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="business"/>
+		<parameter name="detailquery" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[$P!{detailquery}]]>
+		</queryString>
+		<field name="reg_no" class="java.lang.String"/>
+		<field name="flname" class="java.lang.String"/>
+		<field name="doc_no" class="java.lang.Integer"/>
+		<field name="voc_no" class="java.lang.Long"/>
+		<field name="fleet_no" class="java.lang.Integer"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="branchout" class="java.lang.String"/>
+		<field name="dateout" class="java.sql.Date"/>
+		<field name="timeout" class="java.lang.String"/>
+		<field name="kmout" class="java.math.BigDecimal"/>
+		<field name="fuelout" class="java.lang.String"/>
+		<field name="branchin" class="java.lang.String"/>
+		<field name="datein" class="java.sql.Date"/>
+		<field name="timein" class="java.lang.String"/>
+		<field name="kmin" class="java.math.BigDecimal"/>
+		<field name="fuelin" class="java.lang.String"/>
+		<field name="driver" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="fromdate" class="java.lang.String"/>
+	<parameter name="todate" class="java.lang.String"/>
+	<parameter name="branchcount" class="java.lang.String"/>
+	<parameter name="sqlfromdate" class="java.sql.Date"/>
+	<parameter name="sqltodate" class="java.sql.Date"/>
+	<parameter name="detailquery" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 'name' as name;]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<group name="name">
+		<groupExpression><![CDATA[$F{name}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="24" width="200" height="30" uuid="c3e8396e-c3c7-4959-bdf0-dea9ac013fc1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Business Daily Report"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="60" height="20" uuid="1d864823-0459-482e-b7e6-2670f1592755"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Period:-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="60" width="80" height="20" uuid="e64c377f-4a37-41fd-b9c0-edac87909a8c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["From Date:-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="60" width="70" height="20" uuid="0cf007f7-b0e5-4140-95eb-b0c1fab47019"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["To Date:-"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="140" y="60" width="80" height="20" uuid="171f572d-9304-4aa0-a2bc-4171726ef9fd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{fromdate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="290" y="60" width="60" height="20" uuid="379f92d5-60fd-486f-ae2b-2fdf575b982c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{todate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="221" splitType="Stretch">
+			<componentElement>
+				<reportElement positionType="Float" x="7" y="23" width="540" height="60" uuid="e6ed7508-799a-49c2-96a9-25fcf3982b41">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset1" uuid="b6c8b4da-3df8-4961-af90-bad0d71aa805">
+						<datasetParameter name="sqlfromdate">
+							<datasetParameterExpression><![CDATA[$P{sqlfromdate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="sqltodate">
+							<datasetParameterExpression><![CDATA[$P{sqltodate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="branchcount">
+							<datasetParameterExpression><![CDATA[$P{branchcount}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="240" uuid="03eba4ed-6267-47e5-9051-1fd2a3c5657e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="240" height="30" uuid="46b8b926-51be-47b0-a94e-d41c6f8bb6ce"/>
+								<text><![CDATA[description]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="240" height="30" uuid="3c4c9e04-d5a9-4e6b-b812-c50ad7434cfd"/>
+								<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="10f8b34f-879b-4b71-8cb5-81d084beb467">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="2ac6327f-d4a8-4abf-a946-09cc513219ac"/>
+								<text><![CDATA[Al Grahoud Br]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="30" uuid="37f92de2-085a-470b-9e21-f78a96d275c4"/>
+								<textFieldExpression><![CDATA[$F{branch0}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="9d88eea5-e13a-439c-afc1-931391f71616">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="5f3c0e0d-0a93-45e3-8ea5-57996ba05c2b"/>
+								<text><![CDATA[branch2]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="30" uuid="5b51d818-3d68-41af-ba91-9563f2fd68fb"/>
+								<textFieldExpression><![CDATA[$F{branch2}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="5d199432-d8cc-4adc-807f-ba6d5c08b14c">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="f8005256-bc89-4c9b-90c1-65a685e042ce"/>
+								<text><![CDATA[branch3]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="30" uuid="80caa655-32ac-4b18-bfb0-d0e182788f2c"/>
+								<textFieldExpression><![CDATA[$F{branch3}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="f8cb1641-c09a-49a9-875b-96b80af900f7">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="73bcf24b-ecf6-4dd0-b38d-9461595a7023"/>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="30" uuid="5eb0f3da-a7e3-4ece-a59d-b10142554e11"/>
+								<textFieldExpression><![CDATA[$F{horizontotal}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="5" y="142" width="544" height="60" uuid="e6467da4-620f-419a-ac02-a8cc3eadd3f9">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset2" uuid="b7075db1-1e07-4360-a4d6-fc64d5f947d1">
+						<datasetParameter name="detailquery">
+							<datasetParameterExpression><![CDATA[$P{detailquery}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="40" uuid="0114dd3d-0cf1-4b69-887d-e69f2f7fb94d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="30" uuid="8b0887ac-b1a9-4711-8004-8502bc7c478a"/>
+								<text><![CDATA[doc_no]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="30" uuid="58c87732-be0b-4e8a-a532-5b9b359ddd26"/>
+								<textFieldExpression><![CDATA[$F{voc_no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="8f404d1d-89de-4ba6-bbba-f6eaf003ea82">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="df66768b-f999-4393-98e6-5ff5a067e549"/>
+								<text><![CDATA[name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="681974f9-8319-4327-9bd6-95d76dab39c6"/>
+								<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40" uuid="235a8655-6b41-4848-ba42-b58853180d13">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="30" uuid="330a70e6-60bc-4671-801f-33e2694642b2"/>
+								<text><![CDATA[fleet_no]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="30" uuid="d186b7f3-6ef8-40be-903b-751c4c299d7c"/>
+								<textFieldExpression><![CDATA[$F{fleet_no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="36" uuid="40962d98-d765-45be-a653-85080ad872f1">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="36" height="30" uuid="d5d0a36d-b0d0-4f2f-b514-f71fc6f4611b"/>
+								<text><![CDATA[reg_no]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="36" height="30" uuid="ce69f74c-933d-4ae5-864e-f7d11fd07dae"/>
+								<textFieldExpression><![CDATA[$F{reg_no}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="24" uuid="12fbc06a-53ce-4867-bf11-1af3d56012a6">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="24" height="30" uuid="f5823a45-7c56-4a1d-b204-88cb8c94330b"/>
+								<text><![CDATA[Fleet Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="24" height="30" uuid="c3b6ce30-e846-479d-95d6-170734811e05"/>
+								<textFieldExpression><![CDATA[$F{flname}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="34" uuid="30b476e0-5cf3-4b43-8860-2c025dbcdf55">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="34" height="30" uuid="ab0ab518-d9f5-4c4b-845e-3c4b0606c097"/>
+								<text><![CDATA[branchout]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="34" height="30" uuid="f8b94234-ccf7-4065-a882-cffd4f3c309f"/>
+								<textFieldExpression><![CDATA[$F{branchout}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="38" uuid="c7f779e9-baad-4f88-888b-4e6abce4ade7">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="38" height="30" uuid="c78d789b-0644-49f2-a66a-fe73b0d3f47c"/>
+								<text><![CDATA[dateout]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="38" height="30" uuid="854cfe7e-726f-4ea2-a11d-5dc530c71cda"/>
+								<textFieldExpression><![CDATA[$F{dateout}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40" uuid="2cc2a03d-92e4-41e8-9cb8-10a16e13ac9a">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="30" uuid="861c51f9-3149-4a74-8c57-bba6604bb71f"/>
+								<text><![CDATA[timeout]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="30" uuid="5b0113e7-c3f7-4ada-a935-7be8036cdd37"/>
+								<textFieldExpression><![CDATA[$F{timeout}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="31" uuid="f6eb7ff6-1e6e-4f8f-bb2a-de807d19d0a3">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="31" height="30" uuid="b3ddbf59-bf92-45b2-95de-fab8d6183f25"/>
+								<text><![CDATA[kmout]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="31" height="30" uuid="16b7879b-4afb-42b4-8d59-b97e9177ce75"/>
+								<textFieldExpression><![CDATA[$F{kmout}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="37" uuid="6eb1da5f-c4c0-4e29-8aa8-d997877a4669">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="37" height="30" uuid="af70749a-9960-46ef-a98c-61064b3bef52"/>
+								<text><![CDATA[fuelout]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="37" height="30" uuid="29da2b71-49e0-4e94-b9a0-870eac185252"/>
+								<textFieldExpression><![CDATA[$F{fuelout}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40" uuid="9f6d6ae5-540d-48b4-a90b-13281bc7366e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="30" uuid="7c38c85b-25f9-42b7-b5c7-293fc482a19b"/>
+								<text><![CDATA[branchin]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="30" uuid="5558dab2-662c-49d5-8aa8-402f322d2191"/>
+								<textFieldExpression><![CDATA[$F{branchin}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="28" uuid="1b98aa4b-ecbe-477b-9721-3bb3882291b0">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column12"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="28" height="30" uuid="85fe61bb-8900-4fda-9c72-e25834ef64a6"/>
+								<text><![CDATA[datein]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="28" height="30" uuid="925aeb96-7021-4c20-8af2-d739ab834693"/>
+								<textFieldExpression><![CDATA[$F{datein}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="27" uuid="f59ebef4-571d-4d3e-89d6-ddd89739c265">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column13"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="27" height="30" uuid="be39e869-0b8b-40f1-b2ea-9b8c901854fc"/>
+								<text><![CDATA[timein]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="27" height="30" uuid="1e142300-7531-4a37-9796-f59d65089fe7"/>
+								<textFieldExpression><![CDATA[$F{timein}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="26" uuid="51033383-cf86-4f9b-9c4f-7a94b4ef09fc">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column14"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="26" height="30" uuid="8fb2621a-6a8c-4bcf-8c92-cee47edc8b80"/>
+								<text><![CDATA[kmin]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="26" height="30" uuid="27e4044b-6b20-49f8-9f0b-2c226892766c"/>
+								<textFieldExpression><![CDATA[$F{kmin}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="37" uuid="578377cc-52d2-46ea-8cde-6e6790676031">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column15"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="37" height="30" uuid="30dec25d-1ef7-4f04-bf44-45af00235633"/>
+								<text><![CDATA[fuelout]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="37" height="30" uuid="cedc8caf-1b2e-44b6-8103-8eb6895f9290"/>
+								<textFieldExpression><![CDATA[$F{fuelin}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="34" uuid="c848b006-6537-4448-8d05-8afa0b36c1df">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column16"/>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="34" height="30" uuid="6439da20-2c3e-4275-958e-0b68adf2883a"/>
+								<text><![CDATA[del-driver]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="34" height="30" uuid="93b1e55d-3729-4c8e-9e00-8322af7c8d72"/>
+								<textFieldExpression><![CDATA[$F{driver}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

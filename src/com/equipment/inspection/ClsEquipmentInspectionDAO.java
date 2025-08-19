@@ -1,0 +1,1579 @@
+package com.equipment.inspection;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONArray;
+
+import com.common.ClsCommon;
+import com.connection.ClsConnection;
+
+public class ClsEquipmentInspectionDAO {
+	ClsConnection objconn = new ClsConnection();
+	ClsCommon objcommon = new ClsCommon();
+	ClsEquipmentInspectionBean inspectionBean = new ClsEquipmentInspectionBean();
+
+	public ClsEquipmentInspectionBean getViewDetails(int docNo)
+			throws SQLException {
+		ClsEquipmentInspectionBean inspectionBean = new ClsEquipmentInspectionBean();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+
+			Statement stmtmanual = conn.createStatement();
+
+			/*
+			 * String sql= (
+			 * "select insp.agmtbranch,insp.doc_no,insp.date,insp.type,insp.reftype,insp.refdocno,insp.amount,insp.accident,insp.polrep,insp.acdate,insp.coldate,insp.place,"
+			 * +
+			 * "insp.fine,insp.remarks,insp.claim,insp.rfleet from eq_vinspm insp where insp.status<>7 and insp.doc_no="
+			 * +docNo);
+			 */
+			String sql = "select ac.refname,veh.reg_no,insp.agmtbranch,insp.doc_no,insp.date,insp.type,insp.reftype,insp.refdocno,insp.amount,insp.accident,insp.polrep,"
+					+ " insp.acdate,insp.coldate,insp.place,insp.fine,insp.remarks,insp.claim,insp.rfleet from eq_vinspm insp left join gl_vehmaster veh"
+					+ " on insp.rfleet=veh.fleet_no left join gl_ragmt rag on (insp.reftype='RAG' and insp.refdocno=rag.doc_no) left join gl_lagmt lag"
+					+ " on (insp.reftype='LAG' and insp.refdocno=lag.doc_no) left join gl_vehreplace rep on (insp.reftype='RPL' and insp.refdocno=rep.doc_no)"
+					+ " left join gl_ragmt reprag on (rep.rtype='RAG' and rep.rdocno=reprag.doc_no) left join gl_lagmt replag on (rep.rtype='LAG' and"
+					+ " rep.rdocno=replag.doc_no) left join my_acbook ac on (case when insp.reftype='RAG' then (rag.cldocno=ac.cldocno and ac.dtype='CRM')"
+					+ " when insp.reftype='LAG' then (lag.cldocno=ac.cldocno and ac.dtype='CRM') when (insp.reftype='RPL' and rep.rtype='RAG') then"
+					+ " (reprag.cldocno=ac.cldocno and ac.dtype='CRM') when (insp.reftype='RPL' and rep.rtype='LAG') then"
+					+ " (replag.cldocno=ac.cldocno and ac.dtype='CRM') else 0 end) where insp.status<>7 and insp.doc_no="
+					+ docNo;
+			ResultSet resultSet = stmtmanual.executeQuery(sql);
+
+			while (resultSet.next()) {
+				inspectionBean.setDate(resultSet.getDate("date").toString());
+				inspectionBean.setHidcmbtype(resultSet.getString("type"));
+				inspectionBean.setHidcmbreftype(resultSet.getString("reftype"));
+				inspectionBean.setRdocno(resultSet.getInt("refdocno"));
+				inspectionBean.setDocno(docNo);
+				inspectionBean.setAccdate(resultSet.getDate("acdate")
+						.toString());
+				inspectionBean.setPrcs(resultSet.getString("polrep"));
+				inspectionBean.setCollectdate(resultSet.getDate("coldate")
+						.toString());
+				inspectionBean.setAccplace(resultSet.getString("place"));
+				inspectionBean.setAccfines(resultSet.getString("fine"));
+				inspectionBean.setHidcmbclaim(resultSet.getString("claim"));
+				inspectionBean.setAmount(resultSet.getString("amount"));
+				inspectionBean.setHidaccidents(resultSet.getString("accident"));
+				inspectionBean.setAccremarks(resultSet.getString("remarks"));
+				inspectionBean.setRfleet(resultSet.getString("rfleet"));
+				inspectionBean.setHidcmbagmtbranch(resultSet
+						.getString("agmtbranch"));
+				inspectionBean.setRegno(resultSet.getString("reg_no"));
+				inspectionBean.setClient(resultSet.getString("refname"));
+			}
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+
+		return inspectionBean;
+	}
+
+	public JSONArray mainSearch(String cmbtype, String cmbreftype,
+			String fleetno, String refdocno, String searchdate, String docno,
+			String branch, String regno) throws SQLException {
+
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		// String brnchid=session.getAttribute("BRANCHID").toString();
+		// System.out.println("name"+sclname);
+
+		try {
+			conn = objconn.getMyConnection();
+			String sqltest = "";
+			java.sql.Date sqldate = null;
+			if (!(searchdate.equalsIgnoreCase(""))) {
+				sqldate = objcommon.changeStringtoSqlDate(searchdate);
+			}
+
+			if (!(cmbtype.equalsIgnoreCase(""))) {
+				sqltest = sqltest + " and insp.type like '%" + cmbtype + "%'";
+			}
+			if (!(cmbreftype.equalsIgnoreCase(""))) {
+				sqltest = sqltest + " and insp.reftype='" + cmbreftype + "'";
+			}
+			if (!(fleetno.equalsIgnoreCase(""))) {
+				sqltest = sqltest + " and insp.rfleet like '%" + fleetno + "%'";
+			}
+
+			if (!(refdocno.equalsIgnoreCase(""))) {
+				sqltest = sqltest + " and insp.refvoucherno like'%" + refdocno
+						+ "%'";
+			}
+			if (!(docno.equalsIgnoreCase(""))) {
+				sqltest = sqltest + " and insp.doc_no like '%" + docno + "%'";
+			}
+			if (sqldate != null) {
+				sqltest = sqltest + " and insp.date='" + sqldate + "'";
+			}
+			if (!regno.equalsIgnoreCase("")) {
+				sqltest = sqltest + " and veh.reg_no=" + regno + "";
+			}
+			Statement stmtsearch = conn.createStatement();
+			/*
+			 * String str1Sql=
+			 * "select insp.agmtbranch,veh.reg_no,insp.doc_no,insp.date,insp.type,insp.reftype,insp.refdocno,insp.refvoucherno,insp.amount,insp.accident,insp.polrep,insp.acdate,"
+			 * +
+			 * " insp.coldate,insp.place,insp.fine,insp.remarks,insp.claim,insp.rfleet from eq_vinspm insp left join gl_vehmaster veh on insp.rfleet=veh.fleet_no where insp.status<>7 and insp.brhid="
+			 * +branch+" "+sqltest+" group by insp.doc_no";
+			 */
+
+			String sql = "select ac.refname,veh.reg_no,insp.agmtbranch,insp.doc_no,insp.date,insp.type,insp.reftype,insp.refdocno,insp.refvoucherno,insp.amount,insp.accident,insp.polrep,"
+					+ " insp.acdate,insp.coldate,insp.place,insp.fine,insp.remarks,insp.claim,insp.rfleet from eq_vinspm insp left join gl_vehmaster veh"
+					+ " on insp.rfleet=veh.fleet_no left join gl_ragmt rag on (insp.reftype='RAG' and insp.refdocno=rag.doc_no) left join gl_lagmt lag"
+					+ " on (insp.reftype='LAG' and insp.refdocno=lag.doc_no) left join gl_vehreplace rep on (insp.reftype='RPL' and insp.refdocno=rep.doc_no)"
+					+ " left join gl_ragmt reprag on (rep.rtype='RAG' and rep.rdocno=reprag.doc_no) left join gl_lagmt replag on (rep.rtype='LAG' and"
+					+ " rep.rdocno=replag.doc_no) left join my_acbook ac on (case when insp.reftype='RAG' then (rag.cldocno=ac.cldocno and ac.dtype='CRM')"
+					+ " when insp.reftype='LAG' then (lag.cldocno=ac.cldocno and ac.dtype='CRM') when (insp.reftype='RPL' and rep.rtype='RAG') then"
+					+ " (reprag.cldocno=ac.cldocno and ac.dtype='CRM') when (insp.reftype='RPL' and rep.rtype='LAG') then"
+					+ " (replag.cldocno=ac.cldocno and ac.dtype='CRM') else 0 end) where insp.status<>7 and insp.brhid="
+					+ branch
+					+ " "
+					+ sqltest
+					+ " group by insp.doc_no order by insp.doc_no";
+
+			// System.out.println("======="+str1Sql);
+			ResultSet resultSet = stmtsearch.executeQuery(sql);
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtsearch.close();
+			conn.close();
+			return RESULTDATA;
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println(RESULTDATA);
+		conn.close();
+		return RESULTDATA;
+	}
+
+	public JSONArray getDoc(String reftype, String branch, String docno,
+			String fleetno, String regno, String date, String mode, String type)
+			throws SQLException {
+		JSONArray RESULTDATA = new JSONArray();
+
+		if (!mode.equalsIgnoreCase("1")) {
+			return RESULTDATA;
+		}
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtmanual = conn.createStatement();
+			String table = "";
+			java.sql.Date sqldate = null;
+			String sqltest = "";
+			String sqlbranch = "";
+			if (!date.equalsIgnoreCase("")) {
+				sqldate = objcommon.changeStringtoSqlDate(date);
+			}
+
+			if (!docno.equalsIgnoreCase("")) {
+				if (reftype.equalsIgnoreCase("RAG")) {
+					sqltest += " and r.voc_no like '%" + docno + "%'";
+				} else if (reftype.equalsIgnoreCase("RPL")) {
+					sqltest += " and rep.doc_no like '%" + docno + "%'";
+				} else if (reftype.equalsIgnoreCase("NRM")) {
+					sqltest += " and nrm.doc_no like '%" + docno + "%'";
+				}
+			}
+
+			if (!fleetno.equalsIgnoreCase("")) {
+				sqltest += " and veh.fleet_no like '%" + fleetno + "%'";
+			}
+
+			if (!regno.equalsIgnoreCase("")) {
+				sqltest += " and veh.reg_no like '%" + regno + "%'";
+			}
+
+			if (sqldate != null) {
+				if (reftype.equalsIgnoreCase("RAG")) {
+					sqltest += " and r.date='" + sqldate + "'";
+				} else if (reftype.equalsIgnoreCase("RPL")) {
+					sqltest += " and rep.date='" + sqldate + "'";
+				} else if (reftype.equalsIgnoreCase("NRM")) {
+					sqltest += " and nrm.date='" + sqldate + "'";
+				}
+			}
+
+			if (reftype.equalsIgnoreCase("RAG")) {
+				if (!branch.equalsIgnoreCase("")
+						&& !branch.equalsIgnoreCase("a")) {
+					sqlbranch += " and r.brhid=" + branch;
+				}
+				table = "select ac.refname,d.fleet_no,r.doc_no,r.voc_no,r.date,'RAG' reftype,0 insurexcess,veh.reg_no "
+						+ "from gl_rentalcontractm r inner join gl_rentalcontractd  d on r.doc_no=d.rdocno "
+						+ "inner join gl_equipmaster veh on d.fleet_no=veh.fleet_no inner join my_acbook ac on (r.cldocno=ac.cldocno and ac.dtype='CRM') "
+						+ "where r.status=3" + sqlbranch + sqltest;
+			}
+
+			if (reftype.equalsIgnoreCase("RPL")) {
+				String sqlfleet = "";
+				if (type.equalsIgnoreCase("IN")) {
+					sqlfleet = "rep.rfleetno";
+				} else if (type.equalsIgnoreCase("OUT")) {
+					sqlfleet = "rep.ofleetno";
+				} else {
+					sqlfleet = "rep.rfleetno";
+				}
+
+				if (!branch.equalsIgnoreCase("")
+						&& !branch.equalsIgnoreCase("a")) {
+					sqlbranch += " and rep.inbrhid=" + branch;
+				}
+
+				table = "select distinct rep.doc_no,rep.doc_no voc_no,rep.date,"
+						+ sqlfleet
+						+ " fleet_no,'RPL' reftype,veh.reg_no,ac.refname, 0 insurexcess "
+						+ "from eq_vehreplace rep left join gl_rentalcontractm rag on (rep.rdocno=rag.doc_no and rep.rtype='RAG') "
+						+ "left join gl_equipmaster veh on ("
+						+ sqlfleet
+						+ "=veh.fleet_no) "
+						+ "left join my_acbook ac on rep.rtype='RAG' and rag.cldocno=ac.cldocno and ac.dtype='CRM' "
+						+ "where rep.status=3" + sqlbranch + sqltest;
+
+			}
+			if (reftype.equalsIgnoreCase("NRM")) {
+
+				if (!branch.equalsIgnoreCase("")
+						&& !branch.equalsIgnoreCase("a")) {
+					sqlbranch += " and nrm.brhid=" + branch;
+				}
+
+				table = "select distinct nrm.fleet_no,nrm.doc_no,nrm.doc_no voc_no,nrm.date,'NRM' reftype,0 insurexcess,veh.reg_no,sal.sal_name refname "
+						+ "from eq_nrm nrm left join gl_equipmaster veh on (nrm.fleet_no=veh.fleet_no) "
+						+ "left join my_salesman sal on (if(nrm.movtype='ST',(nrm.staffid=sal.doc_no and sal.sal_type='STF'), (nrm.drid=sal.doc_no and sal.sal_type='DRV'))) "
+						+ "where nrm.status=3 " + sqlbranch + sqltest;
+			}
+
+			System.out.println(table);
+			ResultSet resultSet = stmtmanual.executeQuery(table);
+
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		}
+		conn.close();
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public JSONArray getDamage() throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+		String strSql = "";
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+
+			Statement stmtmanual = conn.createStatement();
+			strSql = "select type code1,name description1,doc_no docno1 from gl_damage";
+			ResultSet resultSet = stmtmanual.executeQuery(strSql);
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public ClsEquipmentInspectionBean getUser(int doc) throws SQLException {
+		ClsEquipmentInspectionBean bean = new ClsEquipmentInspectionBean();
+		String strSql = "", strSql1 = "", takedoc = "";
+		int takedocn = 0;
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+
+			Statement stmtmanual = conn.createStatement();
+			strSql1 = "select coalesce(takehanddoc,'')takehanddoc from eq_vinspm where doc_no="
+					+ doc + "";
+			System.out.println("sql1====" + strSql1);
+			ResultSet rs = stmtmanual.executeQuery(strSql1);
+			while (rs.next()) {
+				takedoc = rs.getString("takehanddoc");
+			}
+			takedocn = Integer.parseInt(takedoc);
+			if (takedocn > 0) {
+				strSql = "select coalesce(mu.user_name,'')user_name,coalesce(ak.interior,'')interior,coalesce(ak.back,'')back,coalesce(ak.front,'')front,coalesce(ak.leftk,'')leftk,coalesce(ak.rightk,'')rightk from an_takehand ak left join my_user mu on ak.userid=mu.doc_no where ak.doc_no="
+						+ takedoc + "";
+				System.out.println("sql2====" + strSql);
+				ResultSet resultSet = stmtmanual.executeQuery(strSql);
+				while (resultSet.next()) {
+					bean.setUsername(resultSet.getString("user_name"));
+					bean.setFront(resultSet.getString("front"));
+					bean.setLeft(resultSet.getString("leftk"));
+					bean.setRight(resultSet.getString("rightk"));
+					bean.setBack(resultSet.getString("back"));
+					bean.setInterior(resultSet.getString("interior"));
+				}
+			}
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		return bean;
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+
+	}
+
+	public ClsEquipmentInspectionBean getSignature(int doc) throws SQLException {
+		ClsEquipmentInspectionBean bean = new ClsEquipmentInspectionBean();
+		String strSql = "", strSql1 = "", sign = "";
+		int takedocn = 0;
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+
+			Statement stmtmanual = conn.createStatement();
+			strSql1 = "select signature from an_signdetails where rdocno="
+					+ doc + "";
+			System.out.println("sql1====" + strSql1);
+			ResultSet rs = stmtmanual.executeQuery(strSql1);
+			while (rs.next()) {
+				sign = rs.getString("signature");
+				bean.setSignature(sign);
+			}
+
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		return bean;
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+
+	}
+
+	public JSONArray getComplaint() throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+		String strSql = "";
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+
+			Statement stmtmanual = conn.createStatement();
+			strSql = "select compname,doc_no docno from gl_complaint where status<>7";
+			ResultSet resultSet = stmtmanual.executeQuery(strSql);
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public JSONArray getNewDamage(String fleet, String docno,
+			String formdetailcode) throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtmanual = conn.createStatement();
+			String strSql = "select replace(inspd.path,'\\\\',';') path,dmg.name description,dmg.type code,inspd.type,inspd.remarks,inspd.attach upload,inspd.rowno srno,dmg.doc_no dmgid"
+					+ " from eq_vinspm insp left join eq_vinspd inspd on insp.doc_no=inspd.rdocno left join gl_damage dmg on"
+					+ " inspd.dmid=dmg.doc_no where inspd.dm=0 and insp.rfleet='"
+					+ fleet
+					+ "' and insp.doc_no='"
+					+ docno
+					+ "' group by inspd.rowno";
+			ResultSet resultSet = stmtmanual.executeQuery(strSql);
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public JSONArray getNewMaintenance(String fleet, String docno)
+			throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+		Connection conn = null;
+		JSONArray RESULTDATA = new JSONArray();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtmanual = conn.createStatement();
+			String strSql = "select comp.compname description,comp.doc_no doc,inspd.remarks from eq_vinspm insp left join eq_vinspd inspd on "
+					+ "insp.doc_no=inspd.rdocno left join gl_complaint comp on inspd.dmid=comp.doc_no where inspd.dm=1 and insp.rfleet='"
+					+ fleet + "' and insp.doc_no='" + docno + "'";
+			ResultSet resultSet = stmtmanual.executeQuery(strSql);
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public JSONArray getExistDamage(String fleet, String docno)
+			throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+		String strSql = "";
+		Connection conn = null;
+		JSONArray RESULTDATA = new JSONArray();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtmanual = conn.createStatement();
+			// System.out.println("getdid"+docno);
+			if (docno.equalsIgnoreCase("0")) {
+				strSql = "select dmg.name description,dmg.type code,inspd.type,inspd.remarks,inspd.attach upload,dmg.doc_no dmgid,inspd.rowno from eq_vinspm insp left join"
+						+ " eq_vinspd inspd on insp.doc_no=inspd.rdocno left join gl_damage dmg on inspd.dmid=dmg.doc_no where inspd.dm=0 and"
+						+ "  insp.rfleet=" + fleet + " and inspd.clstatus=0";
+				// System.out.println("EXIST DAMAGE SQL"+strSql);
+				ResultSet resultSet = stmtmanual.executeQuery(strSql);
+				RESULTDATA = objcommon.convertToJSON(resultSet);
+			} else {
+				strSql = "select dmg.name description,dmg.type code,inspd.type,inspd.remarks,inspd.attach upload,dmg.doc_no dmgid,inspd.rowno from eq_vinspm insp"
+						+ " left join eq_vinspd inspd on insp.doc_no=inspd.rdocno left join gl_damage dmg on inspd.dmid=dmg.doc_no where inspd.dm=0"
+						+ " and insp.rfleet="
+						+ fleet
+						+ " and insp.doc_no != "
+						+ docno + " and inspd.rdocno <= " + docno;
+				// System.out.println("EXIST DAMAGE SQL"+strSql);
+				ResultSet resultSet = stmtmanual.executeQuery(strSql);
+				RESULTDATA = objcommon.convertToJSON(resultSet);
+			}
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public JSONArray getExistComplaint(String fleet, String docno)
+			throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+		String strSql = "";
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtmanual = conn.createStatement();
+			// System.out.println("getcmpid"+docno);
+			if (docno.equalsIgnoreCase("0")) {
+				strSql = "select comp.compname description,comp.doc_no doc,inspd.remarks from eq_vinspm insp left join eq_vinspd inspd on insp.doc_no=inspd.rdocno "
+						+ " left join gl_complaint comp on inspd.dmid=comp.doc_no where inspd.dm=1 and insp.rfleet="
+						+ fleet + "  and inspd.clstatus=0";
+				// System.out.println("getexistcomplaint"+strSql);
+				ResultSet resultSet = stmtmanual.executeQuery(strSql);
+				RESULTDATA = objcommon.convertToJSON(resultSet);
+			} else {
+				strSql = "select comp.compname description,comp.doc_no doc,inspd.remarks from eq_vinspm insp left join eq_vinspd inspd on insp.doc_no=inspd.rdocno "
+						+ " left join gl_complaint comp on inspd.dmid=comp.doc_no where inspd.dm=1 and insp.date<inspd.cldate and insp.date<CURDATE() "
+						+ "and insp.rfleet=" + fleet;
+
+				// System.out.println("getexistcomplaint"+strSql);
+				ResultSet resultSet = stmtmanual.executeQuery(strSql);
+				RESULTDATA = objcommon.convertToJSON(resultSet);
+			}
+
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public JSONArray getSearchData(HttpSession session) throws SQLException {
+		List<ClsEquipmentInspectionBean> equipmentinspectionbean = new ArrayList<ClsEquipmentInspectionBean>();
+		String strSql = "";
+		JSONArray RESULTDATA = new JSONArray();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtmanual = conn.createStatement();
+			/*
+			 * strSql=
+			 * "select insp.doc_no,insp.date,insp.type,insp.reftype,insp.refdocno,insp.amount,insp.accident,insp.polrep,insp.acdate,"
+			 * +
+			 * " insp.coldate,insp.place,insp.fine,insp.remarks,insp.claim,insp.rfleet from eq_vinspm insp where insp.status<>7 and insp.brhid='"
+			 * +session.getAttribute("BRANCHID").toString()+"'";
+			 */
+			strSql = "select ac.refname,veh.reg_no,insp.agmtbranch,insp.doc_no,insp.date,insp.type,insp.reftype,insp.refdocno,insp.amount,insp.accident,insp.polrep,"
+					+ " insp.acdate,insp.coldate,insp.place,insp.fine,insp.remarks,insp.claim,insp.rfleet from eq_vinspm insp left join gl_vehmaster veh"
+					+ " on insp.rfleet=veh.fleet_no left join gl_ragmt rag on (insp.reftype='RAG' and insp.refdocno=rag.doc_no) left join gl_lagmt lag"
+					+ " on (insp.reftype='LAG' and insp.refdocno=lag.doc_no) left join gl_vehreplace rep on (insp.reftype='RPL' and insp.refdocno=rep.doc_no)"
+					+ " left join gl_ragmt reprag on (rep.rtype='RAG' and rep.rdocno=reprag.doc_no) left join gl_lagmt replag on (rep.rtype='LAG' and"
+					+ " rep.rdocno=replag.doc_no) left join my_acbook ac on (case when insp.reftype='RAG' then (rag.cldocno=ac.cldocno and ac.dtype='CRM')"
+					+ " when insp.reftype='LAG' then (lag.cldocno=ac.cldocno and ac.dtype='CRM') when (insp.reftype='RPL' and rep.rtype='RAG') then"
+					+ " (reprag.cldocno=ac.cldocno and ac.dtype='CRM') when (insp.reftype='RPL' and rep.rtype='LAG') then"
+					+ " (replag.cldocno=ac.cldocno and ac.dtype='CRM') else 0 end) where insp.status<>7 and insp.brhid='"
+					+ session.getAttribute("BRANCHID").toString() + "'";
+			ResultSet resultSet = stmtmanual.executeQuery(strSql);
+			RESULTDATA = objcommon.convertToJSON(resultSet);
+			stmtmanual.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// System.out.println("RESULTDATA=========>"+RESULTDATA);
+		return RESULTDATA;
+	}
+
+	public int insert(Date date, String cmbtype, String cmbreftype, int rdocno,
+			Date accdate, String prcs, Date collectdate, String accplace,
+			String accfines, String cmbclaim, String amount,
+			String formdetailcode, String hidaccidents, String accremarks,
+			HttpSession session, String mode, String rfleet,
+			ArrayList<String> damagearray, ArrayList<String> maintenancearray,
+			ArrayList<String> existdamagearray, String time,
+			String refvoucherno, String branch, String agmtbranch)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		// System.out.println("ACC"+hidaccidents);
+		Connection conn = null;
+		try {
+			int val;
+			conn = objconn.getMyConnection();
+			conn.setAutoCommit(false);
+			if (accfines.equalsIgnoreCase("")) {
+				accfines = "0";
+			}
+			if (amount.equalsIgnoreCase("")) {
+				amount = "0";
+			}
+			if (hidaccidents.equalsIgnoreCase("")) {
+				hidaccidents = "0";
+			}
+			if (cmbclaim.equalsIgnoreCase("")) {
+				cmbclaim = "0";
+			}
+			// accfines="round("+accfines+","+session.getAttribute("AMTDEC").toString()+")";
+			// amount="round("+amount+","+session.getAttribute("AMTDEC").toString()+")";
+			String tempround = session.getAttribute("AMTDEC").toString();
+			CallableStatement stmtMovement = conn
+					.prepareCall("{call eqInspectionDML(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+
+			stmtMovement.registerOutParameter(16, java.sql.Types.INTEGER);
+			stmtMovement.setDate(1, date);
+			stmtMovement.setString(2, cmbtype);
+			stmtMovement.setString(3, cmbreftype);
+			stmtMovement.setInt(4, rdocno);
+			stmtMovement.setString(5, amount);
+			stmtMovement.setString(6, hidaccidents);
+			stmtMovement.setString(7, prcs);
+			stmtMovement.setDate(8, accdate);
+			stmtMovement.setDate(9, collectdate);
+			stmtMovement.setString(10, accplace);
+			stmtMovement.setString(11, accfines);
+			stmtMovement.setString(12, accremarks);
+			stmtMovement.setString(13, cmbclaim);
+			stmtMovement.setString(14, session.getAttribute("USERID")
+					.toString());
+			stmtMovement.setString(15, branch);
+			stmtMovement.setString(17, mode);
+			stmtMovement.setString(18, formdetailcode);
+			stmtMovement.setString(19, rfleet);
+			stmtMovement.setString(20, tempround);
+			stmtMovement.setString(21, time);
+			stmtMovement.setString(22, refvoucherno);
+			stmtMovement.setString(23, agmtbranch);
+			stmtMovement.executeQuery();
+			val = stmtMovement.getInt("docNo");
+			inspectionBean.setDocno(val);
+			Statement stmtrcalc = conn.createStatement();
+			String strrcalc = "";
+			String strinsurexcess = "";
+
+			// if (cmbreftype.equalsIgnoreCase("RAG")
+			// && (Double.parseDouble(amount)) > 0) {
+			// strrcalc =
+			// "insert into gl_rcalc(brhid,rdocno,dtype,idno,amount,qty,invoiced,invno,invdate)values('"
+			// + session.getAttribute("BRANCHID").toString()
+			// + "',"
+			// + ""
+			// + rdocno
+			// + ",'"
+			// + cmbreftype
+			// + "',10,"
+			// + amount
+			// + ",1,0,0,null)";
+			// if (!accfines.equalsIgnoreCase("")
+			// && !accfines.equalsIgnoreCase("0")) {
+			// strinsurexcess =
+			// "insert into gl_rcalc(brhid,rdocno,dtype,idno,amount,qty,invoiced,invno,invdate)values('"
+			// + session.getAttribute("BRANCHID").toString()
+			// + "',"
+			// + ""
+			// + rdocno
+			// + ",'"
+			// + cmbreftype
+			// + "',21,"
+			// + accfines + ",1,0,0,null)";
+			// }
+			// }
+			// if (cmbreftype.equalsIgnoreCase("LAG")
+			// && (Double.parseDouble(amount)) > 0) {
+			// strrcalc =
+			// "insert into gl_lcalc(brhid,rdocno,dtype,idno,amount,qty,invoiced,invno,invdate)values('"
+			// + session.getAttribute("BRANCHID").toString()
+			// + "',"
+			// + ""
+			// + rdocno
+			// + ",'"
+			// + cmbreftype
+			// + "',10,"
+			// + amount
+			// + ",1,0,0,null)";
+			//
+			// if (!accfines.equalsIgnoreCase("")
+			// && !accfines.equalsIgnoreCase("0")) {
+			// strinsurexcess =
+			// "insert into gl_lcalc(brhid,rdocno,dtype,idno,amount,qty,invoiced,invno,invdate)values('"
+			// + session.getAttribute("BRANCHID").toString()
+			// + "',"
+			// + ""
+			// + rdocno
+			// + ",'"
+			// + cmbreftype
+			// + "',21,"
+			// + accfines + ",1,0,0,null)";
+			// }
+			// }
+			// // System.out.println("Check String: "+strrcalc);
+			// if (!(strrcalc.equalsIgnoreCase(""))) {
+			// int rcalcval = stmtrcalc.executeUpdate(strrcalc);
+			// if (rcalcval <= 0) {
+			// if (!strinsurexcess.equalsIgnoreCase("")) {
+			// int insurval = stmtrcalc.executeUpdate(strinsurexcess);
+			// if (insurval <= 0) {
+			// conn.close();
+			// return 0;
+			// }
+			// }
+			// }
+			// }
+
+			if (val > 0) {
+				for (int i = 0; i < damagearray.size(); i++) {
+					String[] damage = damagearray.get(i).split("::");
+					if (!(damage[5].equalsIgnoreCase("undefined")
+							|| damage[5].isEmpty() || damage[5] == null)) {
+						String strdamage = " insert into eq_vinspd(rowno,rdocno,dmid,type,remarks,attach,dm,fleetno)values('"
+								+ (i + 1)
+								+ "','"
+								+ val
+								+ "','"
+								+ (damage[5].equalsIgnoreCase("undefined")
+										|| damage[5].isEmpty() ? 0 : damage[5])
+								+ "',"
+								+ "'"
+								+ (damage[2].equalsIgnoreCase("undefined")
+										|| damage[2].isEmpty() ? 0 : damage[2])
+								+ "','"
+								+ (damage[3].equalsIgnoreCase("undefined")
+										|| damage[3].isEmpty() ? 0 : damage[3])
+								+ "','"
+								+ (damage[4].equalsIgnoreCase("undefined")
+										|| damage[4].isEmpty() ? 0 : damage[4])
+								+ "',0,'" + rfleet + "')";
+						Statement stmt = conn.createStatement();
+						// System.out.println("Damage SQL"+strdamage);
+						int val1 = stmt.executeUpdate(strdamage);
+
+						if (val1 <= 0) {
+							conn.close();
+							return 0;
+						}
+					}
+				}
+
+				for (int i = 0; i < maintenancearray.size(); i++) {
+					String[] maintenance = maintenancearray.get(i).split("::");
+					if (!(maintenance[2].equalsIgnoreCase("undefined")
+							|| maintenance[2].isEmpty() || maintenance[2] == null)) {
+						String strmaintenance = "insert into eq_vinspd(rowno,rdocno,dmid,remarks,dm,fleetno)values('"
+								+ (i + 1)
+								+ "','"
+								+ val
+								+ "','"
+								+ (maintenance[2].equalsIgnoreCase("undefined")
+										|| maintenance[2].isEmpty() ? 0
+										: maintenance[2])
+								+ "',"
+								+ "'"
+								+ (maintenance[1].equalsIgnoreCase("undefined")
+										|| maintenance[1].isEmpty() ? 0
+										: maintenance[1])
+								+ "',1,'"
+								+ rfleet
+								+ "')";
+						Statement stmt = conn.createStatement();
+						// System.out.println("MAINTENANCE SQL"+strmaintenance);
+						int val1 = stmt.executeUpdate(strmaintenance);
+						if (val1 <= 0) {
+							conn.close();
+							return 0;
+						}
+					}
+				}
+				// System.out.println("Success"+inspectionBean.getDocno());
+				if (inspectionBean.getDocno() > 0) {
+					conn.commit();
+					stmtMovement.close();
+					conn.close();
+					return val;
+				}
+			}
+			stmtMovement.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+			return 0;
+		} finally {
+			conn.close();
+		}
+
+		return 0;
+	}
+
+	public boolean delete(Date date, String cmbtype, String cmbreftype,
+			int rdocno, Date accdate, String prcs, Date collectdate,
+			String accplace, String accfines, String cmbclaim, String amount,
+			String formdetailcode, String hidaccidents, String accremarks,
+			HttpSession session, String mode, String rfleet, int docno,
+			String time) throws SQLException {
+		Connection conn = null;
+		// System.out.println(date+"::"+cmbtype+"::"+cmbreftype+"::"+rdocno+"::"+accdate+"::"+prcs+"::"+collectdate+"::"+accplace+"::"+accfines+"::"+cmbclaim+"::"+amount+"::"+formdetailcode+"::"+hidaccidents+"::"+accremarks+"::"+session+"::"+mode+"::"+rfleet+"::"+docno+"::"+time);
+
+		try {
+			conn = objconn.getMyConnection();
+			conn.setAutoCommit(false);
+
+			accfines = accfines == null || accfines.equalsIgnoreCase("") ? "0"
+					: accfines;
+			amount = amount == null || amount.equalsIgnoreCase("") ? "0"
+					: amount;
+			hidaccidents = hidaccidents == null
+					|| hidaccidents.equalsIgnoreCase("") ? "0" : hidaccidents;
+			/*
+			 * if(accfines.equalsIgnoreCase("")){ accfines="0"; }
+			 * if(amount.equalsIgnoreCase("")){ amount="0"; }
+			 * if(hidaccidents.equalsIgnoreCase("")){ hidaccidents="0"; }
+			 */
+			CallableStatement stmtMovement = conn
+					.prepareCall("{call eqInspectionDML(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+
+			stmtMovement.setInt(16, docno);
+			stmtMovement.setDate(1, date);
+			stmtMovement.setString(2, cmbtype);
+			stmtMovement.setString(3, cmbreftype);
+			stmtMovement.setInt(4, rdocno);
+			stmtMovement.setString(5, amount);
+			stmtMovement.setInt(6, 1);
+			stmtMovement.setString(7, prcs);
+			stmtMovement.setDate(8, accdate);
+			stmtMovement.setDate(9, collectdate);
+			stmtMovement.setString(10, accplace);
+			stmtMovement.setString(11, accfines);
+			stmtMovement.setString(12, accremarks);
+			stmtMovement.setString(13, cmbclaim);
+			stmtMovement.setString(14, session.getAttribute("USERID")
+					.toString());
+			stmtMovement.setString(15, null);
+			stmtMovement.setString(17, mode);
+			stmtMovement.setString(18, formdetailcode);
+			stmtMovement.setString(19, rfleet);
+			stmtMovement.setString(20, null);
+			stmtMovement.setString(21, time);
+			stmtMovement.setString(22, null);
+			stmtMovement.setString(23, null);
+			// System.out.println(stmtMovement);
+			int val = stmtMovement.executeUpdate();
+			if (val > 0) {
+				conn.commit();
+				stmtMovement.close();
+				conn.close();
+				return true;
+			}
+			stmtMovement.close();
+			conn.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+		} finally {
+			conn.close();
+		}
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ClsEquipmentInspectionBean getPrint(int docno) throws SQLException {
+		// TODO Auto-generated method stub
+		ClsEquipmentInspectionBean bean = new ClsEquipmentInspectionBean();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement printstmt = conn.createStatement();
+
+			/*
+			 * String strprintmaster=
+			 * "select coalesce(vp.CODE_NAME,'')platecode,drd.nation,date_format(drd.dob,'%d/%m/%Y')dob,drd.dlno,date_format(vme.dout,'%d/%m/%Y')dout,vme.tout,round(vme.kmout,2)kmout,"
+			 * +
+			 * "coalesce(case when vme.fout='0.000' then '0/8' when vme.fout='0.125' then '1/8' when vme.fout='0.250' then '2/8' when vme.fout='0.375' then '3/8' when vme.fout='0.500' then '4/8' when vme.fout='0.625' then '5/8' when vme.fout='0.750' "
+			 * +
+			 * "then '6/8' when vme.fout='0.875' then '7/8' when vme.fout='1.000' then '8/8' end,'') as fout,ac.cldocno as clientid,coalesce(ac.address,ac.address2)clntaddress,ac.mail1 clientmail,"
+			 * +
+			 * "coalesce(ac.refname,'')docdetails,coalesce(ac.com_mob,ac.per_mob)clntmob, comp.company,comp.address,comp.tel,comp.fax,br.branchname,vm.flname fleetname,coalesce(vm.REG_NO,'') Regno, "
+			 * +
+			 * "insp.doc_no,DATE_FORMAT(insp.date,'%d/%m/%Y') date,insp.time,insp.type,concat(case when insp.reftype='RAG' then 'Rental' when insp.reftype='LAG' then "
+			 * +
+			 * "'Lease' when insp.reftype='RPL' then 'Replacement' when insp.reftype='NRM' then 'Non Revenue Movement' end,'-',case when insp.reftype='RAG' then agmt.voc_no when insp.reftype='LAG' then lagmt.voc_no when insp.reftype='NRM' then "
+			 * +
+			 * "nrm.doc_no when insp.reftype='RPL' then rep.doc_no end) reftype,insp.refdocno,insp.rfleet,round(insp.amount,2) amount,insp.accident,DATE_FORMAT(insp.acdate,'%d/%m/%Y') acdate,insp.polrep,DATE_FORMAT(insp.coldate,'%d/%m/%Y') coldate,"
+			 * +
+			 * "insp.place,round(insp.fine,2) fine,if(insp.claim=1,'Own','Third Party') claim,insp.remarks,case when insp.reftype='NRM' and nrm.drid<>0 then drv.sal_name when insp.reftype='NRM' and nrm.staffid<>0 then stf.sal_name else ac.refname end driver,"
+			 * +
+			 * "coalesce(drv.mobile,stf.mobile) drivermob,case when insp.reftype='NRM' and nrm.drid<>0 then 'Driver' when insp.reftype='NRM' and nrm.staffid<>0 then 'Staff' else 'Client' end outby from eq_vinspm insp  left join gl_ragmt agmt on "
+			 * +
+			 * "(insp.reftype='RAG' and insp.refdocno=agmt.doc_no) left join gl_lagmt lagmt on (insp.reftype='LAG' and insp.refdocno=lagmt.doc_no) left join gl_nrm nrm on "
+			 * +
+			 * "(insp.reftype='NRM' and insp.refdocno=nrm.doc_no) left join gl_vehreplace rep on (insp.reftype='RPL' and insp.refdocno=rep.doc_no) "
+			 * +
+			 * "left join gl_ragmt reprag on (insp.reftype='RPL' and rep.rtype='RAG' and rep.rdocno=reprag.doc_no) left join gl_lagmt replag on "
+			 * +
+			 * "(insp.reftype='RPL' and rep.rtype='LAG' and rep.rdocno=replag.doc_no) left join my_acbook ac on ((case when insp.reftype='RAG' then agmt.cldocno when "
+			 * +
+			 * "insp.reftype='LAG' then lagmt.cldocno when insp.reftype='RPL' and rep.rtype='RAG' then reprag.cldocno when insp.reftype='RPL' and rep.rtype='LAG' then "
+			 * +
+			 * "replag.cldocno else 0 end)=ac.cldocno and ac.dtype='CRM') left join my_brch br on insp.brhid=br.doc_no left join my_comp comp on br.cmpid=comp.doc_no "
+			 * +
+			 * "left join gl_vehmaster vm on insp.rfleet=vm.fleet_no left join gl_vehplate vp on vm.PLTID=vp.DOC_NO left join gl_vmove vme on (insp.refdocno=vme.rdocno and insp.reftype=vme.rdtype) or (insp.reftype='RPL' and insp.refdocno=vme.repno) or (insp.reftype='NRM' "
+			 * +
+			 * "and insp.refdocno=vme.rdocno and vme.rdtype='MOV') left join my_salesman drv on (nrm.drid=drv.doc_no and drv.sal_type='DRV') "
+			 * +
+			 * "left join my_salesman stf on (nrm.staffid=stf.doc_no and stf.sal_type='STF') left join gl_drdetails drd on (drv.sal_type='DRV' and drv.doc_no=drd.doc_no) or (stf.sal_type='STF' and stf.doc_no=drd.doc_no)    where insp.doc_no="
+			 * +docno+" and insp.status=3 group by insp.doc_no";
+			 */
+			String strprintmaster = "select coalesce(a.CODE_NAME,'')platecode,a.nation,date_format(a.dob,'%d/%m/%Y')dob,a.dlno,date_format(a.dout,'%d/%m/%Y')dout,a.tout,round(a.kmout,2) as kmout,"
+					+ "coalesce(case when a.fout='0.000' then '0/8' when a.fout='0.125' then '1/8' when a.fout='0.250' then '2/8' when a.fout='0.375' then '3/8' when a.fout='0.500' then '4/8' when a.fout='0.625' then '5/8' when a.fout='0.750' then '6/8' when a.fout='0.875' then '7/8' when a.fout='1.000' then '8/8' end,'') as fout,"
+					+ "a.clientid,a.clntaddress,a.clientmail,a.docdetails,a.clntmob,a.company,a.address,a.tel,a.fax,a.branchname,a.fleetname,a.Regno,a.doc_no,DATE_FORMAT(a.date,'%d/%m/%Y') date,a.time,a.type,a.reftype,a.refdocno,a.rfleet,a.amount,a.accident,DATE_FORMAT(a.acdate,'%d/%m/%Y') acdate,a.polrep,DATE_FORMAT(a.coldate,'%d/%m/%Y') coldate,"
+					+ "a.place,a.fine,if(a.claim=1,'Own','Third Party') claim,a.remarks,a.driver,a.drivermob,a.outby from(select vp.CODE_NAME,drd.nation,drd.dob,drd.dlno,if(vme.status='IN',vme.din,vme.dout) dout,if(vme.status='IN',vme.tin,vme.tout) tout,if(vme.status='IN',vme.kmin,vme.kmout) kmout,if(vme.status='IN',vme.fin,vme.fout) fout,"
+					+ "ac.cldocno as clientid,coalesce(ac.address,ac.address2)clntaddress,ac.mail1 clientmail,coalesce(ac.refname,'')docdetails,coalesce(ac.com_mob,ac.per_mob)clntmob, comp.company,comp.address,comp.tel,comp.fax,br.branchname,vm.flname fleetname,coalesce(vm.REG_NO,'') Regno, insp.doc_no,insp.date,insp.time,insp.type,"
+					+ "concat(case when insp.reftype='RAG' then 'Rental' when insp.reftype='LAG' then 'Lease' when insp.reftype='RPL' then 'Replacement' when insp.reftype='NRM' then 'Non Revenue Movement' end,'-',case when insp.reftype='RAG' then agmt.voc_no when insp.reftype='LAG' then lagmt.voc_no when insp.reftype='NRM' then nrm.doc_no when insp.reftype='RPL' then rep.doc_no end) reftype,"
+					+ "insp.refdocno,insp.rfleet,round(insp.amount,2) amount,insp.accident,insp.acdate,insp.polrep,insp.coldate,insp.place,round(insp.fine,2) fine,insp.claim,insp.remarks,case when insp.reftype='NRM' and nrm.drid<>0 then drv.sal_name when insp.reftype='NRM' and nrm.staffid<>0 then stf.sal_name else ac.refname end driver,coalesce(drv.mobile,stf.mobile) drivermob,"
+					+ "case when insp.reftype='NRM' and nrm.drid<>0 then 'Driver' when insp.reftype='NRM' and nrm.staffid<>0 then 'Staff' else 'Client' end outby from eq_vinspm insp  left join gl_ragmt agmt on (insp.reftype='RAG' and insp.refdocno=agmt.doc_no) left join gl_lagmt lagmt on (insp.reftype='LAG' and insp.refdocno=lagmt.doc_no) "
+					+ "left join gl_nrm nrm on (insp.reftype='NRM' and insp.refdocno=nrm.doc_no) left join gl_vehreplace rep on (insp.reftype='RPL' and insp.refdocno=rep.doc_no) left join gl_ragmt reprag on (insp.reftype='RPL' and rep.rtype='RAG' and rep.rdocno=reprag.doc_no) left join gl_lagmt replag on (insp.reftype='RPL' and rep.rtype='LAG' and rep.rdocno=replag.doc_no) "
+					+ "left join my_acbook ac on ((case when insp.reftype='RAG' then agmt.cldocno when insp.reftype='LAG' then lagmt.cldocno when insp.reftype='RPL' and rep.rtype='RAG' then reprag.cldocno when insp.reftype='RPL' and rep.rtype='LAG' then replag.cldocno else 0 end)=ac.cldocno and ac.dtype='CRM') left join my_brch br on insp.brhid=br.doc_no "
+					+ "left join my_comp comp on br.cmpid=comp.doc_no left join gl_vehmaster vm on insp.rfleet=vm.fleet_no left join gl_vehplate vp on vm.PLTID=vp.DOC_NO left join gl_vmove vme on (insp.refdocno=vme.rdocno and insp.reftype=vme.rdtype) or (insp.reftype='RPL' and insp.refdocno=vme.repno) or (insp.reftype='NRM' and insp.refdocno=vme.rdocno and vme.rdtype='MOV') "
+					+ "left join my_salesman drv on (nrm.drid=drv.doc_no and drv.sal_type='DRV') left join my_salesman stf on (nrm.staffid=stf.doc_no and stf.sal_type='STF') left join gl_drdetails drd on (drv.sal_type='DRV' and drv.doc_no=drd.doc_no) or (stf.sal_type='STF' and stf.doc_no=drd.doc_no)where insp.doc_no="
+					+ docno + " and insp.status=3 group by insp.doc_no)a;";
+
+			System.out.println("mobileprintsql-------" + strprintmaster);
+			ResultSet rsprintmaster = printstmt.executeQuery(strprintmaster);
+			while (rsprintmaster.next()) {
+				bean.setLblcompname(rsprintmaster.getString("company"));
+				bean.setLblcompaddress(rsprintmaster.getString("clntaddress"));
+				bean.setLblcomptel(rsprintmaster.getString("tel"));
+				bean.setLblcompfax(rsprintmaster.getString("fax"));
+				bean.setLblbranch(rsprintmaster.getString("branchname"));
+				bean.setLbldate(rsprintmaster.getString("date"));
+				bean.setLbldocno(rsprintmaster.getString("doc_no"));
+				bean.setLbltime(rsprintmaster.getString("time"));
+				bean.setLbltype(rsprintmaster.getString("type"));
+				bean.setLblreftype(rsprintmaster.getString("reftype"));
+				bean.setLblrefdocno(rsprintmaster.getString("docdetails"));
+				bean.setLblreffleetno(rsprintmaster.getString("rfleet"));
+				bean.setLblamount(rsprintmaster.getString("amount"));
+				bean.setLblaccident(rsprintmaster.getString("accident"));
+				bean.setLblaccdate(rsprintmaster.getString("acdate"));
+				bean.setLblprcs(rsprintmaster.getString("polrep"));
+				bean.setLblcoldate(rsprintmaster.getString("coldate"));
+				bean.setLblplace(rsprintmaster.getString("place"));
+				bean.setLblfines(rsprintmaster.getString("fine"));
+				bean.setLblfleetname(rsprintmaster.getString("fleetname"));
+				bean.setLblregno(rsprintmaster.getString("Regno"));
+				bean.setClientmail(rsprintmaster.getString("clientmail"));
+				bean.setLblclientid(rsprintmaster.getString("clientid"));
+				bean.setLblclntmob(rsprintmaster.getString("clntmob"));
+				bean.setLbldriver(rsprintmaster.getString("driver"));
+				bean.setLbldrivermob(rsprintmaster.getString("drivermob"));
+				bean.setLbldriverdob(rsprintmaster.getString("dob"));
+				bean.setLbldriverdlno(rsprintmaster.getString("dlno"));
+				bean.setLblpltcode(rsprintmaster.getString("platecode"));
+				bean.setLbldout(rsprintmaster.getString("dout"));
+				bean.setLbltout(rsprintmaster.getString("tout"));
+				bean.setLblkmout(rsprintmaster.getString("kmout"));
+				bean.setLblfout(rsprintmaster.getString("fout"));
+				bean.setLbloutby(rsprintmaster.getString("outby"));
+
+				if (bean.getLblaccident().equalsIgnoreCase("1")) {
+					bean.setLblclaim(rsprintmaster.getString("claim"));
+				} else {
+					bean.setLblclaim(" ");
+				}
+
+				bean.setLblremarks(rsprintmaster.getString("remarks"));
+
+			}
+			printstmt.close();
+			conn.close();
+			return bean;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+
+	}
+
+	public ArrayList<String> getExistingDamagePrint(int docno, String fleetno)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		ArrayList<String> existarray = new ArrayList<String>();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtexist = conn.createStatement();
+			String strexist = "select dmg.name description,dmg.type code,inspd.type,if(inspd.remarks='0','',inspd.remarks) remarks from eq_vinspm insp left join eq_vinspd inspd on"
+					+ " insp.doc_no=inspd.rdocno left join gl_damage dmg on inspd.dmid=dmg.doc_no where inspd.dm=0 and insp.rfleet="
+					+ fleetno
+					+ ""
+					+ " and insp.doc_no !="
+					+ docno
+					+ " and inspd.rdocno <=" + docno;
+			// System.out.println("Existing Query:"+strexist);
+
+			ResultSet rsexist = stmtexist.executeQuery(strexist);
+			int i = 1;
+			while (rsexist.next()) {
+				String temp = i + "::" + rsexist.getString("code") + "::"
+						+ rsexist.getString("description") + "::"
+						+ rsexist.getString("type") + "::"
+						+ rsexist.getString("remarks");
+				i++;
+				existarray.add(temp);
+			}
+			// System.out.println("Existing Array:"+existarray);
+			stmtexist.close();
+			conn.close();
+			return existarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getNewDamagePrint(int docno, String fleetno)
+			throws SQLException {
+
+		// TODO Auto-generated method stub
+		ArrayList<String> newarray = new ArrayList<String>();
+		Connection conn = null;
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String strnew = "select  dmg.name description,dmg.type code,inspd.type,if(inspd.remarks='0','',inspd.remarks) remarks from eq_vinspm insp left join eq_vinspd inspd on"
+					+ " insp.doc_no=inspd.rdocno left join gl_damage dmg on inspd.dmid=dmg.doc_no where inspd.dm=0 and insp.rfleet="
+					+ fleetno
+					+ ""
+					+ " and insp.doc_no="
+					+ docno
+					+ " group by inspd.rowno";
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				String temp = i + "::" + rsexist.getString("code") + "::"
+						+ rsexist.getString("description") + "::"
+						+ rsexist.getString("type") + "::"
+						+ rsexist.getString("remarks");
+				i++;
+				newarray.add(temp);
+			}
+
+			stmtnew.close();
+			conn.close();
+			return newarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getNewDamagePrintPics(int docno, String fleetno,
+			String url) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String strnew = "select coalesce(inspd.path,'') path from eq_vinspm insp left join eq_vinspd inspd on"
+					+ " insp.doc_no=inspd.rdocno left join gl_damage dmg on inspd.dmid=dmg.doc_no where inspd.dm=0 and insp.rfleet="
+					+ fleetno
+					+ ""
+					+ " and insp.doc_no="
+					+ docno
+					+ " group by inspd.rowno";
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path").split("webapps")[1];
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(url + temp);
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsLeft(int docno, String url,
+			String agmtno, String agmtype) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String type = "", strnew = "";
+			String strtst = "select type from eq_vinspm where doc_no=" + docno
+					+ "";
+			ResultSet rstst = stmtnew.executeQuery(strtst);
+			while (rstst.next()) {
+				type = rstst.getString("type");
+			}
+			if (type.equalsIgnoreCase("IN")) {
+				strnew = "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('leftpic') "
+						+ "union all "
+						+ "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where vs.type='OUT' and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('lefthpic')";
+			}
+			if (type.equalsIgnoreCase("OUT")) {
+				strnew = "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' "
+						+ "and fa.descpt in('lefthpic') ";
+			}
+			System.out.println("printpicsleft========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsRight(int docno, String url,
+			String agmtno, String agmtype) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String type = "", strnew = "";
+			String strtst = "select type from eq_vinspm where doc_no=" + docno
+					+ "";
+			ResultSet rstst = stmtnew.executeQuery(strtst);
+			while (rstst.next()) {
+				type = rstst.getString("type");
+			}
+			if (type.equalsIgnoreCase("IN")) {
+				strnew = "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('rightpic') "
+						+ "union all "
+						+ "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where vs.type='OUT' and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('righthpic')";
+			}
+			if (type.equalsIgnoreCase("OUT")) {
+				strnew = "select coalesce(fa.path,'') path from my_fileattach fa left join eq_vinspm vs on vs.doc_no=fa.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' "
+						+ "and fa.descpt in('righthpic')";
+			}
+			System.out.println("printpicsright========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsFront(int docno, String url,
+			String agmtno, String agmtype) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String type = "", strnew = "";
+			String strtst = "select type from eq_vinspm where doc_no=" + docno
+					+ "";
+			ResultSet rstst = stmtnew.executeQuery(strtst);
+			while (rstst.next()) {
+				type = rstst.getString("type");
+			}
+			if (type.equalsIgnoreCase("IN")) {
+				strnew = "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('frontpic') "
+						+ "union all "
+						+ "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where vs.type='OUT' and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('fronthpic')";
+			}
+			if (type.equalsIgnoreCase("OUT")) {
+				strnew = "select coalesce(fa.path,'') path from my_fileattach fa left join eq_vinspm vs on vs.doc_no=fa.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' "
+						+ "and fa.descpt in('fronthpic')";
+			}
+			System.out.println("printpicsfront========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsBack(int docno, String url,
+			String agmtno, String agmtype) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String type = "", strnew = "";
+			String strtst = "select type from eq_vinspm where doc_no=" + docno
+					+ "";
+			ResultSet rstst = stmtnew.executeQuery(strtst);
+			while (rstst.next()) {
+				type = rstst.getString("type");
+			}
+			if (type.equalsIgnoreCase("IN")) {
+				strnew = "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('backpic') "
+						+ "union all "
+						+ "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where vs.type='OUT' and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('backhpic')";
+			}
+			if (type.equalsIgnoreCase("OUT")) {
+				strnew = "select coalesce(fa.path,'') path from my_fileattach fa left join eq_vinspm vs on vs.doc_no=fa.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' "
+						+ "and fa.descpt in('backhpic')";
+			}
+			System.out.println("printpicsback========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsInterior(int docno,
+			String url, String agmtno, String agmtype) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String type = "", strnew = "";
+			String strtst = "select type from eq_vinspm where doc_no=" + docno
+					+ "";
+			ResultSet rstst = stmtnew.executeQuery(strtst);
+			while (rstst.next()) {
+				type = rstst.getString("type");
+			}
+			if (type.equalsIgnoreCase("IN")) {
+				strnew = "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('interiorpic') "
+						+ "union all "
+						+ "select coalesce(fa.path,'') path from eq_vinspm vs left join my_fileattach fa on fa.doc_no=vs.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where vs.type='OUT' and fa.dtype='EIP' and vs.reftype='"
+						+ agmtype
+						+ "' and vs.refdocno="
+						+ agmtno
+						+ " "
+						+ "and fa.descpt in('interiorhpic')";
+			}
+			if (type.equalsIgnoreCase("OUT")) {
+				strnew = "select coalesce(fa.path,'') path from my_fileattach fa left join eq_vinspm vs on vs.doc_no=fa.doc_no "
+						+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+						+ docno
+						+ " and fa.dtype='EIP' "
+						+ "and fa.descpt in('interiorhpic')";
+			}
+			System.out.println("printpicsinterior========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsID(int docno, String url)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String strnew = "select coalesce(fa.path,'') path from my_fileattach fa left join eq_vinspm vs on vs.doc_no=fa.doc_no "
+					+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+					+ docno
+					+ " and fa.dtype='EIP' "
+					+ "and fa.descpt in('frontidpic','backidpic','frontidhpic','backidhpic')";
+			System.out.println("printpicsidpics========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPicsNew(int docno, String url)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String strnew = "select coalesce(fa.path,'') path from my_fileattach fa left join eq_vinspm vs on vs.doc_no=fa.doc_no "
+					+ "left join an_takehand at on at.doc_no=vs.takehanddoc left join an_signdetails sg on sg.rdocno=fa.doc_no where fa.doc_no="
+					+ docno
+					+ " and fa.dtype='EIP' "
+					+ "and fa.descpt in('frontpic','leftpic','rightpic','backpic','interiorpic','fronthpic','lefthpic','righthpic','backhpic','interiorhpic')";
+			System.out.println("printpics========" + strnew);
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				// System.out.println("loop========1");
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path");
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(temp);
+				} else {
+
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+
+	public ArrayList<String> getInspectionPrintPics(int docno, String url)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		ArrayList<String> picarray = new ArrayList<String>();
+		try {
+			conn = objconn.getMyConnection();
+			Statement stmtnew = conn.createStatement();
+			String strnew = "select coalesce(path,'') path from my_fileattach "
+					+ " where doc_no=" + docno + " and dtype='EIP'";
+			ResultSet rsexist = stmtnew.executeQuery(strnew);
+			int i = 1;
+			while (rsexist.next()) {
+				if (!rsexist.getString("path").equalsIgnoreCase("")) {
+					String temp = rsexist.getString("path").split("webapps")[1];
+
+					// System.out.println(temp);
+					i++;
+					picarray.add(url + temp);
+				}
+			}
+
+			stmtnew.close();
+			conn.close();
+			return picarray;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		} finally {
+			conn.close();
+		}
+	}
+}

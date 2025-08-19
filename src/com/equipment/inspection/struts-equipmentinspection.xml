@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+
+	<package name="equipmentinspection" extends="struts-default">
+
+		<action name="equipmentInspectionMobilePrint"
+			class="com.equipment.inspection.ClsEquipmentInspectionAction" method="mobilePrintAction2">
+			<interceptor-ref name="params" />
+			<result name="print">${url}</result>
+		</action>
+
+		<action name="saveEquipmentInspection"
+			class="com.equipment.inspection.ClsEquipmentInspectionAction" method="saveAction">
+			<interceptor-ref name="params" />
+			<result name="success">equipmentInspection.jsp</result>
+			<result name="fail">equipmentInspection.jsp</result>
+		</action>
+
+		<action name="equipmentInspectionPrint"
+			class="com.equipment.inspection.ClsEquipmentInspectionAction" method="printAction">
+			<interceptor-ref name="params" />
+			<result name="print">../../../../com/equipment/inspection/equipmentInspectionPrintEpic.jsp
+			</result>
+		</action>
+
+	</package>
+
+	<package name="insp-FileUpload" extends="json-default">
+
+		<action name="fileUploadInsp" class="com.equipment.inspection.ClsInspAttach">
+			<param name="contentType">text/html</param>
+			<result type="json" name="success">
+				<param name="contentType">text/html</param>
+			</result>
+			<result type="json" name="error">
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="inspectionDetails"
+			class="com.equipment.inspection.ClsEquipmentInspectionAction" method="saveAction">
+			<interceptor-ref name="params" />
+			<result name="success">../../../com/equipment/inspection/equipmentInspection.jsp
+			</result>
+			<result name="fail">../../../com/equipment/inspection/equipmentInspection.jsp
+			</result>
+		</action>
+
+	</package>
+</struts>

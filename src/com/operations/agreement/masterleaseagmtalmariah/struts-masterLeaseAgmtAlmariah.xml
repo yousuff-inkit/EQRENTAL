@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	
+
+	<package name="masterleaseagmtalmariah" extends="struts-default">
+			<action name="saveMasterLeaseAgmtAlmariah" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="saveAction">
+				<interceptor-ref name="params"/>
+				<result name="success">masterLeaseAgmt.jsp</result>
+				<result name="fail">masterLeaseAgmt.jsp</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariah" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah.jrxml</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariahPrint1" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah01.jrxml</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariahPrint2" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah02.jrxml</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariahPrint3" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah002.jrxml</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariahPrint4" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah04.jrxml</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariahPrint5" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah06.jrxml</result>
+			</action>
+			<action name="printMasterLeaseAgmtAlmariahPrint6" class="com.operations.agreement.masterleaseagmtalmariah.ClsMasterLeaseAgmtAlmariahAction" method="printAction">
+				<interceptor-ref name="params"/>
+				<result name="print">leaseagmtPrintAlmariah05.jrxml</result>
+			</action>
+			
+			
+			
+		</package>	
+</struts>

@@ -1,0 +1,75 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.sql.*"%>
+<%@page import="javax.sql.*"%>
+<%@page import="com.connection.*" %>
+<%@page import="com.common.ClsCommon"%>
+
+<%	
+String accid=request.getParameter("accid")==null?"":request.getParameter("accid");
+
+System.out.println("gettaxper");
+	ClsConnection ClsConnection=new ClsConnection();
+	ClsCommon ClsCommon=new ClsCommon();
+
+	Connection conn = null;
+	
+	try{
+		conn = ClsConnection.getMyConnection();
+		Statement stmt = conn.createStatement();
+		java.sql.Date sqlDate=null;
+		
+		String date=request.getParameter("date");
+		
+		if(!(date.equalsIgnoreCase("undefined"))&&!(date.equalsIgnoreCase(""))&&!(date.equalsIgnoreCase("0")))
+        {
+     	   sqlDate = ClsCommon.changeStringtoSqlDate(date);
+        }
+		
+		String sql = "select method from gl_config where field_nme='tax'";
+		ResultSet rsConfig = stmt.executeQuery(sql);
+		
+		int configTax=0;
+		while(rsConfig.next()) {
+			configTax=rsConfig.getInt("method");
+		} 
+
+		String taxper="0";
+		int vndtax=0;
+		
+		if(configTax==1){
+		
+			String strSql1 = "select tax from my_acbook A LEFT JOIN MY_HEAD H ON A.ACNO=H.DOC_NO where H.ACCOUNT='"+accid+"'";
+			
+			System.out.println("==vndtax "+strSql1);
+			
+			ResultSet rs1 = stmt.executeQuery(strSql1);
+			
+			while(rs1.next()) {
+							vndtax=rs1.getInt("tax");
+					} 
+			if(vndtax!=0){
+			
+						String strSql = "select per from gl_taxmaster where status=3 and type=1 and per>0 and fromdate<='"+sqlDate+"' and todate>='"+sqlDate+"'";
+						System.out.println("==taxpersql "+strSql);
+						ResultSet rs = stmt.executeQuery(strSql);
+						
+						while(rs.next()) {
+									taxper=rs.getString("per");
+								} 
+							}
+		}
+		
+	
+		
+		
+		response.getWriter().write(taxper);
+		
+		stmt.close();
+	}catch(Exception e){
+	 	e.printStackTrace();
+	 	conn.close();
+	}finally{
+		conn.close();
+	}
+  %>
+  
