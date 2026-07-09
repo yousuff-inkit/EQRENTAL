@@ -1,4 +1,3 @@
-
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -8,333 +7,549 @@
 <% String contextPath=request.getContextPath();%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/mystyle.css">
-<link rel="shortcut icon" href="<%=contextPath+"/"%>gatelogo.ico" > 
-<title>Gateway ERP(Integrated) Copyright &#169; 2017 GW INNOVATIONS Pvt Ltd</title>
-<%-- <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script> --%>
+<link rel="shortcut icon" href="<%=contextPath+"/"%>gatelogo.ico" >
+<title>Gateway ERP(Integrated) Copyright &#169; 2017 INK IT Business Solution Pvt Ltd</title>
 
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/easyui.css">
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/icon.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!-- <link href="https://fonts.googleapis.com/css?family=Raleway:200" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Droid+Serif:700i" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Raleway:900" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
-<style type="text/css">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   PREMIUM SPLIT-PANEL LOGIN — Gateway ERP(Integrated)
+   Left  58% : dark brand canvas with logo + features
+   Right 42% : clean white sign-in form
+   (Design system matched to master INK IT login page)
+   ═══════════════════════════════════════════════════════════ */
 
-            body{
-                width: 100%;
-                height: 100%;
-                color: #000;
-                background-color: #F2F2F4;
-                overflow: hidden;
-            }
-            .bg-svg{
-                width: 100%;
-                height: 100%;
-            }
-            svg{
-                width: 100%;
-                height: 100%;    
-            }
-            .vertical-login{
-                
-                position: absolute;
-                top:120px;
-                left:70px;
-                /*transform: rotate(-90deg);*/
-                text-align: center;
-            }
-            .login-text{
-                text-transform: uppercase;
-                color: #C8C8C8;
-                font-family: 'Raleway', sans-serif;
-                letter-spacing: 2px;
-            }
-            .login-line{
-                display: inline-block;
-                width: 0px;
-                height:3px;
-                background-color: #C8C8C8;
-                margin-bottom:3px; 
-                animation-name:showLine;
-                animation-duration:1s;
-                animation-delay: 1.5s;
-                animation-fill-mode: forwards;
-            }
-            @keyframes showLine{
-            from{
-                width: 0px;
-            }
-            to{
-                width: 80px;
-            }
-        }
-            .block-login{
-                position: absolute;
-                z-index: -5;
-                bottom: 10px;
-                left: 5%;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body { background: #0b1120; }
 
-            }
-            .block-login h2{
-                font-size: 18.5em;
-                font-family: 'Raleway', sans-serif;
-                text-transform: capitalize;
-                color: #E1E1E1;
-                text-shadow: -1px -1px 1px #111, 2px 2px 1px #363636;
-                color: #E1E1E1;
-  /*background-color: #2d2d2d;*/
-text-shadow: -1px 5px 5px #d8d8d8, 2px 2px 1px #C8C8C8;
-            
-            }
-            .login-container{
-                width: 60%;
-                height: 600px;
-                background-color: #fff;
-                box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-                position: absolute;
-                display: block;
-                z-index: 999;
-                top: 20px;
-                right: 20px;
-                float: right;
-                animation-delay: 0.2s;
+/* ─── FULL-PAGE SHELL ─── */
+.page-shell {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
 
-            }
-            .login-container .first,.login-container .second{
-                height: 100%;
-                float: left;
+/* ─────────────── LEFT : BRAND PANEL ─────────────── */
+.brand-panel {
+  flex: 0 0 58%;
+  position: relative;
+  background: linear-gradient(145deg, #0b1120 0%, #0f1e3c 60%, #0b1120 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 44px 60px;
+}
 
-            }
-            .first{
-                width: 40%;
-                padding-top: 10%;    
-            }
-            .second{
-                width: 60%;
-                background:url(icons/logincover4.jpg);
-                background-size: cover;
-                border-top-right-radius: 7px;
-                border-bottom-right-radius: 7px;
-            }
-            .second .header-image{
-                bottom: 0;
-                position: absolute;
-                padding-right: 10px;
-                padding-left: 10px;
-                margin-top: 30px;
-                margin-bottom: 30px;
-            }
-            .second .header-image img{
-                width: 50%;
-                float: right;
-                transition: all 0.5s ease-in;
-                cursor: pointer;
+.brand-panel::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -180px;
+  width: 560px; height: 560px;
+  background: radial-gradient(circle, rgba(37,99,235,0.28) 0%, transparent 68%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.brand-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -160px; left: -100px;
+  width: 440px; height: 440px;
+  background: radial-gradient(circle, rgba(16,185,129,0.16) 0%, transparent 68%);
+  border-radius: 50%;
+  pointer-events: none;
+}
 
-            }
-            .second .header-image img:hover{
-                transform: scale(0.7);
-            }
-            .first .header-image{
-                padding-right: 10px;
-                padding-left: 10px;
-            }
-            .login-control-container{
-                margin-left: 30px;
-                margin-right: 30px;
-            }
-            .first .header-image img{
+.dot-grid {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 0;
+}
 
-                float: right;
-            }
-            .rowgap{
-                margin-bottom: 15px;
-            }
-            .forgotpwd-container,.btnlogin-container{
-                display: inline-block;
-            }
-            .btnlogin-container{
-                float: right;
-            }
-            
-            .btnlogin{
-                background-color: #4486D9;
-                text-transform: uppercase;
-                color: #fff;
-                font-weight: bold;
-                border-color: #4486D9;
-                letter-spacing: 1px;
-                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-                padding-left: 18px;
-                padding-right: 18px;
-                transition: all 0.5s ease-in;
-            }
-            .forgotpwd-container{
-                padding-top: 7px;
-            }
-            .forgotpwd{
-                text-decoration: none;
-                cursor: progress;
-            }
-            .forgotpwd:hover{
-                text-decoration: none;   
-            }
-            .input-group-addon{
-                background-color: #fff;
-            }
-            .input-group-addon i{
-                color: #C8C8C8;
-            }
-            
-            .btnlogin:hover,.btnlogin:active,.btnlogin:focus{
-                background-color: #fff;
-                border-color: #4486D9;
-                color: #4486D9;
+.bp-logo {
+  position: relative; z-index: 2;
+  margin-bottom: 0;
+}
+.bp-logo img {
+  height: 40px; width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
 
-/*  
-                background-color: #FF0000;
-                border-color: #FF0000;
-                color: #fff;*/
-                
-            }
-            @keyframes slideInLeft {
-              from {
-                -webkit-transform: translate3d(-100%, 0, 0);
-                transform: translate3d(-100%, 0, 0);
-                opacity: 0;
-              }
+.bp-body {
+  position: relative; z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0 20px;
+}
 
-              to {
-                -webkit-transform: translate3d(0, 0, 0);
-                transform: translate3d(0, 0, 0);
-                opacity: 1;
-              }
-            }
+.bp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #60a5fa;
+  margin-bottom: 22px;
+}
+.bp-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 2px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  border-radius: 2px;
+}
 
-            @keyframes slideInRight {
-              from {
-                -webkit-transform: translate3d(100%, 0, 0);
-                transform: translate3d(100%, 0, 0);
-               opacity: 0;
-              }
+.bp-title {
+  font-size: clamp(30px, 3.4vw, 50px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #f1f5f9;
+  letter-spacing: -1.5px;
+  margin-bottom: 22px;
+}
+.bp-title .grad {
+  background: linear-gradient(90deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-              to {
-                -webkit-transform: translate3d(0, 0, 0);
-                transform: translate3d(0, 0, 0);
-                opacity: 1;
-              }
-            }
-            
-            
-            .wizard-container{
-                width: 450px;
-                height: 250px;
-                position: absolute;
-                z-index: 9999;
-                top: 50%;
-                left: 50%;
-                background-color: #fff;
-                transform: translate(-50%,-50%);
-                box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-                opacity: 0;          
-                transition: all 0.25s ease-in; 
-            }
-            .wizard-container.active{
-                opacity: 1;
-            }
-            .tabcontrols-container{
-                width: 100%;
-            }
-            .tabcontrols-container .tab-control{
-                width: 50%;
-                float: left;
-                transition: all 0.35s ease-in; 
-                margin-bottom: 25px;
-            }
-            .tab-control.active{
-                background-color: #2672E7;
-                transform: scale(1.1);
-                color: #fff;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-            }
-            .tab-content{
-                width: 100%;
-                display: none;
-            }
-            .btn-next{
-                float: right;
-                margin-top: 15px;
-                margin-right: 15px;
-                border-radius: 50%;
-                transition: all 0.25s ease-in;
-            }
-            .btn-next:hover,.btn-next:active,.btn-next:hover,.btn-dismiss:hover,.btn-dismiss:active,.btn-dismiss:hover{
-                background-color: #2672E7;
-                border-color: #2672E7;
-                color: #fff;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-            }
-            .btn-dismiss{
-                margin-top: 15px;
-                transition: all 0.25s ease-in;    
-                text-transform: uppercase;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-            .instructions{
-            	text-align:center;
-            }
-            .btnwizardclose-container{
-            	float:right;
-            	margin-right:15px;
-            	margin-top:15px;
-            	
-            }
-            .btnwizardclose-container a i{
-            	color:#000;
-            }
-        </style>
+.bp-tagline {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #94a3b8;
+  max-width: 400px;
+  margin-bottom: 44px;
+}
+
+.bp-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bp-features li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+.bp-feat-icon {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(37,99,235,0.18);
+  border: 1px solid rgba(59,130,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+.bp-feat-icon svg {
+  width: 14px; height: 14px;
+  fill: #60a5fa;
+}
+
+.bp-stats {
+  position: relative; z-index: 2;
+  display: flex;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 28px;
+  margin-top: auto;
+}
+.bp-stat {
+  flex: 1;
+  padding-right: 24px;
+}
+.bp-stat:not(:first-child) {
+  padding-left: 24px;
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.bp-stat-n {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.bp-stat-l {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ─────────────── RIGHT : FORM PANEL ─────────────── */
+.form-panel {
+  flex: 0 0 42%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  position: relative;
+  overflow-y: auto;
+}
+
+.form-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(180deg, #2563eb 0%, #10b981 100%);
+}
+
+.fp-inner {
+  width: 100%;
+  max-width: 340px;
+}
+
+.fp-logo {
+  margin-bottom: 36px;
+}
+.fp-logo img {
+  height: 40px; width: auto;
+}
+
+.fp-heading { margin-bottom: 30px; }
+.fp-heading h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  margin-bottom: 5px;
+}
+.fp-heading p {
+  font-size: 13.5px;
+  color: #64748b;
+}
+
+/* stacked fields */
+.fp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.fp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.fp-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fp-field label,
+.fp-label-row label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.1px;
+}
+
+/* select */
+.fp-field select {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  appearance: auto;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.fp-field select:focus {
+  border-color: #2563eb;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+/* text / password input */
+.fp-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.fp-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 14px;
+  color: #94a3b8;
+  pointer-events: none;
+  z-index: 1;
+}
+.fp-field input[type="text"],
+.fp-field input[type="password"] {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 40px;
+  font-size: 14px;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+}
+.fp-field input:focus {
+  border-color: #2563eb;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+.fp-field input::placeholder { color: #b0bec5; font-size: 13px; }
+
+/* forgot link */
+.forgotpwd {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  cursor: progress;
+  transition: color 0.15s;
+}
+.forgotpwd:hover { color: #1d4ed8; text-decoration: underline; }
+
+/* sign-in button */
+.btnlogin {
+  width: 100%;
+  height: 48px;
+  margin-top: 6px;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #3b82f6 100%);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.18s;
+  box-shadow: 0 6px 22px rgba(37,99,235,0.38);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.btnlogin::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.10), transparent);
+}
+.btnlogin:hover,
+.btnlogin:active,
+.btnlogin:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(37,99,235,0.48);
+  color: #fff;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #3b82f6 100%);
+}
+
+/* footer */
+.fp-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+/* ─────────────── FORGOT-PASSWORD WIZARD ─────────────── */
+.wizard-container {
+  position: fixed;
+  z-index: 9999;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.06);
+  overflow: hidden;
+  opacity: 0;
+  display: none;
+  transition: opacity 0.25s ease;
+}
+.wizard-container.active { opacity: 1; }
+
+.wizard-container h3 {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 15px 48px 15px 20px;
+  margin: 0;
+  text-align: left;
+}
+.btnwizardclose-container {
+  position: absolute;
+  top: 11px; right: 14px;
+  float: none;
+  margin: 0;
+}
+.btnwizardclose-container a i { color: rgba(255,255,255,0.75); font-size: 15px; }
+.btnwizardclose-container a:hover i { color: #fff; }
+
+.tabcontrols-container {
+  display: flex;
+  border-bottom: 1px solid #f1f5f9;
+  width: 100%;
+}
+.tab-control {
+  flex: 1; text-align: center;
+  padding: 11px 0;
+  font-size: 12.5px; font-weight: 600;
+  color: #94a3b8;
+  background: #fafbfc;
+  border: none; cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  float: none;
+  margin-bottom: 0;
+  width: auto;
+}
+.tab-control.active {
+  color: #2563eb;
+  background: #fff;
+  border-bottom-color: #2563eb;
+  transform: none;
+  box-shadow: none;
+}
+
+.tab-content-container { width: 100%; }
+.tab-content { padding: 18px 20px; display: none; width: 100%; }
+
+/* wizard input group */
+.wizard-container .input-group {
+  display: flex;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.wizard-container .input-group-addon {
+  background: #f8fafc;
+  border: none;
+  border-right: 1.5px solid #e2e8f0;
+  width: 40px;
+  display: flex; align-items: center; justify-content: center;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+.wizard-container .form-control {
+  flex: 1;
+  height: 42px;
+  border: none;
+  outline: none;
+  padding: 0 12px;
+  font-size: 14px;
+  background: transparent;
+  color: #0f172a;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.help-block { font-size: 12px; color: #ef4444; margin-top: 6px; display: block; }
+
+.btn-next {
+  float: right; margin-top: 10px; margin-right: 0;
+  width: 34px; height: 34px;
+  background: #2563eb; color: #fff;
+  border: none; border-radius: 50%;
+  cursor: pointer; font-size: 15px;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  transition: background 0.15s, transform 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-next:hover,
+.btn-next:active,
+.btn-next:focus {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+  transform: translateX(2px);
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+
+.instructions {
+  text-align: center; color: #475569;
+  font-size: 13px; line-height: 1.7;
+  padding: 8px 0 12px;
+}
+.btn-dismiss {
+  display: block; width: 100%;
+  margin-top: 10px;
+  padding: 10px 0;
+  background: #f1f5f9; color: #475569;
+  border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
+  transition: background 0.15s;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.btn-dismiss:hover,
+.btn-dismiss:active {
+  background: #e2e8f0;
+  color: #475569;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* hide legacy layout classes / offscreen decorative markup that
+   the master design no longer displays, kept in DOM only for the
+   unmodified JS to reference without altering behaviour */
+.outer-container, .vertical-login, .block-login, .bg-svg,
+.login-container, .first, .second, .header-image,
+.login-group, .rowgap, .container-fluid.login-control-container {
+  all: unset;
+}
+.outer-container, .vertical-login, .block-login, .bg-svg {
+  display: none;
+}
+</style>
 </head>
-<%-- <body background="icons/car.jpg" style="overflow:hidden;background-repeat: no-repeat;" autocomplete="off" onload="getComp();"> 
-	<div class="content">
-	   <form method="post" action="login" autocomplete="off">
-		<table class="loginTable" border="0" align="center" cellpadding="10" cellspacing="0">
-		<tr>
-		    <td colspan="3"><select name="company" id="company" required="required" ></select></td>
-		</tr>
-		<tr>
-		    <td width="150"><p style="margin-left:20px;">USERNAME</p></td>
-			<td style="width:10px;">:</td>
-			<td width="110"><input type="text" name="userid" value="" placeholder="Username" autofocus></td>
-		</tr>
-		<tr>
-		    <td><p style="margin-left:20px;">PASSWORD</p></td>
-			<td>:</td>
-			<td><input type="password" name="password" value="" placeholder="Password"></td>
-		</tr>
-		<tr>
-			<td colspan="3" style="text-align:center;"><input class="buttonStyle" type="submit" id="btnlogin" name="commit" value="Login"  onclick=""/></td>
-		</tr>
-	</table>
-	<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
- 
-		</form>
-	</div> --%>
-<body  autocomplete="off" onload="getComp();">	
-	<div class="outer-container">
-            <div class="block-login">
-                <h2></h2>
-            </div>
-            <div class="vertical-login">
-                <span class="login-text"></span>
-                <span class="login-line"></span>
-            </div>
-            <div class="bg-svg">
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<body autocomplete="off" onload="getComp();">
+
+<!-- legacy decorative / animation-target markup retained off-screen so the
+     unmodified JS (anime.js targets, login-text typewriter, etc.) keeps
+     running exactly as before, without altering visible behaviour -->
+<div class="outer-container">
+    <div class="block-login">
+        <h2></h2>
+    </div>
+    <div class="vertical-login">
+        <span class="login-text"></span>
+        <span class="login-line"></span>
+    </div>
+    <div class="bg-svg">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
      viewBox="0 0 960 560" style="enable-background:new 0 0 960 560;" xml:space="preserve">
 <style type="text/css">
@@ -350,105 +565,158 @@ text-shadow: -1px 5px 5px #d8d8d8, 2px 2px 1px #C8C8C8;
 <ellipse id="middle-sub-circle" class="st2" cx="131" cy="338.6" rx="16.3" ry="16"/>
 <ellipse id="inner-sub-circle" class="st3" cx="306.7" cy="192.9" rx="16.3" ry="16"/>
 </svg>
+    </div>
+</div>
+
+<div class="page-shell">
+
+  <!-- ────────── LEFT : BRAND PANEL ────────── -->
+  <div class="brand-panel">
+    <div class="dot-grid"></div>
+
+    <div class="bp-logo">
+      <img src="icons/ink_new_logo_2025.png" alt="INK IT Business Solutions">
+    </div>
+
+    <div class="bp-body">
+      <span class="bp-eyebrow">Enterprise Resource Planning</span>
+
+      <h1 class="bp-title">
+        Smarter ERP for<br>
+        <span class="grad">Modern Business</span>
+      </h1>
+
+      <p class="bp-tagline">
+        A unified platform to manage car rental, fleet, finance, HR, and operations —
+        all from a single, powerful workspace.
+      </p>
+
+      <ul class="bp-features">
+        <li>
+          <span class="bp-feat-icon">
+            <svg viewBox="0 0 20 20"><path d="M3 4h14v2H3V4zm0 4h10v2H3V8zm0 4h14v2H3v-2z"/></svg>
+          </span>
+          Multi-branch Operations &amp; Fleet Management
+        </li>
+        <li>
+          <span class="bp-feat-icon">
+            <svg viewBox="0 0 20 20"><path d="M2 11l8-8 8 8v7a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-7z"/></svg>
+          </span>
+          Real-time Financial Reports &amp; Analytics
+        </li>
+        <li>
+          <span class="bp-feat-icon">
+            <svg viewBox="0 0 20 20"><path d="M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 8a7 7 0 0 1 14 0H3z"/></svg>
+          </span>
+          Integrated HR, Payroll &amp; Leave Management
+        </li>
+        <li>
+          <span class="bp-feat-icon">
+            <svg viewBox="0 0 20 20"><path d="M7.629 15.314l-4.71-4.71 1.414-1.415 3.296 3.296 8.042-8.042 1.414 1.414z"/></svg>
+          </span>
+          Approval Workflows &amp; Role-based Access Control
+        </li>
+      </ul>
+    </div>
+
+    <div class="bp-stats">
+      <div class="bp-stat">
+        <span class="bp-stat-n">33+</span>
+        <span class="bp-stat-l">Modules</span>
+      </div>
+      <div class="bp-stat">
+        <span class="bp-stat-n">Multi</span>
+        <span class="bp-stat-l">Branch</span>
+      </div>
+      <div class="bp-stat">
+        <span class="bp-stat-n">24 / 7</span>
+        <span class="bp-stat-l">Support</span>
+      </div>
+    </div>
+  </div><!-- /.brand-panel -->
 
 
-            </div>
-        </div>  
+  <!-- ────────── RIGHT : FORM PANEL ────────── -->
+  <div class="form-panel">
+    <div class="fp-inner">
 
-        <div class="login-container img-rounded animated slideInRight" style="animation-delay: 1s;">
-            <div class="first">
-                <div class="header-image">
-                    <img src="icons/gwinnobanner.png" alt="" class="img-responsive animated flipInX" style="animation-delay: 1.5s;">
-                </div>
-                <div class="container-fluid login-control-container">
-                	<form method="post" action="login" autocomplete="off">
-	                    <div class="row rowgap">
-	                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	                            <div class="input-group  login-group animated slideInRight" style="animation-delay: 1.2s;">
-	                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-	                                <input id="username" type="text" class="form-control" name="userid" placeholder="Username" >
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="row rowgap">
-	                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	                            <div class="input-group  login-group animated slideInLeft" style="animation-delay: 1.2s;">
-	                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-	                                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="row">
-	                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	                            <div class="forgotpwd-container  login-group  animated fadeInDown" style="animation-delay: 1.2s;">
-	                                <a class="forgotpwd" tabindex="-1">Forgot Password ?</a>
-	                            </div>
-	                            <div class="btnlogin-container login-group animated fadeInDown" style="animation-delay: 1.2s;">
-	                                <button type="submit" class="btn btn-default btnlogin" id="btnlogin"><span>login</span></button>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
-        <select name="company" id="company" required="required" hidden="true"></select>
-	                </form>
-                </div>
-            </div>
-            <div class="second">
-                <div class="header-image">
-                    <img src="icons/gateway_logo.gif" alt="" class="img-responsive">
-                </div>
-            </div>
+      <div class="fp-logo">
+        <img src="icons/ink_new_logo_2025.png" alt="INK IT">
+      </div>
+
+      <div class="fp-heading">
+        <h2>Welcome back</h2>
+        <p>Sign in to your workspace</p>
+      </div>
+
+      <form method="post" action="login" autocomplete="off" class="fp-form">
+
+        <div class="fp-field">
+          <label for="company">Company</label>
+          <select name="company" id="company" required="required"></select>
         </div>
-        <div class="wizard-container img-rounded">
-        	<span class="btnwizardclose-container"><a href="" class="btnwizardclose"><i class="fa fa-times"></i></a></span>
-            <h3 class="text-center">Forgot Password Wizard</h3>
-            <div class="tabcontrols-container">
-                <button type="button" class="btn btn-default tab-control active" data-tab="step1" id="btnstep1">Step 1</button>
-                <button type="button" class="btn btn-default tab-control" data-tab="step2" id="btnstep2">Step 2</button>
-            </div>
-            <div class="tab-content-container">
-                <div class="tab-content" id="step1">
-                    <div class="container-fluid" >
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div class="form-group ">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                        <input type="email" class="form-control" id="forgotemail" name="forgotemail" placeholder="Enter Email">    
-                                    </div>
-                                    <span class="glyphicon form-control-feedback"></span>
-                                    <span class="help-block">&nbsp;</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <button type="button" class="btn btn-default btn-next"><i class="fa fa-chevron-right"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-content" id="step2">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <p class="instructions"></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div class="text-center"><button type="button" class="btn btn-default btn-dismiss">dismiss</button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        <div class="fp-field">
+          <label for="username">Username</label>
+          <div class="fp-input-wrap">
+            <i class="glyphicon glyphicon-user fp-icon"></i>
+            <input id="username" type="text" class="form-control" name="userid" placeholder="Enter your username">
+          </div>
         </div>
+
+        <div class="fp-field">
+          <div class="fp-label-row">
+            <label for="password">Password</label>
+            <a class="forgotpwd" tabindex="-1">Forgot Password ?</a>
+          </div>
+          <div class="fp-input-wrap">
+            <i class="glyphicon glyphicon-lock fp-icon"></i>
+            <input id="password" type="password" class="form-control" name="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-default btnlogin" id="btnlogin"><span>Sign In</span></button>
+
+        <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'/>
+
+      </form>
+
+      <p class="fp-footer">&copy; 2017 INK IT Business Solution Pvt Ltd. All rights reserved.</p>
+
+    </div>
+  </div><!-- /.form-panel -->
+
+</div><!-- /.page-shell -->
+
+
+<!-- ────────── FORGOT-PASSWORD WIZARD (IDs kept for JS) ────────── -->
+<div class="wizard-container img-rounded">
+    <span class="btnwizardclose-container"><a href="" class="btnwizardclose"><i class="fa fa-times"></i></a></span>
+    <h3 class="text-center">Forgot Password Wizard</h3>
+    <div class="tabcontrols-container">
+        <button type="button" class="btn btn-default tab-control active" data-tab="step1" id="btnstep1">Step 1</button>
+        <button type="button" class="btn btn-default tab-control" data-tab="step2" id="btnstep2">Step 2</button>
+    </div>
+    <div class="tab-content-container">
+        <div class="tab-content" id="step1">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                    <input type="email" class="form-control" id="forgotemail" name="forgotemail" placeholder="Enter Email">
+                </div>
+                <span class="glyphicon form-control-feedback"></span>
+                <span class="help-block">&nbsp;</span>
+            </div>
+            <button type="button" class="btn btn-default btn-next"><i class="fa fa-chevron-right"></i></button>
+        </div>
+        <div class="tab-content" id="step2">
+            <p class="instructions"></p>
+            <div class="text-center"><button type="button" class="btn btn-default btn-dismiss">dismiss</button></div>
+        </div>
+    </div>
+</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <%-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TimelineMax.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script> --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
     <script type="text/javascript" src="<%=contextPath%>/js/jquery.easyui.min.js"></script>
     <script type="text/javascript">
