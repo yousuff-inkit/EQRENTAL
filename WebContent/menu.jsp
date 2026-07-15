@@ -12,7 +12,8 @@
 <link rel="shortcut icon" href="<%=contextPath+"/"%>gatelogo.ico" >
 <title>Gateway ERP(Integrated) Copyright &#169; 2017 GW INNOVATIONS PVT. LTD.</title>
 <jsp:include page="includes.jsp"></jsp:include>
-<link href='http://fonts.googleapis.com/css?family=Mr+Dafoe' rel='stylesheet' type='text/css'> 
+<link href='http://fonts.googleapis.com/css?family=Mr+Dafoe' rel='stylesheet' type='text/css'>
+<link href="css/modern-theme.css" rel="stylesheet" type="text/css"> 
 
 <script type = "text/javascript">
 		$(document).ready(function () {
