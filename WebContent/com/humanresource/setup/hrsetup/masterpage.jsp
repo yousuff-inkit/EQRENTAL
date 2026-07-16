@@ -1,184 +1,178 @@
-<!DOCTYPE>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<% String contextPath=request.getContextPath();%>
+<!DOCTYPE html>
 <html>
 <head>
-<% String contextPath=request.getContextPath();%>
 <title>GatewayERP(i)</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../../../../css/main.css" rel="stylesheet" type="text/css" />
-<link href="../../../../css/body.css" media="screen" rel="stylesheet" type="text/css" />
-<link href="../../../../css/myButton.css" rel="stylesheet" type="text/css"/>
 <jsp:include page="../../../../includes.jsp"></jsp:include>
-<style>
 
-
-
-#whole
-{
-width:100%;
-}
-#header
-{
-background-color: #E0ECF8;
-color:black;
-text-align:left;
-height:7%;
-width:3%
-padding:0px;
-}
-
-
-#nav
-{
-   line-height:30px;
-    background-color: #E0ECF8; 
-    height:50%;
-    width:15%;
-    float:left;
-    position:absolute;
-    
- /*    background-color:	#ffc0cb; */
-    
-    
-}
-
-#comiframe
-{
-float:right;
-width:93%;
-height:95%;
-color:#eeeeee;
-
-}
- 
- /*   .myButtons {
-	  -moz-box-shadow: 0px -2px 14px -7px #276873;
-	-webkit-box-shadow: 0px -2px 14px -7px #276873;  
-	box-shadow: 0px -2px 14px -7px #276873;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
-	background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
-	background-color:#599bb3;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	border-radius:5px;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Verdana;
-	font-size:10px;
-	padding:5px 10px;
-	text-decoration:none;
-	   text-shadow:0px 1px 13px #3d768a;  
-}
-.myButtons:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
-	background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
-	background-color:#408c99;
-}
-.myButtons:active {
-	position:relative;
-	top:1px;
-} 
-      */
- 
- 
-    .myButtons {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
-	background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
-	background-color:#599bb3;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Verdana;
-	font-size:10px;
-	padding:4px 8px;
-	text-decoration:none;
-}
-.myButtons:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
-	background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
-	background-color:#408c99;
-}
-.myButtons:active {
-	position:relative;
-	top:1px;
-} 
- 
-  /*   #ss
-{
-background-color:	#ffc0cb;
-}
-   
-  */
-
-</style>
 <script type="text/javascript">
-	
 	$(document).ready(function() {
-		//document.getElementById("btnproject").disabled="true";
 		$('#branchid').val(window.parent.branchid.value); 
 	});
-	</script> 
+
+	// Active button styling logic
+	document.addEventListener("DOMContentLoaded", function () {
+		const buttons = document.querySelectorAll(".myButton");
+
+		buttons.forEach(btn => {
+		    btn.addEventListener("click", function () {
+		        buttons.forEach(b => b.classList.remove("active"));
+		        this.classList.add("active");
+		    });
+		});
+
+		// Auto-highlight first button on page load
+		if (buttons.length > 0) {
+		    buttons[0].classList.add("active");
+		}
+	});
+</script>
+
+<style type="text/css">
+/* =========================================================
+   SCOPED UI: HR Setup Navigation
+========================================================= */
+
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    background-color: #f5f7fa; 
+}
+
+/* Sidebar Navigation */
+#nav {
+    width: 240px; 
+    height: 100vh;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    background: #ffffff; 
+    border-right: 1px solid #c5d3e0; 
+    box-shadow: 2px 0 8px rgba(0,0,0,0.03);
+    overflow-y: auto;
+    z-index: 10;
+}
+
+#nav::-webkit-scrollbar {
+    width: 6px;
+}
+#nav::-webkit-scrollbar-thumb {
+    background: #c5d3e0;
+    border-radius: 4px;
+}
+
+#header h3 {
+    font-size: 14px;
+    color: #0b45a2; 
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+#header hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 0 0 15px 0;
+}
+
+.nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; 
+    width: 100%;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+.myButton {
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    width: 100%; 
+    height: 36px;
+    padding: 0 15px;
+    background: transparent;
+    color: #4b5563;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left; 
+}
+
+.myButton:hover {
+    background: #f1f5f9;
+    color: #0b45a2;
+}
+
+.myButton.active {
+    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+/* Content Area */
+#comiframe {
+    flex-grow: 1;
+    height: 100vh;
+    background: #f5f7fa; 
+}
+
+#comiframe iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+body::-webkit-scrollbar {
+    width: 0px;
+}
+</style>
 </head>
+
 <body>
-<div id="mainBG" class="homeContent" data-type="background">
- 
-<br> 
-
-<div id="nav"> 
-<br>
- 
-<table width="60%" id="ss">  
-<tr><td align="center"><input type="button"   class="myButtons" value="GENERAL" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/hrsetupgeneral/hrsetupgeneralmaster.jsp";'></td></tr>
-
-<tr><td align="center"><input type="button"   class="myButtons" value="DESIGNATION" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/designation.jsp";'></td></tr>
-<tr><td align="center"><input type="button"   class="myButtons" value="DEPARTMENT" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/department.jsp";'></td></tr>
-<tr><td align="center"><input type="button"   class="myButtons" value="PAYROLL CATEGORY" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/payrollcategory.jsp";'></td></tr>
-<tr><td align="center"><input type="button"   class="myButtons" value="DOCUMENT" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/document.jsp";'></td></tr>
-<tr><td align="center"><input type="button"  class="myButtons" value="LEAVE" style="width:180px;outline:none;"  onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/leave.jsp";'></td></tr>
-
-<tr><td align="center"><input type="button"   class="myButtons" value="ALLOWANCES" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/allowances.jsp";'></td></tr>
-<tr><td align="center"><input type="button"   class="myButtons" value="STATUTORY DEDUCTIONS" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/statutorydeductions.jsp";'></td></tr>
- <tr><td align="center"><input type="button"   class="myButtons" value="AGENT" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/agent.jsp";'></td></tr>
- <tr><td align="center"><input type="button"   class="myButtons" value="LEAVE SETUP" style="width:180px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/leavesetup/leavesetupmaster.jsp";'></td></tr>
-
-</table>
+<div id="nav">
+    <div id="header">
+        <h3>HR Setup</h3>
+        <hr>
+    </div>
+    
+    <div class="nav-buttons">
+        <div class="nav-item"><input type="button" class="myButton" value="General" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/hrsetupgeneral/hrsetupgeneralmaster.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Designation" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/designation.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Department" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/department.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Payroll Category" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/payrollcategory.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Document" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/document.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Leave" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/leave.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Allowances" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/allowances.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Statutory Deductions" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/statutorydeductions.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Agent" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/agent.jsp";'></div>
+        <div class="nav-item"><input type="button" class="myButton" value="Leave Setup" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/humanresource/setup/hrsetup/leavesetup/leavesetupmaster.jsp";'></div>
+    </div>
 </div>
+
 <div id="comiframe">
-	<iframe width="99%" height="100%" id="iframe2" align="right" frameborder="0" marginwidth="100%" scrolling="no" src="<%=contextPath%>/com/humanresource/setup/hrsetup/hrsetupgeneral/hrsetupgeneralmaster.jsp";></iframe>
+    <iframe id="iframe2" frameborder="0" src="<%=contextPath%>/com/humanresource/setup/hrsetup/hrsetupgeneral/hrsetupgeneralmaster.jsp"></iframe>
 </div>
-<input type="hidden" id="formName" name="formName"  value='000'/>
-<input type="hidden" id="formCode" name="formCode"  value='HRM'/>
-<input type="hidden" id="branchid" name="branchid"  value=''/>
 
-
-<input type="hidden" id="mode" name="mode"   />
-
-
-
+<div style="display:none;">
+    <input type="hidden" id="formName" name="formName" value='000'/>
+    <input type="hidden" id="formCode" name="formCode" value='HRM'/>
+    <input type="hidden" id="branchid" name="branchid" value=''/>
+    <input type="hidden" id="mode" name="mode" />
 </div>
+
 </body>
 </html>

@@ -9,10 +9,11 @@
 <%-- <meta http-equiv="refresh" content="${pageContext.session.maxInactiveInterval};url=<%=contextPath%>/sessionout.jsp" /> --%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="HandheldFriendly" content="true">
-<link rel="shortcut icon" href="<%=contextPath+"/"%>gatelogo.ico" >
-<title>Gateway ERP(Integrated) Copyright &#169; 2017 GW INNOVATIONS PVT. LTD.</title>
+<link rel="shortcut icon" href="<%=contextPath+"/"%>icons/ink_new_logo_2025.png" >
+<title>INK IT Business Solutions</title>
 <jsp:include page="includes.jsp"></jsp:include>
-<link href='http://fonts.googleapis.com/css?family=Mr+Dafoe' rel='stylesheet' type='text/css'> 
+<link href='http://fonts.googleapis.com/css?family=Mr+Dafoe' rel='stylesheet' type='text/css'>
+<link href="css/modern-theme.css" rel="stylesheet" type="text/css"> 
 
 <script type = "text/javascript">
 		$(document).ready(function () {
@@ -788,6 +789,15 @@ label.licenceExpiry:hover{
 
  
  <div id="tt" class="easyui-tabs" style="width:100%;height:100%;margin-left:-8px;" >
+ 
+ 
+   <div title="New Home">
+         <iframe scrolling="auto" frameborder="0" id="frame" src="com/dashboard/dashBoardTiles.jsp" style="width:100%;height:100%;"></iframe>
+     </div>
+     
+ <div title="New Home 1">
+         <iframe scrolling="auto" frameborder="0" id="frame2" src="com/dashboard/dashboardtiels2.jsp" style="width:100%;height:100%;"></iframe>
+     </div>
  
  <div title="Home">
 		<iframe scrolling="auto" frameborder="0" id="frame" src="com/dashboard/dashBoard.jsp" style="width:100%;height:100%;"></iframe>

@@ -7,8 +7,8 @@
 <% String contextPath=request.getContextPath();%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="<%=contextPath+"/"%>gatelogo.ico" >
-<title>Gateway ERP(Integrated) Copyright &#169; 2017 INK IT Business Solution Pvt Ltd</title>
+<link rel="shortcut icon" href="<%=contextPath+"/"%>icons/ink_new_logo_2025.png" >
+<title>INK IT Business Solutions</title>
 
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/easyui.css">
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/icon.css">
