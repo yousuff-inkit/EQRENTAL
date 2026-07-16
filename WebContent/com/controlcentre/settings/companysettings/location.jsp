@@ -8,198 +8,295 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GatewayERP(i)</title>
+<title>GatewayERP(i) - Location</title>
 <jsp:include page="../../../../includes.jsp"></jsp:include>
+
 <style>
-form label.error {
-color:red;
-  font-weight:bold;
+/* =========================================================
+SCOPED UI: Modern Layout (Master UI Standard)
+========================================================= */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 24px 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
 }
 
+#mainBG {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.modern-ui {
+    font-family: Arial, sans-serif; 
+    color: #333;
+    font-size: 12px; 
+    padding: 5px 15px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Master Input Heights - Forced to 24px */
+.modern-ui input[type="text"],
+.modern-ui input[type="email"],
+.modern-ui select { 
+    height: 24px !important; 
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    width: 100%;
+}
+
+.modern-ui input[type="text"]:focus,
+.modern-ui input[type="email"]:focus,
+.modern-ui select:focus { 
+    border-color: #007bff; 
+    outline: none;
+}
+
+.modern-ui input[readonly],
+.modern-ui input:disabled,
+.modern-ui select:disabled { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+/* Layout Utilities */
+.modern-ui .field-row { 
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    margin-bottom: 10px; 
+    flex-wrap: wrap;
+}
+
+.modern-ui .lbl-right { 
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 5px;
+}
+
+/* Middle Section Panels */
+.modern-ui .middle-panel {
+    border: 1px solid #c5d3e0; 
+    padding: 20px 10px 10px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.modern-ui .middle-panel-title { 
+    position: absolute; 
+    top: -12px;
+    left: 10px; 
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    border-left: 3px solid #0056b3;
+    z-index: 2; 
+    line-height: normal; 
+}
+
+/* Validation Label */
+.modern-ui label.error,
+.modern-ui .val-error { color: red; font-size: 11px; font-weight:bold; margin-left: 4px; }
+
+/* Scrollbar Logic */
+.hidden-scrollbar {
+    overflow-y: auto;
+    height: calc(100vh - 150px);
+    padding-right: 5px;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
 </style>
+
 <script type="text/javascript">
-$(document).ready(function () {  
-    //Date
-	   document.getElementById("formdet").innerText="Location(LOC)";
-		 document.getElementById("formdetail").value="Location";
-		 document.getElementById("formdetailcode").value="LOC";
-		 window.parent.formCode.value="LOC";
-		 window.parent.formName.value="Location";
+    $(document).ready(function () {  
+        document.getElementById("formdet").innerText="Location(LOC)";
+        document.getElementById("formdetail").value="Location";
+        document.getElementById("formdetailcode").value="LOC";
+        window.parent.formCode.value="LOC";
+        window.parent.formName.value="Location";
     });
-        function funReadOnly(){
-	       $('#frmLocation input').attr('readonly', true );
-	       $('#frmLocation select').attr('disabled', true );
-	       /* $('#jqxDateTimeInput').jqxDateTimeInput({ disabled: true}); */
-        }
-        function funRemoveReadOnly(){
-	       $('#frmLocation input').attr('readonly', false );
-	       $('#frmLocation select').attr('disabled', false );
-	       //$('#jqxDateTimeInput').jqxDateTimeInput({ disabled: false});
-        }
+        
+    function funReadOnly(){
+        $('#frmLocation input').attr('readonly', true);
+        $('#frmLocation select').attr('disabled', true);
+    }
+        
+    function funRemoveReadOnly(){
+        $('#frmLocation input').attr('readonly', false);
+        $('#frmLocation select').attr('disabled', false);
+    }
       
-        function funSearchLoad(){
-			changeContent('locationSearch.jsp', $('#window')); 
-		 }
-        function getBranch()
-        {
-        	
-        	var x=new XMLHttpRequest();
-    		x.onreadystatechange=function(){
-    		if (x.readyState==4 && x.status==200)
-    			{
-    			 	items= x.responseText;
-    			 	//System.out.println(x.responseText);
-    			 	items=items.split('***');
-    			 	 var branchidItems=items[1].split(",");
-    			 	var branchItems=items[0].split(",");
-    		         var optionsbranch = '<option value="">--Select--</option>';
-    		        for ( var i = 0; i < branchItems.length; i++) {
-    		    	   optionsbranch += '<option value="' + branchidItems[i] + '">' + branchItems[i] + '</option>';
-    		        }
-    		        $("select#cmbbranchname").html(optionsbranch);
-   			     $('#cmbbranchname').val($('#hidcmbbranchname').val()) ;
-
-    			    }
-    		       else
-    			  {
-    			  }
-    	     }
-    	      x.open("GET","getBranch.jsp",true);
-    	     x.send();	
+    function funSearchLoad(){
+        changeContent('locationSearch.jsp', $('#window')); 
+    }
+        
+    function getBranch(){
+        var x=new XMLHttpRequest();
+        x.onreadystatechange=function(){
+            if (x.readyState==4 && x.status==200){
+                items= x.responseText;
+                items=items.split('***');
+                var branchidItems=items[1].split(",");
+                var branchItems=items[0].split(",");
+                var optionsbranch = '<option value="">--Select--</option>';
+                for (var i = 0; i < branchItems.length; i++) {
+                    optionsbranch += '<option value="' + branchidItems[i] + '">' + branchItems[i] + '</option>';
+                }
+                $("select#cmbbranchname").html(optionsbranch);
+                $('#cmbbranchname').val($('#hidcmbbranchname').val());
+            }
         }
-        function setValues(){
-        	
-       	 if($('#msg').val()!=""){
-    		   $.messager.alert('Message',$('#msg').val());
-    		  }
-
+        x.open("GET","getBranch.jsp",true);
+        x.send();	
+    }
+        
+    function setValues(){
+        if($('#msg').val()!=""){
+            $.messager.alert('Message',$('#msg').val());
         }
-        function funFocus()
-        {
-        	document.getElementById("cmbbranchname").focus();
-        		
-        }
-        $(function(){
-            $('#frmLocation').validate({
-                     rules: {
-                   cmbbranchname: "required",
-                    txtloccode:"required",
-                    txtlocname:"required"/* ,
-                    txttel1:{
-                    	required:true,
-                    	digits:true,
-                    	minlength:12,
-                    	maxlength:12
-                    } */
-                     },
-                     messages: {
-                      cmbbranchname: " *",
-                      txtloccode:" *",
-                      txtlocname:" *"/* ,
-                      txttel1:{
-                    	  required:" *",
-                    	  digits:'Digits',
-                    	  minlength:'Min 12',
-                    	  maxlength:'Max 12'
-                      } */
-                     
-                     }
-            });});
-         function funNotify(){
+    }
+        
+    function funFocus(){
+        document.getElementById("cmbbranchname").focus();
+    }
+        
+    $(function(){
+        $('#frmLocation').validate({
+            rules: {
+                cmbbranchname: "required",
+                txtloccode: "required",
+                txtlocname: "required"
+            },
+            messages: {
+                cmbbranchname: " *",
+                txtloccode: " *",
+                txtlocname: " *"
+            }
+        });
+    });
+         
+    function funNotify(){
         return 1;
-    	}
-         function checkLocCode(value){
-        	 var x=new XMLHttpRequest();
-        		x.onreadystatechange=function(){
-        		if (x.readyState==4 && x.status==200)
-        			{
-        			 	var items=x.responseText;
-        			 	//alert(items.trim()!='undefine');
-        			 	if(items.trim()!='undefine'){
-        			 		document.getElementById("txtloccode").focus();
-        			 		document.getElementById("errormsg").innerText="Location ID Already Exists";
-        			 	}
-        			 	else{
-        			 		document.getElementById("txtlocname").focus();
-        			 		document.getElementById("errormsg").innerText="";
-        			 		
-        			 	}
-        			    }
-        		       else
-        			  {
-        			  }
-        	     }
-        	      x.open("GET","checkLocCode.jsp?code="+value+"&doc="+document.getElementById("docno").value,true);
-        	     x.send();
-         }
+    }
+         
+    function checkLocCode(value){
+        var x=new XMLHttpRequest();
+        x.onreadystatechange=function(){
+            if (x.readyState==4 && x.status==200){
+                var items=x.responseText;
+                if(items.trim()!='undefine'){
+                    document.getElementById("txtloccode").focus();
+                    document.getElementById("errormsg").innerText="Location ID Already Exists";
+                } else {
+                    document.getElementById("txtlocname").focus();
+                    document.getElementById("errormsg").innerText="";
+                }
+            }
+        }
+        x.open("GET","checkLocCode.jsp?code="+value+"&doc="+document.getElementById("docno").value,true);
+        x.send();
+    }
 </script>
 </head>
+
 <body onload="getBranch();funReadOnly();setValues();">
 <div id="mainBG" class="homeContent" data-type="background">
-<form id="frmLocation" action="saveActionLocation" autocomplete="off" >
+<form id="frmLocation" action="saveActionLocation" autocomplete="off">
+    <jsp:include page="../../../../header.jsp" />
 
-	<jsp:include page="../../../../header.jsp" />
-	<br/>     
-<fieldset>
-<%-- <input type="text" id="txtbranchname" name="txtbranchname" style="width:50.5%;" value='<s:property value="txtbranchname"/>'> --%>
-<table width="100%">
-  <tr> 
-    <td width="12%" align="right">Branch</td>
-    <td colspan="4"><select id="cmbbranchname" name="cmbbranchname" style="width:50.8%" value='<s:property value="cmbbranchname"/>'><option></option></select></td>
-  </tr>
-  <tr>
-    <td align="right">Location</td>
-    <td width="15%"><input type="text" id="txtloccode" name="txtloccode" style="width:79%;" value='<s:property value="txtloccode"/>' onblur="checkLocCode(this.value);"></td>
-    <td colspan="3"><input type="text" id="txtlocname" name="txtlocname" style="width:40%;" value='<s:property value="txtlocname"/>'></td>
-  </tr>
-   <tr>
-    <td align="right">Address</td>
-    <td colspan="4"><input type="text" id="txtaddress" name="txtaddress" style="width:50.2%;" value='<s:property value="txtaddress"/>' /></td>    
-  </tr>
-  <tr>
-    <td align="right">P.B.No</td>
-    <td colspan="4"><input type="text" id="txtpbno" name="txtpbno" style="width:50.5%;" value='<s:property value="txtpbno"/>'></td>
-  </tr>
-  <tr>
-    <td align="right">Tel</td>
-    <td colspan="2"><input type="text" id="txttel1" name="txttel1" style="width:60%;" value='<s:property value="txttel1"/>'></td>
-    <td width="6%" align="right">Tel</td>
-    <td width="61%" align="left"><input type="text" id="txttel2" name="txttel2" style="width:28%;" value='<s:property value="txttel2"/>'></td>
-  </tr>
-  <tr>
-    <td align="right">Fax</td>
-    <td colspan="2"><input type="text" id="txtfax1"  name="txtfax1" style="width:60%;" value='<s:property value="txtfax1"/>'></td>
-    <td align="right">Fax</td>
-    <td><input type="text" id="txtfax2" name="txtfax2" style="width:28%;" value='<s:property value="txtfax2"/>'></td>
-  </tr>
-  <tr>
-    <td align="right">Email</td>
-    <td colspan="4"><input type="email" id="txtemail1" name="txtemail1" style="width:50.5%;" value='<s:property value="txtemail1"/>'></td>
-  </tr>
-  <tr>
-    <td align="right">Website</td>
-    <td colspan="4"><input type="text"  id="txtwebsite" name="txtwebsite" style="width:50.5%;" value='<s:property value="txtwebsite"/>'></td>
-  </tr>
-</table>
-<input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'>
+    <div class='modern-ui hidden-scrollbar'>
 
-<input type="hidden" id="hidcmbbranchname" name="hidcmbbranchname" value='<s:property value="hidcmbbranchname"/>'>
-<input type="hidden" name="docno" id="docno" value='<s:property value="docno"/>'>
-<input type="text" name="deleted" id="deleted" value='<s:property value="deleted"/>' hidden="true"/>
-<input type="hidden" id="mode" name="mode"/><br/>
-</fieldset>
+        <div class="middle-panel">
+            <span class="middle-panel-title">Location Info</span>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px;">Branch</label>
+                <select id="cmbbranchname" name="cmbbranchname" style="flex:1; max-width:400px;" value='<s:property value="cmbbranchname"/>'>
+                    <option></option>
+                </select>
+                <input type="hidden" id="hidcmbbranchname" name="hidcmbbranchname" value='<s:property value="hidcmbbranchname"/>'>
+            </div>
+            
+            <div class="field-row" style="margin-bottom:0;">
+                <label class="lbl-right" style="width:100px;">Location Code</label>
+                <input type="text" id="txtloccode" name="txtloccode" style="width:150px;" value='<s:property value="txtloccode"/>' onblur="checkLocCode(this.value);" />
+                
+                <label class="lbl-right" style="width:100px; margin-left:15px;">Location Name</label>
+                <input type="text" id="txtlocname" name="txtlocname" style="flex:1; max-width:400px;" value='<s:property value="txtlocname"/>' />
+            </div>
+        </div>
+
+        <div class="middle-panel">
+            <span class="middle-panel-title">Contact Details</span>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px;">Address</label>
+                <input type="text" id="txtaddress" name="txtaddress" style="flex:1; max-width:635px;" value='<s:property value="txtaddress"/>' />
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px;">P.B. No.</label>
+                <input type="text" id="txtpbno" name="txtpbno" style="width:150px;" value='<s:property value="txtpbno"/>' />
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px;">Telephone 1</label>
+                <input type="text" id="txttel1" name="txttel1" style="width:150px;" value='<s:property value="txttel1"/>' />
+                
+                <label class="lbl-right" style="width:100px; margin-left:15px;">Telephone 2</label>
+                <input type="text" id="txttel2" name="txttel2" style="width:150px;" value='<s:property value="txttel2"/>' />
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px;">Fax 1</label>
+                <input type="text" id="txtfax1" name="txtfax1" style="width:150px;" value='<s:property value="txtfax1"/>' />
+                
+                <label class="lbl-right" style="width:100px; margin-left:15px;">Fax 2</label>
+                <input type="text" id="txtfax2" name="txtfax2" style="width:150px;" value='<s:property value="txtfax2"/>' />
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px;">Email</label>
+                <input type="email" id="txtemail1" name="txtemail1" style="width:250px;" value='<s:property value="txtemail1"/>' />
+            </div>
+            
+            <div class="field-row" style="margin-bottom:0;">
+                <label class="lbl-right" style="width:100px;">Website</label>
+                <input type="text" id="txtwebsite" name="txtwebsite" style="width:300px;" value='<s:property value="txtwebsite"/>' />
+            </div>
+        </div>
+
+        <div style="display:none;">
+            <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'>
+            <input type="hidden" name="docno" id="docno" value='<s:property value="docno"/>'>
+            <input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>' />
+            <input type="hidden" id="mode" name="mode"/>
+        </div>
+
+    </div>
 </form>
-		<%-- <div id="window">
-			<div id="windowHeader" style="background: #81BEF7;">
-				<span> <img src="../../../../icons/search_new.png" alt=""
-					style="margin-right: 15px" />Search
-				</span>
-			</div>
-			<div style="overflow: hidden; background: #E0ECF8;"
-				id="windowContent">
-				<jsp:include page="locationSearch.jsp"></jsp:include>
-			</div>
-		</div> --%>
-	</div>
+</div>
 </body>
 </html>
