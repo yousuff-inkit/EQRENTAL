@@ -1,158 +1,329 @@
+<%@page import="com.humanresource.setup.hrsetup.department.ClsDepartmentDAO"%>
+<% ClsDepartmentDAO showDAO = new ClsDepartmentDAO(); %>  
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<% String contextPath = request.getContextPath(); %>
+
 <!DOCTYPE html>
 <html>
-<%
-String contextPath=request.getContextPath();
-%>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>GatewayERP(i)</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <jsp:include page="../../../../includes.jsp"></jsp:include>
-<style>
-form label.error {
-color:red;
-  font-weight:bold;
+<s:head/>
 
+<style>
+/* =========================================================
+SCOPED UI: Modern Layout (Matches Client Master)
+========================================================= */
+body, html, #mainBG, .homeContent, form {
+    background-color: #ffffff !important; 
+    background-image: none !important; 
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
 }
+
+#mainBG {
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: none !important; 
+    border: none !important;
+}
+
+.modern-ui {
+    font-family: Arial, sans-serif; 
+    color: #333;
+    font-size: 12px; 
+    padding: 5px 15px;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: #ffffff !important;
+}
+
+/* Master Input Heights - Forced to 24px */
+.modern-ui input[type="text"],
+.modern-ui select,
+.modern-ui textarea { 
+    height: 24px !important; 
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    width: 100%;
+}
+
+.modern-ui textarea {
+    height: 48px !important; 
+    resize: none;
+}
+
+.modern-ui input[type="text"]:focus,
+.modern-ui select:focus,
+.modern-ui textarea:focus { 
+    border-color: #007bff; 
+    outline: none;
+}
+
+.modern-ui input[readonly],
+.modern-ui input:disabled,
+.modern-ui select:disabled,
+.modern-ui textarea[readonly] { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+/* Layout Utilities */
+.modern-ui .field-row { 
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    margin-bottom: 10px; 
+    flex-wrap: wrap;
+}
+
+.modern-ui .lbl-right { 
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 5px;
+}
+
+/* Middle Section Panels */
+.modern-ui .middle-panel {
+    border: 1px solid #c5d3e0; 
+    padding: 20px 10px 10px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.modern-ui .middle-panel-title { 
+    position: absolute; 
+    top: -12px;
+    left: 10px; 
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    border-left: 3px solid #0056b3;
+    z-index: 2; 
+    line-height: normal; 
+}
+
+/* Custom UI Buttons matching 24px height */
+.modern-ui .myButton {
+    height: 24px !important;
+    line-height: 22px !important;
+    padding: 0 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: none;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border: none;
+    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
+    color: #ffffff;
+    white-space: nowrap;
+}
+.modern-ui .myButton:hover { background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%); }
+
+/* Grid Wrappers */
+.modern-ui .grid-container {
+    border: 1px solid #c5d3e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* Validation Label */
+.modern-ui .val-error { color: red; font-size: 11px; font-weight:bold; }
+form label.error { color:red; font-weight:bold; }
+
+/* Scrollbar Logic */
+.hidden-scrollbar {
+    overflow-y: auto;
+    height: calc(100vh - 150px);
+    padding-right: 5px;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
 </style>
 
-<%@page import="com.humanresource.setup.hrsetup.department.ClsDepartmentDAO"%>
-<% ClsDepartmentDAO showDAO = new ClsDepartmentDAO(); %>  
-
 <script type="text/javascript">
-
-	$(document).ready(function () {    
-	    document.getElementById("formdet").innerText="Department(DEP)";
-		document.getElementById("formdetail").value="Department";
-		document.getElementById("formdetailcode").value="DEP";
-		window.parent.formCode.value="DEP";
-		window.parent.formName.value="Department";
-		
-	    $("#deptdate").jqxDateTimeInput({ width: '125px', height: '15px' ,formatString : "dd.MM.yyyy" });
-           
-	    var deptdata='<%=showDAO.searchDepartment()%>';
+$(document).ready(function () {    
+    document.getElementById("formdet").innerText="Department(DEP)";
+    document.getElementById("formdetail").value="Department";
+    document.getElementById("formdetailcode").value="DEP";
+    window.parent.formCode.value="DEP";
+    window.parent.formName.value="Department";
     
-	    var source =
-            {
-                datatype: "json",
-                datafields: [
-                          	{name : 'doc_no' , type: 'number' },
-     						{name : 'department', type: 'String'  },
-                          	{name : 'date', type: 'date'  },
-                          	{name : 'remarks', type: 'String'  }
-                 ],
-               	 localdata: deptdata,
-                
-                pager: function (pagenum, pagesize, oldpagenum) {
-                    // callback called when a page or page size is changed.
-                }
-            };
-	    
-	        var dataAdapter = new $.jqx.dataAdapter(source);
+    /* Formatted jqxDateTimeInput heights to match modern UI 24px */
+    $("#deptdate").jqxDateTimeInput({ width: '125px', height: 24 ,formatString : "dd.MM.yyyy", theme: 'energyblue' });
     
-            $("#departmentgrid").jqxGrid(
-                  {
-                  	width: "100%",
-                    source: dataAdapter,
-                    showfilterrow: true,
-                    filterable: true,
-                    selectionmode: 'singlerow',
-                        
-                    columns: [
-	        					{ text: 'Doc No',filtertype: 'number', datafield: 'doc_no', width: '10%' },
-	        					{ text: 'Date',columntype: 'textbox', filtertype: 'input', datafield: 'date', width: '12%',cellsformat:'dd.MM.yyyy' },
-	        					{ text: 'Department',columntype: 'textbox', filtertype: 'input', datafield: 'department', width: '38%' },
-	        					{ text: 'Remarks',columntype: 'textbox', filtertype: 'input', datafield: 'remarks', width: '40%' },
-        	              ]
-                    });
-            
-             $('#departmentgrid').on('rowdoubleclick', function (event) {
-                var rowindex1=event.args.rowindex;
-                
-                document.getElementById("docno").value= $('#departmentgrid').jqxGrid('getcellvalue', rowindex1, "doc_no"); 
-                document.getElementById("department").value = $("#departmentgrid").jqxGrid('getcellvalue', rowindex1, "department");
-                $("#deptdate").jqxDateTimeInput('val', $("#departmentgrid").jqxGrid('getcellvalue', rowindex1, "date"));
-                document.getElementById("remarks").value = $("#departmentgrid").jqxGrid('getcellvalue', rowindex1, "remarks");
-            });   
+    /* force internal alignment AFTER render */
+    setTimeout(function () {
+        $("#deptdate").find("input").css({
+            "margin-top": "0px",
+            "line-height": "24px",
+            "font-size": "12px", 
+            "font-family": "Arial, sans-serif", 
+            "padding": "0 6px", 
+            "box-sizing":"border-box"
         });
+        $("#deptdate").find(".jqx-action-button").css({
+            "top": "0px",
+            "height": "24px"
+        });
+    }, 0);
+       
+    var deptdata='<%=showDAO.searchDepartment()%>';
 
-	function funSearchLoad(){
-		 changeContent('departmentsearch.jsp'); 
-	 }
- 
-	function funReadOnly() {
-		$('#frmdepartment input').attr('readonly', true);
-		$('#deptdate').jqxDateTimeInput({ disabled: true});
-	}
-	
-	function funRemoveReadOnly() {
-		$('#frmdepartment input').attr('readonly', false);
-		$('#docno').attr('readonly', true);
-		$('#deptdate').jqxDateTimeInput({ disabled: false});
+    var source = {
+        datatype: "json",
+        datafields: [
+            {name : 'doc_no' , type: 'number' },
+            {name : 'department', type: 'String'  },
+            {name : 'date', type: 'date'  },
+            {name : 'remarks', type: 'String'  }
+        ],
+        localdata: deptdata,
+        pager: function (pagenum, pagesize, oldpagenum) {
+            // callback called when a page or page size is changed.
+        }
+    };
+    
+    var dataAdapter = new $.jqx.dataAdapter(source);
 
-		if ($("#mode").val() == "A") {
-			 $('#deptdate').val(new Date());
-		}
-	}
-	
-	function setValues() {
-	
-		if($('#datehidden').val()){
-			$("#deptdate").jqxDateTimeInput('val', $('#datehidden').val());
-		}
-		
-		if($('#msg').val()!=""){
-			  $.messager.alert('Message',$('#msg').val());
-		}
-	}
- 
-	     function funNotify(){
-	        	if(document.getElementById("department").value=="") {
-	        		
-	        		document.getElementById("errormsg").innerText=" Enter Department";
-	        		document.getElementById("department").focus();
-	        		return 0;
-	        	}
-	    		return 1;
-		}
-	     
-	     function funFocus(){
-	    	 $('#deptdate').jqxDateTimeInput('focus');
-	     }
-	  
+    $("#departmentgrid").jqxGrid({
+        width: "100%",
+        height: 350,
+        source: dataAdapter,
+        showfilterrow: true,
+        filterable: true,
+        selectionmode: 'singlerow',
+        columns: [
+            { text: 'Doc No',filtertype: 'number', datafield: 'doc_no', width: '10%' },
+            { text: 'Date',columntype: 'textbox', filtertype: 'input', datafield: 'date', width: '12%',cellsformat:'dd.MM.yyyy' },
+            { text: 'Department',columntype: 'textbox', filtertype: 'input', datafield: 'department', width: '38%' },
+            { text: 'Remarks',columntype: 'textbox', filtertype: 'input', datafield: 'remarks', width: '40%' },
+        ]
+    });
+        
+    $('#departmentgrid').on('rowdoubleclick', function (event) {
+        var rowindex1=event.args.rowindex;
+        
+        document.getElementById("docno").value= $('#departmentgrid').jqxGrid('getcellvalue', rowindex1, "doc_no"); 
+        document.getElementById("department").value = $("#departmentgrid").jqxGrid('getcellvalue', rowindex1, "department");
+        $("#deptdate").jqxDateTimeInput('val', $("#departmentgrid").jqxGrid('getcellvalue', rowindex1, "date"));
+        document.getElementById("remarks").value = $("#departmentgrid").jqxGrid('getcellvalue', rowindex1, "remarks");
+    });   
+});
+
+function funSearchLoad(){
+    changeContent('departmentsearch.jsp'); 
+}
+
+function funReadOnly() {
+    $('#frmdepartment input').attr('readonly', true);
+    $('#deptdate').jqxDateTimeInput({ disabled: true});
+}
+
+function funRemoveReadOnly() {
+    $('#frmdepartment input').attr('readonly', false);
+    $('#docno').attr('readonly', true);
+    $('#deptdate').jqxDateTimeInput({ disabled: false});
+
+    if ($("#mode").val() == "A") {
+        $('#deptdate').val(new Date());
+    }
+}
+
+function setValues() {
+    if($('#datehidden').val()){
+        $("#deptdate").jqxDateTimeInput('val', $('#datehidden').val());
+    }
+    
+    if($('#msg').val()!=""){
+        $.messager.alert('Message',$('#msg').val());
+    }
+}
+
+function funNotify(){
+    if(document.getElementById("department").value=="") {
+        document.getElementById("errormsg").innerText=" Enter Department";
+        document.getElementById("department").focus();
+        return 0;
+    }
+    return 1;
+}
+
+function funFocus(){
+    $('#deptdate').jqxDateTimeInput('focus');
+}
 </script>   
- 
 </head>
 <body onLoad="setValues();" >
+<div id="mainBG" class="homeContent" data-type="background">
+    <form id="frmdepartment" action="saveDepartment" method="post" autocomplete="off">
+        <jsp:include page="../../../../header.jsp" />
 
-<form id="frmdepartment" action="saveDepartment" method="post" autocomplete="off">
-<jsp:include page="../../../../header.jsp" /><br/>
- 
-<fieldset><legend>Department Details</legend> 
-<table width="100%">
-	<tr><td  width="10%" align="right">Date</td>
-	<td  width="15%" align="left"><div id="deptdate" name="deptdate" value='<s:property value="deptdate"/>'> </div></td>
-  	<td   width="12%" align="right">Department</td>
-  	<td width="34%"><input type="text" name="department" id="department" style="width:100%;" placeholder="Department" value='<s:property value="department"/>'></td>
-	<td  width="10%" align="right">Doc No</td>
-	<td  width="10%"><input type="text" name="docno" id="docno" value='<s:property value="docno"/>' readonly="readonly" tabindex="-1"></td>
-	<td  width="9%" >&nbsp;</td></tr> 
-	<tr><td align="right">Remarks</td>
-	<td colspan="4"><input type="text" name="remarks" id="remarks"  style="width:85.8%;" placeholder="Remarks" value='<s:property value="remarks"/>' ></td></tr>
-</table>
-	 
-<input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>' />
-<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/> 
-<input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/> 
-<input type="hidden" id="datehidden" name="datehidden" value='<s:property value="datehidden"/>'/> 
+        <div class='modern-ui hidden-scrollbar'>
+            
+            <div class="middle-panel">
+                <span class="middle-panel-title">Department Details</span>
+                
+                <div class="field-row">
+                    <label class="lbl-right" style="width:100px;">Date</label>
+                    <div style="width: 125px;">
+                        <div id="deptdate" name="deptdate" value='<s:property value="deptdate"/>'> </div>
+                    </div>
+                    
+                    <label class="lbl-right" style="width:80px;">Department</label>
+                    <input type="text" name="department" id="department" style="width:250px;" placeholder="Department" value='<s:property value="department"/>'>
 
-</fieldset> 
-</form>
+                    <label class="lbl-right" style="width:80px; margin-left:auto;">Doc No</label>
+                    <input type="text" name="docno" id="docno" value='<s:property value="docno"/>' readonly="readonly" tabindex="-1" style="width:120px;">
+                </div>
 
-<table width="100%">
-    <tr><td><div id="departmentgrid"></div></td></tr>
-</table><br/>
+                <div class="field-row" style="margin-bottom:0;">
+                    <label class="lbl-right" style="width:100px;">Remarks</label>
+                    <input type="text" name="remarks" id="remarks" style="flex:1;" placeholder="Remarks" value='<s:property value="remarks"/>' >
+                </div>
+            </div>
 
+            <div class="middle-panel">
+                <span class="middle-panel-title">Department List</span>
+                <div class="grid-container">
+                    <div id="departmentgrid" style="border:none;"></div>
+                </div>
+            </div>
+
+            <div style="display:none;">
+                <input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>' />
+                <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'/> 
+                <input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/> 
+                <input type="hidden" id="datehidden" name="datehidden" value='<s:property value="datehidden"/>'/> 
+            </div>
+
+        </div>
+    </form>
+</div>
 </body>
 </html>
