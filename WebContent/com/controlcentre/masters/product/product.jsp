@@ -1353,351 +1353,383 @@
 </script>
 
 <style>
-.hidden-scrollbar {
-	overflow: auto;
-	height: 530px;
+/* =========================================================
+   SCOPED UI: Modern Layout Adapted for Table Structure
+========================================================= */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 24px 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
 }
+
+#mainBG {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+#frmProduct input[type="text"],
+#frmProduct select,
+.textbox { 
+    height: 24px !important; 
+    width: 100% !important;
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    box-shadow: none !important;
+    outline: none;
+}
+
+#frmProduct input[type="text"]:focus,
+#frmProduct select:focus,
+.textbox:focus { 
+    border-color: #007bff; 
+}
+
+#frmProduct input[readonly],
+#frmProduct input:disabled,
+#frmProduct select:disabled,
+.textbox[readonly] { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+form label.error {
+    color: red;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+}
+
+.myButton, .btn {
+    height: 24px !important;
+    line-height: 22px !important;
+    padding: 0 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: none;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border: none;
+    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
+    color: #ffffff;
+    white-space: nowrap;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.myButton:hover, .btn:hover { 
+    background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%); 
+}
+
+.hidden-scrollbar {
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    padding-right: 5px;
+    overflow-x: hidden;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
+
+/* Grid Containers */
+.grid-container {
+    border: 1px solid #c5d3e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* JQX Widget Overrides for 24px Alignment */
+.jqx-datetimeinput-input { 
+    height: 24px !important; 
+    line-height: 24px !important; 
+    margin-top: 0px !important; 
+    padding-top: 0px !important;
+    box-sizing: border-box !important;
+    font-size: 12px !important;
+}
+.jqx-action-button {
+    height: 24px !important;
+}
+
+/* Middle Section Panels */
+.modern-ui .middle-panel {
+    border: 1px solid #c5d3e0; 
+    padding: 20px 10px 10px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.modern-ui .middle-panel-title { 
+    position: absolute; 
+    top: -12px;
+    left: 10px; 
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    border-left: 3px solid #0056b3;
+    z-index: 2; 
+    line-height: normal; 
+}
+
+.modern-ui .field-row { 
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    margin-bottom: 10px; 
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.modern-ui .lbl-right { 
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 5px;
+    flex-shrink: 0;
+}
+
+.modern-ui .input-search-container {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+}
+.modern-ui .input-search-container input {
+    padding-right: 25px !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+.modern-ui .magnifier-icon {
+    position: absolute;
+    right: 6px; 
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #64748b; 
+    z-index: 10;
+}
+.modern-ui .magnifier-icon:hover { color: #2563eb; }
 </style>
 
 </head>
-<body
-	onload="setValues();getpmconfig();getAlterConfig();">
-	<div id="mainBG" class="homeContent" data-type="background">
-		<form id="frmProduct" action="saveProduct" method="post"
-			autocomplete="off">
-			
-			
-			<jsp:include page="../../../../header.jsp"></jsp:include><br />
-
-			<div class='hidden-scrollbar'>
-
-				<table width="100%">
-					<tr>
-						<td width="7%" align="right">Date</td>
-						<td width="43%"><div id="date" name="date"
-								value='<s:property value="date"/>'></div> <input type="hidden"
-							id="hiddate" name="hiddate" value='<s:property value="hiddate"/>' /></td>
-						<td width="31%" align="right">Doc No</td>
-						<td width="19%"><input type="text" id="docno" name="docno"
-							style="width: 65%;" tabindex="-1"
-							value='<s:property value="docno"/>' /></td>
-					</tr>
-				</table>
-
-				<table width="100%" >
-					<tr>
-						<td width="40%">
-							<fieldset>
-								<table width="100%">
-									<tr>
-										<td width="15%" align="right">Product Code</td>
-										<td width="85%"><input type="text" id="txtproductcode"
-											name="txtproductcode" style="width: 30%;"
-											value='<s:property value="txtproductcode"/>' /></td>
-									</tr>
-									<tr>
-										<td align="right">Product Name</td>
-										<td><input type="text" id="txtproductname"
-											name="txtproductname" style="width: 100%;"
-											value='<s:property value="txtproductname"/>' /></td>
-									
-									</tr>
-									<tr>
-										<td align="right">Bar Code</td>
-										<td><input type="text" id="txtbarcode" name="txtbarcode"
-											style="width: 30%;" value='<s:property value="txtbarcode"/>' /></td>
-									</tr>
-																 <tr>
-    <td width="11%" align="right">Star</td>
-    <td colspan="6"><select  name="cmbstar" id="cmbstar"  value='<s:property value="cmbstar"/>' style="width:31%;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
-    &nbsp;&nbsp;&nbsp;
-    <label id="mtypess">Type</label> 
-       <select  name="cmbmastertype" id="cmbmastertype"  value='<s:property value="cmbmastertype"/>' style="width:30%;"><option ></option></select>
+<div class='modern-ui hidden-scrollbar'>
     
-    </td> 
-       <td width="30%">
-        </td>
-  </tr>
-								</table>
-							</fieldset>
-						</td>
-						<td width="60%">
-							<fieldset>
-								<table width="100%">
-									<tr>
-										<td width="10%" align="right">Product Type</td>
-										<td width="45%">
-											<input type="text" id="txtproducttype" name="txtproducttype"
-											style="width: 80%;" placeholder="Press F3 for Search" readonly="true" onKeyDown="getProdType(event);" value='<s:property value="txtproducttype"/>' /></td>
-											
-										<td width="11%" align="right">Brand</td>
-										<td><input type="text" id="txtbrand" name="txtbrand"
-											style="width: 75%;" placeholder="Press F3 for Search" readonly="true" onKeyDown="getProdBrand(event);" value='<s:property value="txtbrand"/>' /></td>
-									</tr>
-									<tr>
-										<td align="right">Category</td>
-										<td>
-											<input type="text" id="txtcategory" name="txtcategory"
-											style="width: 80%;" placeholder="Press F3 for Search" readonly="true" onKeyDown="getProdCat(event);" value='<s:property value="txtcategory"/>' /></td>
-											
-										<td align="right">Sub Category</td>
-										<td>
-											<input type="text" id="txtsubcategory" name="txtsubcategory"
-											style="width: 75%;" placeholder="Press F3 for Search" readonly="true" onKeyDown="getProdSubCat(event);" value='<s:property value="txtsubcategory"/>' /></td>
-									</tr>
-									<tr>
-										<td align="right">Unit</td>
-										<td>
-											<input type="text" id="txtunit" name="txtunit"
-											style="width: 50%;" placeholder="Press F3 for Search" readonly="true" onKeyDown="getProdUnit(event);" value='<s:property value="txtunit"/>' /></td>
+    <!-- General Info Header -->
+    <div class="field-row" style="background: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #c5d3e0;">
+        <label class="lbl-right" style="width:80px; flex-shrink:0;">Date</label>
+        <div style="width: 125px; flex-shrink:0;">
+            <div id="date" name="date" value='<s:property value="date"/>'></div> 
+            <input type="hidden" id="hiddate" name="hiddate" value='<s:property value="hiddate"/>' />
+        </div>
+        
+        <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:auto;">Doc No</label>
+        <input type="text" id="docno" name="docno" tabindex="-1" value='<s:property value="docno"/>' readonly style="width:150px; flex-shrink:0;" />
+    </div>
 
-										<td align="right">Department</td>
-										<td><input type="text" id="textdept" name="textdept"
-											style="width: 50%;" placeholder="Press F3 for Search" readonly="true"  onKeyDown="getProdDept(event);" value='<s:property value="textdept"/>' />
-											
-											<input
-											type="hidden" id="spec1" name="spec1"
-											value='<s:property value="spec1"/>' /> <input type="hidden"
-											id="spec2" name="spec2" value='<s:property value="spec2"/>' />
-											<input type="hidden" id="spec3" name="spec3"
-											value='<s:property value="spec3"/>' /> <input type="hidden"
-											id="spec4" name="spec4" value='<s:property value="spec4"/>' />
-											
-											<input type="hidden" id="cmbproducttype" name="cmbproducttype" value='<s:property value="cmbproducttype"/>' />
-											<input type="hidden" id="cmbbrand" name="cmbbrand" value='<s:property value="cmbbrand"/>' />
-											<input type="hidden" id="cmbcategory" name="cmbcategory" value='<s:property value="cmbcategory"/>' />
-											<input type="hidden" id="cmbsubcategory" name="cmbsubcategory" value='<s:property value="cmbsubcategory"/>' />
-											<input type="hidden" id="cmbunit" name="cmbunit" value='<s:property value="cmbunit"/>' />
-											<input type="hidden" id="cmbdept" name="cmbdept" value='<s:property value="cmbdept"/>' />
-											
-											
-											<input type="hidden" id="hidcmbmastertype" name="hidcmbmastertype" value='<s:property value="hidcmbmastertype"/>' />
+    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+        <!-- Left Panel: Product Details -->
+        <div class="middle-panel" style="flex: 1; margin-bottom: 0;">
+            <span class="middle-panel-title">Product Details</span>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Product Code</label>
+                <input type="text" id="txtproductcode" name="txtproductcode" value='<s:property value="txtproductcode"/>' style="width:120px; flex-shrink:0;" />
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Product Name</label>
+                <input type="text" id="txtproductname" name="txtproductname" value='<s:property value="txtproductname"/>' style="flex:1; min-width:0;" />
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Bar Code</label>
+                <input type="text" id="txtbarcode" name="txtbarcode" value='<s:property value="txtbarcode"/>' style="width:120px; flex-shrink:0;" />
+            </div>
+            
+            <div class="field-row" style="margin-bottom:0;">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Star</label>
+                <select name="cmbstar" id="cmbstar" value='<s:property value="cmbstar"/>' style="width:60px; flex-shrink:0;">
+                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                </select>
+                
+                <label class="lbl-right" id="mtypess" style="width:60px; flex-shrink:0; margin-left:15px;">Type</label> 
+                <select name="cmbmastertype" id="cmbmastertype" value='<s:property value="cmbmastertype"/>' style="width:120px; flex-shrink:0;">
+                    <option></option>
+                </select>
+            </div>
+        </div>
 
+        <!-- Right Panel: Categorization -->
+        <div class="middle-panel" style="flex: 1.2; margin-bottom: 0;">
+            <span class="middle-panel-title">Categorization</span>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Product Type</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="txtproducttype" name="txtproducttype" placeholder="Press F3" readonly="true" onKeyDown="getProdType(event);" value='<s:property value="txtproducttype"/>' />
+                    <svg class="magnifier-icon" onclick="typeFormSearchContent('typeFormSearchGrid.jsp');" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                
+                <label class="lbl-right" style="width:100px; flex-shrink:0; margin-left:auto;">Brand</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="txtbrand" name="txtbrand" placeholder="Press F3" readonly="true" onKeyDown="getProdBrand(event);" value='<s:property value="txtbrand"/>' />
+                    <svg class="magnifier-icon" onclick="brandFormSearchContent('brandFormSearchGrid.jsp');" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Category</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="txtcategory" name="txtcategory" placeholder="Press F3" readonly="true" onKeyDown="getProdCat(event);" value='<s:property value="txtcategory"/>' />
+                    <svg class="magnifier-icon" onclick="catFormSearchContent('catFormSearchGrid.jsp');" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                
+                <label class="lbl-right" style="width:100px; flex-shrink:0; margin-left:auto;">Sub Category</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="txtsubcategory" name="txtsubcategory" placeholder="Press F3" readonly="true" onKeyDown="getProdSubCat(event);" value='<s:property value="txtsubcategory"/>' />
+                    <svg class="magnifier-icon" onclick="var catid=document.getElementById('cmbcategory').value; subCatFormSearchContent('subCatFormSearchGrid.jsp?catid='+catid);" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+            </div>
+            
+            <div class="field-row" style="margin-bottom:0;">
+                <label class="lbl-right" style="width:100px; flex-shrink:0;">Unit</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="txtunit" name="txtunit" placeholder="Press F3" readonly="true" onKeyDown="getProdUnit(event);" value='<s:property value="txtunit"/>' />
+                    <svg class="magnifier-icon" onclick="unitFormSearchContent('unitFormSearchGrid.jsp');" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
 
+                <label class="lbl-right" style="width:100px; flex-shrink:0; margin-left:auto;">Department</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="textdept" name="textdept" placeholder="Press F3" readonly="true" onKeyDown="getProdDept(event);" value='<s:property value="textdept"/>' />
+                    <svg class="magnifier-icon" onclick="deptFormSearchContent('deptFormSearchGrid.jsp');" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Custom Cost Labels row -->
+    <div class="field-row" style="margin-bottom: 15px; padding: 10px; border-radius: 4px; border: 1px solid #c5d3e0; background: #fdfdfd; justify-content: center; gap: 20px;">
+        <div style="display:flex; gap:8px;">
+            <b><label id="stdcostname" name="stdcostname" style="font-size: 13px; font-family: Tahoma; color:#6000FC;"><s:property value="stdcostname"/> </label></b>   
+            <b><label id="stdcostprice" name="stdcostprice" style="font-size: 13px; font-family: Tahoma; color:#a03838;"><s:property value="stdcostprice"/> </label></b>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <b><label id="fixname" name="fixname" style="font-size: 13px; font-family: Tahoma; color:#6000FC;"><s:property value="fixname"/> </label></b> 
+            <b><label id="fixprices" name="fixprices" style="font-size: 13px; font-family: Tahoma; color:#a03838;"><s:property value="fixprices"/> </label></b>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <b><label id="lbrcostname" name="lbrcostname" style="font-size: 13px; font-family: Tahoma; color:#6000FC;"><s:property value="lbrcostname"/> </label></b>
+            <b><label id="lbrcosts" name="lbrcosts" style="font-size: 13px; font-family: Tahoma; color:#a03838;"><s:property value="lbrcosts"/> </label></b>
+        </div>
+    </div>
 
+    <!-- Permissions Grid -->
+    <div class="middle-panel">
+        <span class="middle-panel-title">Permissions</span>
+        <div class="field-row">
+            <label style="display:flex; align-items:center; gap:4px; margin-right:15px; cursor:pointer;">
+                <input type="radio" id="company" name="chkbrorcom" value="" onchange="funcomorbranch()" style="margin:0; width:auto!important; height:auto!important;"> Company
+            </label>
+            <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+                <input type="radio" id="branch" name="chkbrorcom" value="" onchange="funcomorbranch()" style="margin:0; width:auto!important; height:auto!important;"> Branch  
+            </label>
+        </div>
+        <div id="productDiv" class="grid-container">
+            <jsp:include page="productGrid.jsp"></jsp:include>
+        </div>
+    </div>
 
+    <!-- Price Management -->
+    <div id="pricediv" class="middle-panel">
+        <span class="middle-panel-title">Price Management</span>
+        <div id="pmDiv" class="grid-container"> 
+            <jsp:include page="pricemanagementgrid.jsp"></jsp:include>
+        </div>
+    </div>
+    
+    <!-- UOM -->
+    <div class="middle-panel">
+        <span class="middle-panel-title">UOM</span>
+        <div id="uomDiv" class="grid-container">
+            <jsp:include page="uomGrid.jsp"></jsp:include>
+        </div>
+    </div>
+         
+    <!-- Alternative Item -->
+    <div id="alterinfo" class="middle-panel">
+        <span class="middle-panel-title">Alternative Item</span>
+        <div id="alterDiv" class="grid-container">
+            <jsp:include page="alterGrid.jsp"></jsp:include>
+        </div>
+    </div>
 
+    <!-- Specification -->
+    <div id="SpecDiv" class="middle-panel">
+        <span class="middle-panel-title">Specification</span>
+        <div class="grid-container">
+            <jsp:include page="specGrid.jsp"></jsp:include>
+        </div>
+    </div>
 
-											<input type="hidden" id="specGridlen" name="specGridlen"
-											value='<s:property value="specGridlen"/>' /> <input
-											type="hidden" id="proGridlen" name="proGridlen"
-											value='<s:property value="proGridlen"/>' /> <input
-											type="hidden" id="suitGridlen" name="suitGridlen"
-											value='<s:property value="suitGridlen"/>' /> <input
-											type="hidden" id="uomGridlen" name="uomGridlen"
-											value='<s:property value="uomGridlen"/>' />
-										<input type="hidden" name="mode" id="mode"
-											value='<s:property value="mode"/>' />
-										<input type="hidden" name="deleted" id="deleted"
-											value='<s:property value="deleted"/>' />
-										<input type="hidden" id="msg" name="msg"
-											value='<s:property value="msg"/>' />
-											<input type="hidden" id="hidspec1id" name="hidspec1id"
-											value='<s:property value="hidspec1id"/>' />
-											<input type="hidden" id="hidspec2id" name="hidspec2id"
-											value='<s:property value="hidspec2id"/>' />
-											<input type="hidden" id="hidspec3id" name="hidspec3id"
-											value='<s:property value="hidspec3id"/>' />
-											<input type="hidden" id="hidsuitid" name="hidsuitid"
-											value='<s:property value="hidsuitid"/>' />
-											<input type="hidden" id="alterGridlen" name="alterGridlen"
-											value='<s:property value="alterGridlen"/>' />
-											</td>
-									</tr>
+    <!-- Suitability -->
+    <div id="suits" class="middle-panel">
+        <span class="middle-panel-title">Suitability</span>
+        <div id="SuitDiv" class="grid-container">
+            <jsp:include page="suitGrid.jsp"></jsp:include>
+        </div>
+    </div>
 
-								</table>
-							</fieldset>
-							
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><label id="stdcostname"  name="stdcostname"   style="font-size: 13px;font-family: Tahoma; color:#6000FC"><s:property value="stdcostname"/> </label></b>   
-							 <b><label id="stdcostprice"  name="stdcostprice"   style="font-size: 13px;font-family: Tahoma; color:#a03838"><s:property value="stdcostprice"/> </label></b>
-							&nbsp;&nbsp;
-							 <b><label id="fixname"  name="fixname"   style="font-size: 13px;font-family: Tahoma; color:#6000FC"><s:property value="fixname"/> </label></b> 
-							 <b><label id="fixprices"  name="fixprices"   style="font-size: 13px;font-family: Tahoma; color:#a03838"><s:property value="fixprices"/> </label></b>
-							 &nbsp;&nbsp;
-							 <b><label id="lbrcostname"  name="lbrcostname"   style="font-size: 13px;font-family: Tahoma; color:#6000FC"><s:property value="lbrcostname"/> </label></b>
-							 <b><label id="lbrcosts"  name="lbrcosts"   style="font-size: 13px;font-family: Tahoma; color:#a03838"><s:property value="lbrcosts"/> </label></b>
-						</td>
-					</tr>
-				</table>
-				<br />
-				<table width="100%">
-					<tr>
-						<td colspan="4">
-							<fieldset>
-									<legend>Permissions</legend>
-									<table width="100%">
-									<tr>
-									<td>
-									&nbsp;
-									<input type="radio" id="company" name="chkbrorcom" value=""  onchange="funcomorbranch()"> Company &nbsp;&nbsp;
-									  <input type="radio"id="branch"  name="chkbrorcom" value="" onchange="funcomorbranch()"> Branch  
-									</td></tr>
-										</table>
-									
-									<div id="productDiv">
-									<jsp:include page="productGrid.jsp"></jsp:include><br /></div>
-								</fieldset>
-							
-							<table width="100%">
-							
-							<tr>
-									<td>
-									<div id="pricediv">
-										<fieldset>
-												<legend>Price Management</legend>
-												
-												
-												<div id="pmDiv"> 
-											
-												<jsp:include page="pricemanagementgrid.jsp"></jsp:include></div>
-									</fieldset>
-										</div></td>
-								</tr>
-	
-								
-								<tr>
-									<td>
-										<fieldset>
-												<legend>UOM</legend>
-												<div id="uomDiv">
-											
-												<jsp:include page="uomGrid.jsp"></jsp:include></div>
-									</fieldset>
-										
-								</tr>
-									 
-								<tr>
-								<td width="50%" id="alterinfo">
-								<fieldset>
-												<legend>Alternative Item</legend>
-												<div id="alterDiv">
-											<table width="100%">
-											
-											<tr>
-											<td>
-											<div><jsp:include page="alterGrid.jsp"></jsp:include></div>
-											</td>
-											</tr>
-											</table>
-												
-												</div>
-									</fieldset>
-								</td>
-								</tr>
-								
-								
+    <!-- Hidden Fields Container -->
+    <div style="display:none;">
+        <input type="hidden" id="spec1" name="spec1" value='<s:property value="spec1"/>' /> 
+        <input type="hidden" id="spec2" name="spec2" value='<s:property value="spec2"/>' />
+        <input type="hidden" id="spec3" name="spec3" value='<s:property value="spec3"/>' /> 
+        <input type="hidden" id="spec4" name="spec4" value='<s:property value="spec4"/>' />
+        <input type="hidden" id="cmbproducttype" name="cmbproducttype" value='<s:property value="cmbproducttype"/>' />
+        <input type="hidden" id="cmbbrand" name="cmbbrand" value='<s:property value="cmbbrand"/>' />
+        <input type="hidden" id="cmbcategory" name="cmbcategory" value='<s:property value="cmbcategory"/>' />
+        <input type="hidden" id="cmbsubcategory" name="cmbsubcategory" value='<s:property value="cmbsubcategory"/>' />
+        <input type="hidden" id="cmbunit" name="cmbunit" value='<s:property value="cmbunit"/>' />
+        <input type="hidden" id="cmbdept" name="cmbdept" value='<s:property value="cmbdept"/>' />
+        <input type="hidden" id="hidcmbmastertype" name="hidcmbmastertype" value='<s:property value="hidcmbmastertype"/>' />
+        <input type="hidden" id="specGridlen" name="specGridlen" value='<s:property value="specGridlen"/>' /> 
+        <input type="hidden" id="proGridlen" name="proGridlen" value='<s:property value="proGridlen"/>' /> 
+        <input type="hidden" id="suitGridlen" name="suitGridlen" value='<s:property value="suitGridlen"/>' /> 
+        <input type="hidden" id="uomGridlen" name="uomGridlen" value='<s:property value="uomGridlen"/>' />
+        <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>' />
+        <input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>' />
+        <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>' />
+        <input type="hidden" id="hidspec1id" name="hidspec1id" value='<s:property value="hidspec1id"/>' />
+        <input type="hidden" id="hidspec2id" name="hidspec2id" value='<s:property value="hidspec2id"/>' />
+        <input type="hidden" id="hidspec3id" name="hidspec3id" value='<s:property value="hidspec3id"/>' />
+        <input type="hidden" id="hidsuitid" name="hidsuitid" value='<s:property value="hidsuitid"/>' />
+        <input type="hidden" id="alterGridlen" name="alterGridlen" value='<s:property value="alterGridlen"/>' />
+        <input type="hidden" id="hidecmbstar" name="hidecmbstar" value='<s:property value="hidecmbstar"/>' />
+        <input type="hidden" id="pmgtgridlength" name="pmgtgridlength" value='<s:property value="pmgtgridlength"/>' />
+        <input type="hidden" id="comorbranch" name="comorbranch" value='<s:property value="comorbranch"/>' />
+        <input type="hidden" id="hidpricemgt" name="hidpricemgt" value='<s:property value="hidpricemgt"/>' /> 
+    </div>
 
-								<tr>
-									<td>
-									
-										<div id="SpecDiv">
-											<fieldset>
-												<legend>Specification</legend>
-												<jsp:include page="specGrid.jsp"></jsp:include></fieldset>
-												</div>
-										
-									</td>
-								</tr>
-
-
-
-
-
-
-								<tr>
-									<td><div id="suits">
-												 <fieldset>
-												<legend>Suitabilty</legend>
-												<table width="100%">
-												<tr>
-												<td width="99%" height="300">
-												<div  id="SuitDiv">
-										
-												<jsp:include page="suitGrid.jsp"></jsp:include>
-												</div></td><td width="1%" height="300">&nbsp;</td></tr></table></fieldset>
-										</div>
-									</td>
-								</tr>
-
-
-							</table>
-						</td>
-					</tr>
-				</table>
-
-			</div>
-			
-			
-				<input type="hidden" id="hidecmbstar" name="hidecmbstar" value='<s:property value="hidecmbstar"/>' />
-			
-					<input type="hidden" id="pmgtgridlength" name="pmgtgridlength" value='<s:property value="pmgtgridlength"/>' />
-			<input type="hidden" id="comorbranch" name="comorbranch" value='<s:property value="comorbranch"/>' />
-			
-			<input type="hidden" id="hidpricemgt" name="hidpricemgt" value='<s:property value="hidpricemgt"/>' /> <!-- //div -->
-			
-		</form>
-		<div id="unitsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		
-		<div id="catsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		
-		<div id="subcatsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		
-		<div id="typesearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-
-		<div id="brandsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="modelsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="deptsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		
-		<div id="yomsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="spec1searchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="spec2searchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="spec3searchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="suitsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="submodelsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-		<div id="prodsearchwindow">
-			<div></div>
-			<div></div>
-		</div>
-	</div>
-</body>
+</div>
 </html>

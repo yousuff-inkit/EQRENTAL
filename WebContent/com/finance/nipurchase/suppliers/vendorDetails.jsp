@@ -9,12 +9,156 @@
 <title>GatewayERP(i)</title>
 <jsp:include page="../../../../includes.jsp"></jsp:include>
 
+<style>
+/* =========================================================
+   SCOPED UI: Modern Layout Adapted for Table Structure
+========================================================= */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 24px 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+}
+
+#mainBG {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+#frmVendorDetails input[type="text"],
+#frmVendorDetails input[type="email"],
+#frmVendorDetails select,
+.textbox { 
+    height: 24px !important; 
+    width: 100% !important;
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    box-shadow: none !important;
+    outline: none;
+}
+
+#frmVendorDetails input[type="text"]:focus,
+#frmVendorDetails input[type="email"]:focus,
+#frmVendorDetails select:focus,
+.textbox:focus { 
+    border-color: #007bff; 
+}
+
+#frmVendorDetails input[readonly],
+#frmVendorDetails input:disabled,
+#frmVendorDetails select:disabled,
+.textbox[readonly] { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+form label.error {
+    color: red;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+}
+
+.hidden-scrollbar {
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    padding-right: 5px;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
+
+/* JQX Widget Overrides for 24px Alignment */
+.jqx-datetimeinput-input { 
+    height: 24px !important; 
+    line-height: 24px !important; 
+    margin-top: 0px !important; 
+    padding-top: 0px !important;
+    box-sizing: border-box !important;
+    font-size: 12px !important;
+}
+.jqx-action-button {
+    height: 24px !important;
+}
+
+/* Middle Section Panels */
+.modern-ui .middle-panel {
+    border: 1px solid #c5d3e0; 
+    padding: 20px 10px 10px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.modern-ui .middle-panel-title { 
+    position: absolute; 
+    top: -12px;
+    left: 10px; 
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    border-left: 3px solid #0056b3;
+    z-index: 2; 
+    line-height: normal; 
+}
+
+.modern-ui .field-row { 
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    margin-bottom: 10px; 
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.modern-ui .lbl-right { 
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 5px;
+    flex-shrink: 0; /* Keep labels from squishing */
+}
+</style>
+
 <script type="text/javascript">
      
 	$(document).ready(function () {
 	  	 /* Date */
-	 	 $("#jqxVendorDate").jqxDateTimeInput({ width: '80%', height: '15px', formatString:"dd.MM.yyyy"});
+	 	 $("#jqxVendorDate").jqxDateTimeInput({ width: '100%', height: '24px', formatString:"dd.MM.yyyy"});
 	  
+         /* Force inner alignment for jqxDateTimeInput */
+         setTimeout(function () {
+             $("#jqxVendorDate").find("input").css({
+                 "margin-top": "0px",
+                 "line-height": "24px",
+                 "font-size": "12px", 
+                 "font-family": "Arial, sans-serif", 
+                 "padding": "0 6px", 
+                 "box-sizing":"border-box"
+             });
+             $("#jqxVendorDate").find(".jqx-action-button").css({
+                 "top": "0px",
+                 "height": "24px"
+             });
+         }, 0);
+
 		 getCurrencyIds();getCategory();getGroup();getTypeAllowed();getType();
 	});  
 	
@@ -336,112 +480,132 @@
 	 
 </script>
 
-<style>
-.hidden-scrollbar {
-  overflow: auto;
-  height: 530px;
-}
-</style>
-
 </head>
 <body onload="setValues();">
 <div id="mainBG" class="homeContent" data-type="background">
 <form id="frmVendorDetails" action="saveVendorDetails" method="post" autocomplete="off">
 <jsp:include page="../../../../header.jsp"></jsp:include><br/>
    
-<div class='hidden-scrollbar'>
-<fieldset>
-<table width="100%">
-  <tr>
-    <td width="5%" align="right">Date</td>
-    <td width="15%"><div id="jqxVendorDate" name="jqxVendorDate" value='<s:property value="jqxVendorDate"/>'></div>
-    <input type="hidden" id="hidjqxVendorDate" name="hidjqxVendorDate" value='<s:property value="hidjqxVendorDate"/>'/></td>
-    <td width="7%" align="right">Code</td>
-    <td width="20%"><input type="text" id="txtcode" name="txtcode" style="width:60%;" tabindex="-1" value='<s:property value="txtcode"/>'/></td>
-    <td width="5%" align="right">Name</td>
-    <td width="25%"><input type="text" id="txtvendorname" name="txtvendorname" style="width:100%;" value='<s:property value="txtvendorname"/>'/></td>
-    <td width="6%" align="right">Doc No</td>
-    <td width="17%"><input type="text" id="docno" name="txtvendordocno" style="width:75%;" tabindex="-1" value='<s:property value="txtvendordocno"/>'/></td>
-  </tr>
-  <tr>
-    <td align="right">Currency</td>
-    <td><select id="cmbcurrency" name="cmbcurrency" style="width:60%;" value='<s:property value="cmbcurrency"/>'>
-      <option value="">--Select--</option></select>
-      <input type="hidden" id="hidcmbcurrency" name="hidcmbcurrency" value='<s:property value="hidcmbcurrency"/>'/></td>
-    <td align="right">Category</td>
-    <td><select id="cmbcategory" name="cmbcategory" style="width:100%;" onchange="getCategoryAccountGroup(this.value);" value='<s:property value="cmbcategory"/>'>
-      <option value="">--Select--</option></select>
-      <input type="hidden" id="hidcmbcategory" name="hidcmbcategory" value='<s:property value="hidcmbcategory"/>'/></td>
-    <td align="right"><label id="lbltypeentity">Type</label></td>
-    <td><select id="cmbtype" name="cmbtype" style="width:70%;" value='<s:property value="cmbtype"/>'>
-      </select>
-      <input type="hidden" id="hidcmbtype" name="hidcmbtype" value='<s:property value="hidcmbtype"/>'/></td>
-    <td align="right"><label id="lbltrnnoentity">TRN No.</label></td>
-    <td><input type="text" id="txtregisteredtrnno" name="txtregisteredtrnno" style="width:75%;" value='<s:property value="txtregisteredtrnno"/>'/></td>
-  </tr>
-</table>
-</fieldset><br/>
+<div class='modern-ui hidden-scrollbar'>
 
-<fieldset>
-<table width="100%">
-  <tr>
-    <td width="6%" align="right">Account Group</td>
-    <td width="26%"><select id="cmbaccgroup" name="cmbaccgroup"  style="width:80%;" value='<s:property value="cmbaccgroup"/>'>
-      <option value="">--Select--</option></select>
-       <input type="hidden" id="hidcmbaccgroup" name="hidcmbaccgroup" value='<s:property value="hidcmbaccgroup"/>'/></td>
-    <td width="5%" align="right">Account</td>
-    <td width="14%"><input type="text" id="txtaccount" name="txtaccount" style="width:70%;" value='<s:property value="txtaccount"/>' tabindex="-1"/></td>
-    <td width="10%" align="right">Credit Period-Min(Days)</td>
-    <td width="10%"><input type="text" id="txtcredit_period_min" name="txtcredit_period_min" style="width:50%;text-align: right;" value='<s:property value="txtcredit_period_min"/>'/></td>
-    <td width="7%" align="right">Max(Days)</td>
-    <td width="8%"><input type="text" id="txtcredit_period_max" name="txtcredit_period_max" style="width:50%;text-align: right;" value='<s:property value="txtcredit_period_max"/>'/></td>
-    <td width="6%" align="right">Credit Limit</td>
-    <td width="10%"><input type="text" id="txtcredit_limit" name="txtcredit_limit" style="width:50%;text-align: right;" value='<s:property value="txtcredit_limit"/>'/></td>
-  </tr>
-</table>
-</fieldset><br/>
+    <div class="middle-panel">
+        <span class="middle-panel-title">General Info</span>
+        
+        <div class="field-row">
+            <label class="lbl-right" style="width:80px; flex-shrink:0;">Date</label>
+            <div style="width: 125px; flex-shrink:0;">
+                <div id="jqxVendorDate" name="jqxVendorDate" value='<s:property value="jqxVendorDate"/>'></div>
+                <input type="hidden" id="hidjqxVendorDate" name="hidjqxVendorDate" value='<s:property value="hidjqxVendorDate"/>'/>
+            </div>
+            
+            <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left:15px;">Code</label>
+            <input type="text" id="txtcode" name="txtcode" tabindex="-1" value='<s:property value="txtcode"/>' style="width:100px; flex-shrink:0;" />
+            
+            <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left:15px;">Name</label>
+            <input type="text" id="txtvendorname" name="txtvendorname" value='<s:property value="txtvendorname"/>' style="flex:1; min-width:0;" />
+            
+            <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left:15px;">Doc No</label>
+            <input type="text" id="docno" name="txtvendordocno" tabindex="-1" value='<s:property value="txtvendordocno"/>' style="width:120px; flex-shrink:0;" />
+        </div>
 
-<fieldset>
-<table width="100%">
-  <tr>
-    <td width="9%" align="right">Address</td>
-    <td width="27%"><input type="text" id="txtaddress" name="txtaddress" style="width:90%;" value='<s:property value="txtaddress"/>'/></td>
-    <td width="6%" align="right">Address 2</td>
-    <td colspan="3"><input type="text" id="txtaddress1" name="txtaddress1" style="width:40%;" value='<s:property value="txtaddress1"/>'/></td>
-  </tr>
-  <tr>
-    <td align="right">Tel</td>
-    <td><input type="text" id="txttel" name="txttel" style="width:40%;" value='<s:property value="txttel"/>'/></td>
-    <td align="right">Mob</td>
-    <td width="28%"><input type="text" id="txtmob" name="txtmob" style="width:40%;" onblur="getMobileNoAlreadyExists(this.value,$('#docno').val(),$('#mode').val());" value='<s:property value="txtmob"/>'/></td>
-    <td width="4%" align="right">Office No.</td>
-    <td width="26%"><input type="text" id="txtoffice" name="txtoffice" style="width:40%;" value='<s:property value="txtoffice"/>'/></td>
-  </tr>
-  <tr>
-    <td align="right">Fax</td>
-    <td><input type="text" id="txtfax" name="txtfax" style="width:40%;" value='<s:property value="txtfax"/>'/></td>
-    <td align="right">Email</td>
-    <td colspan="3"><input type="email" id="txtemail" name="txtemail" style="width:40%;" placeholder="someone@example.com" value='<s:property value="txtemail"/>'/></td>
-  </tr>
-  <tr>
-    <td align="right">Contact Person</td>
-    <td><input type="text" id="txtcontact" name="txtcontact" style="width:60%;" value='<s:property value="txtcontact"/>'/></td>
-    <td align="right">Extn. No.</td>
-    <td><input type="text" id="txtextno" name="txtextno" style="width:20%;" value='<s:property value="txtextno"/>'/></td>
-     
-    <td width="" align="right">RCM</td>
-    <td width="5%">
-    <input type="checkbox" value="0" id="chkrcm" name="chkrcm" onclick="$(this).attr('value', this.checked ? 1 : 0)" >
-	<input type="hidden" id="hidchkrcm" name="hidchkrcm" value='<s:property value="hidchkrcm"/>'/>   
-    </td>
-  </tr>
-</table>
-</fieldset>
-<input type="hidden" id="mode" name="mode"/>
-<input type="hidden" id="deleted" name="deleted" value='<s:property value="deleted"/>'/>
-<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
-<input type="hidden" id="txtmobilevalidation" name="txtmobilevalidation" value='<s:property value="txtmobilevalidation"/>'/>
-<input type="hidden" id="typeallowed" name="typeallowed" value='<s:property value="typeallowed"/>'/>
+        <div class="field-row" style="margin-bottom:0;">
+            <label class="lbl-right" style="width:80px; flex-shrink:0;">Currency</label>
+            <select id="cmbcurrency" name="cmbcurrency" value='<s:property value="cmbcurrency"/>' style="width:125px; flex-shrink:0;">
+                <option value="">--Select--</option>
+            </select>
+            <input type="hidden" id="hidcmbcurrency" name="hidcmbcurrency" value='<s:property value="hidcmbcurrency"/>'/>
+            
+            <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left:15px;">Category</label>
+            <select id="cmbcategory" name="cmbcategory" onchange="getCategoryAccountGroup(this.value);" value='<s:property value="cmbcategory"/>' style="width:150px; flex-shrink:0;">
+                <option value="">--Select--</option>
+            </select>
+            <input type="hidden" id="hidcmbcategory" name="hidcmbcategory" value='<s:property value="hidcmbcategory"/>'/>
+            
+            <label class="lbl-right" id="lbltypeentity" style="width:60px; flex-shrink:0; margin-left:15px; display:none;">Type</label>
+            <select id="cmbtype" name="cmbtype" value='<s:property value="cmbtype"/>' style="width:120px; flex-shrink:0; display:none;">
+            </select>
+            <input type="hidden" id="hidcmbtype" name="hidcmbtype" value='<s:property value="hidcmbtype"/>'/>
+            
+            <label class="lbl-right" id="lbltrnnoentity" style="width:80px; flex-shrink:0; margin-left:15px; display:none;">TRN No.</label>
+            <input type="text" id="txtregisteredtrnno" name="txtregisteredtrnno" value='<s:property value="txtregisteredtrnno"/>' style="width:150px; flex-shrink:0; display:none;" />
+        </div>
+    </div>
+
+    <div class="middle-panel">
+        <span class="middle-panel-title">Account Settings</span>
+        
+        <div class="field-row" style="margin-bottom:0;">
+            <label class="lbl-right" style="width:100px; flex-shrink:0;">Account Group</label>
+            <select id="cmbaccgroup" name="cmbaccgroup" value='<s:property value="cmbaccgroup"/>' style="width:200px; flex-shrink:0;">
+                <option value="">--Select--</option>
+            </select>
+            <input type="hidden" id="hidcmbaccgroup" name="hidcmbaccgroup" value='<s:property value="hidcmbaccgroup"/>'/>
+            
+            <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left:15px;">Account</label>
+            <input type="text" id="txtaccount" name="txtaccount" value='<s:property value="txtaccount"/>' tabindex="-1" style="width:120px; flex-shrink:0;" />
+            
+            <label class="lbl-right" style="width:140px; flex-shrink:0; margin-left:15px;">Credit Period-Min(Days)</label>
+            <input type="text" id="txtcredit_period_min" name="txtcredit_period_min" value='<s:property value="txtcredit_period_min"/>' style="width:60px; text-align:right; flex-shrink:0;" />
+            
+            <label class="lbl-right" style="width:70px; flex-shrink:0; margin-left:15px;">Max(Days)</label>
+            <input type="text" id="txtcredit_period_max" name="txtcredit_period_max" value='<s:property value="txtcredit_period_max"/>' style="width:60px; text-align:right; flex-shrink:0;" />
+            
+            <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:15px;">Credit Limit</label>
+            <input type="text" id="txtcredit_limit" name="txtcredit_limit" value='<s:property value="txtcredit_limit"/>' style="width:100px; text-align:right; flex-shrink:0;" />
+        </div>
+    </div>
+
+    <div class="middle-panel">
+        <span class="middle-panel-title">Contact Info</span>
+        
+        <div class="field-row">
+            <label class="lbl-right" style="width:100px; flex-shrink:0;">Address</label>
+            <input type="text" id="txtaddress" name="txtaddress" value='<s:property value="txtaddress"/>' style="flex:1; min-width:0;" />
+            
+            <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:15px;">Address 2</label>
+            <input type="text" id="txtaddress1" name="txtaddress1" value='<s:property value="txtaddress1"/>' style="flex:1; min-width:0;" />
+        </div>
+        
+        <div class="field-row">
+            <label class="lbl-right" style="width:100px; flex-shrink:0;">Tel</label>
+            <input type="text" id="txttel" name="txttel" value='<s:property value="txttel"/>' style="flex:1; min-width:0;" />
+            
+            <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:15px;">Mob</label>
+            <input type="text" id="txtmob" name="txtmob" onblur="getMobileNoAlreadyExists(this.value,$('#docno').val(),$('#mode').val());" value='<s:property value="txtmob"/>' style="flex:1; min-width:0;" />
+            
+            <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:15px;">Office No.</label>
+            <input type="text" id="txtoffice" name="txtoffice" value='<s:property value="txtoffice"/>' style="flex:1; min-width:0;" />
+        </div>
+        
+        <div class="field-row">
+            <label class="lbl-right" style="width:100px; flex-shrink:0;">Fax</label>
+            <input type="text" id="txtfax" name="txtfax" value='<s:property value="txtfax"/>' style="flex:1; min-width:0;" />
+            
+            <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:15px;">Email</label>
+            <input type="email" id="txtemail" name="txtemail" placeholder="someone@example.com" value='<s:property value="txtemail"/>' style="flex:2; min-width:0;" />
+        </div>
+        
+        <div class="field-row" style="margin-bottom:0;">
+            <label class="lbl-right" style="width:100px; flex-shrink:0;">Contact Person</label>
+            <input type="text" id="txtcontact" name="txtcontact" value='<s:property value="txtcontact"/>' style="flex:1; min-width:0;" />
+            
+            <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left:15px;">Extn. No.</label>
+            <input type="text" id="txtextno" name="txtextno" value='<s:property value="txtextno"/>' style="width:120px; flex-shrink:0;" />
+            
+            <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left:15px; display:flex; align-items:center; justify-content:flex-end; gap:4px;">
+                <input type="checkbox" value="0" id="chkrcm" name="chkrcm" onclick="$(this).attr('value', this.checked ? 1 : 0)" style="margin:0; height:auto !important; width:auto !important;"> RCM
+            </label>
+            <input type="hidden" id="hidchkrcm" name="hidchkrcm" value='<s:property value="hidchkrcm"/>'/>   
+        </div>
+    </div>
+
+<div style="display:none;">
+    <input type="hidden" id="mode" name="mode"/>
+    <input type="hidden" id="deleted" name="deleted" value='<s:property value="deleted"/>'/>
+    <input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
+    <input type="hidden" id="txtmobilevalidation" name="txtmobilevalidation" value='<s:property value="txtmobilevalidation"/>'/>
+    <input type="hidden" id="typeallowed" name="typeallowed" value='<s:property value="typeallowed"/>'/>
+</div>
 </div>
 </form>
 </div>
