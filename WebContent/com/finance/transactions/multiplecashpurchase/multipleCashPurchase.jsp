@@ -9,6 +9,166 @@
 <title>GatewayERP(i)</title>
 <jsp:include page="../../../../includes.jsp"></jsp:include>
 
+<style>
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 24px 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+}
+
+#mainBG {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.modern-ui {
+    font-family: Arial, sans-serif; 
+    color: #333;
+    font-size: 12px; 
+    padding: 5px 15px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Master Input Heights - Forced to 24px */
+.modern-ui input[type="text"],
+.modern-ui select { 
+    height: 24px !important; 
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    width: 100%;
+}
+
+.modern-ui input[type="text"]:focus,
+.modern-ui select:focus { 
+    border-color: #007bff; 
+    outline: none;
+}
+
+.modern-ui input[readonly],
+.modern-ui input:disabled,
+.modern-ui select:disabled { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+/* Layout Utilities */
+.modern-ui .field-row { 
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    margin-bottom: 10px; 
+    flex-wrap: wrap;
+}
+
+.modern-ui .lbl-right { 
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 5px;
+}
+
+/* Middle Section Panels */
+.modern-ui .middle-panel {
+    border: 1px solid #c5d3e0; 
+    padding: 20px 10px 10px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.modern-ui .middle-panel-title { 
+    position: absolute; 
+    top: -12px;
+    left: 10px; 
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    border-left: 3px solid #0056b3;
+    z-index: 2; 
+    line-height: normal;
+}
+
+/* Custom UI Buttons matching 24px height */
+.modern-ui .myButton {
+    height: 24px !important;
+    line-height: 22px !important;
+    padding: 0 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: none;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border: none;
+    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
+    color: #ffffff;
+    white-space: nowrap;
+}
+.modern-ui .myButton:hover { background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%); }
+
+/* Search Icon Wrapper */
+.modern-ui .input-search-container {
+    position: relative;
+    display: flex;
+}
+.modern-ui .input-search-container input {
+    padding-right: 25px !important;
+}
+.modern-ui .magnifier-icon {
+    position: absolute;
+    right: 6px; 
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #64748b; 
+    z-index: 10;
+}
+.modern-ui .magnifier-icon:hover { color: #2563eb; }
+
+/* Grid Wrappers */
+.modern-ui .grid-container {
+    border: 1px solid #c5d3e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* Validation Label */
+.modern-ui .val-error { color: red; font-size: 11px; font-weight:bold; }
+
+/* Scrollbar Logic */
+.hidden-scrollbar {
+    overflow-y: auto;
+    height: calc(100vh - 150px);
+    padding-right: 5px;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
+</style>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		 $("#btnvaluechange").hide();
@@ -489,160 +649,163 @@
 	  } 
 </script>
 
-<style>
-.hidden-scrollbar {
-  overflow: auto;
-  height: 530px;
-}
-</style>
-
 </head>
 <body onload="setValues();">
 <div id="mainBG" class="homeContent" data-type="background" >
 <form id="frmMultipleCashPurchase" action="saveMultipleCashPurchase" method="post" autocomplete="off">
 <jsp:include page="../../../../header.jsp"></jsp:include>
 
-<div  class='hidden-scrollbar'>
-<table width="100%">
-  <tr>
-    <td width="3%" height="42" align="right">Date</td>
-    <td width="11%"><div id="jqxmcpdate" name="jqxmcpdate" onchange="datechange();" onblur="datechange();" value='<s:property value="jqxmcpdate"/>'></div>
-    <input type="hidden" id="hidjqxmcpdate" name="hidjqxmcpdate" value='<s:property value="hidjqxmcpdate"/>'/></td>
-    <td width="21%" align="left">&nbsp;</td>
-    <td width="9%" align="right">Ref. No.</td>
-    <td width="29%"><input type="text" id="txtrefno" name="txtrefno" onkeypress="return isNumberKey(event)" style="width:40%;" value='<s:property value="txtrefno"/>'/></td>
-    <td width="6%" align="right">Doc No.</td>
-    <td width="21%"><input type="text" id="docno" name="txtpettycashdocno" style="width:50%;" value='<s:property value="txtpettycashdocno"/>' tabindex="-1"/>
-    <td width="11%" align="right"><button id="btnpost" class="myButton" type="button" onclick="funPost()">Post</button></td>
-    <td width="11%" align="right"><button id="btnunpost" class="myButton" type="button" onclick="unPost();">Unpost</button></td> 
-    <!-- <button class="myButton" type="button" id="btnvaluechange" name="btnvaluechange" onclick="funwarningopen();">Value Change</button></td> -->
-  </tr>
-</table>
+<div class='modern-ui hidden-scrollbar'>
 
-<fieldset>
-<table width="100%">
-  <tr>
-    <td width="6%" align="right">Cash</td>
-    <td width="16%"><input type="text" id="txtaccid" name="txtaccid" style="width:70%;" placeholder="Press F3 to Search" value='<s:property value="txtaccid"/>'  onkeydown="getAcc(event);"/></td>
-    <td colspan="2"><input type="text" id="txtaccname" name="txtaccname" style="width:85%;" value='<s:property value="txtaccname"/>' tabindex="-1"/>
-    <input type="hidden" id="txtdocno" name="txtdocno" value='<s:property value="txtdocno"/>'/></td>
-    <td width="7%" align="right">Currency</td>
-    <td width="18%"><select id="cmbcurrency" name="cmbcurrency" style="width:40%;" value='<s:property value="cmbcurrency"/>' onload="getRatevalue(this.value,$('#jqxmcpdate').val());" onchange="getRatevalue(this.value,$('#jqxmcpdate').val());">
-      <option></option></select>   
-      <input type="hidden" id="hidcmbcurrency" name="hidcmbcurrency" value='<s:property value="hidcmbcurrency"/>'/>
-      <input type="hidden" id="hidcurrencytype" name="hidcurrencytype" value='<s:property value="hidcurrencytype"/>'/></td>
-    <td width="4%" align="right">Rate</td>
-    <td width="20%"><input type="text" id="txtrate" name="txtrate" style="width:32%;text-align: right;" value='<s:property value="txtrate"/>' onblur="funRoundRate(this.value,this.id);" tabindex="-1"/></td>
-  </tr>
-  <tr>
-   <td align="right">Round Off</td>             
-    <td><input type="hidden" id="grandtot" name="grandtot" value='<s:property value="grandtot"/>'/>       
-    <input type="text" id="txtroundoff" name="txtroundoff" style="width:70%;text-align: right;" value='<s:property value="txtroundoff"/>'  onblur="funRoundAmt(this.value,this.id);" onchange="funcalc();"/></td>
-    <td align="right">Amount</td>
-    <td><input type="text" id="txtamount" name="txtamount" style="width:70%;text-align: right;" value='<s:property value="txtamount"/>' readonly onblur="funRoundAmt(this.value,this.id);" tabindex="-1"/></td>
-    <td width="15%" align="right">Base Amount</td>
-    <td width="14%"><input type="text" id="txtbaseamount" name="txtbaseamount" style="width:70%;text-align: right;" readonly value='<s:property value="txtbaseamount"/>' tabindex="-1" tabindex="-1"/></td>
-    <td align="right">Description</td>
-     <td colspan="3"><input type="text" id="txtdescription" name="txtdescription" style="width:68%;" value='<s:property value="txtdescription"/>'/></td>
-  </tr>
-</table>
-</fieldset><br/>
+    <div class="middle-panel">
+        <span class="middle-panel-title">General Info</span>
+        <div class="field-row" style="margin-bottom:0;">
+            <label class="lbl-right" style="width:80px;">Date</label>
+            <div style="width: 125px;">
+                <div id="jqxmcpdate" name="jqxmcpdate" onchange="datechange();" onblur="datechange();" value='<s:property value="jqxmcpdate"/>'></div>
+                <input type="hidden" id="hidjqxmcpdate" name="hidjqxmcpdate" value='<s:property value="hidjqxmcpdate"/>'/>
+            </div>
 
-<%-- <fieldset id="psearch">
-<legend>Item Details</legend>
-   <table width="100% "  >   
-   <tr> 
-	   <td align="center">Product ID</td>
-	   <td align="center" colspan="2">Product Name</td>
-	   <td align="center" style="width:15%;"  >Brand</td>
-	   <td align="center">Unit</td>
-	   <td  width="6%" align="center">Qty</td>
-	   <td align="center" class="ff" >FOC</td>
-	   <td align="center" class="ff" > Extra FOC</td> 
-	   <td align="center"> Unit price</td>
-	   <td align="center"> &nbsp;</td>
-   </tr>
-   <tr>
-	   <td align="center"><div id="part"><jsp:include page="part.jsp"></jsp:include></div> </td>
-	   <td colspan="2" align="center"> <div id="pnames"><jsp:include page="name.jsp"></jsp:include></div> </td> 
-	   <td align="center" ><input type="text" id="brand" ><input type="hidden" id="collqty" ></td>
-	   <td align="center"> <select    id="unit"   >   </select>      </td>  
-	   <td width="6%" align="center"> <input type="hidden" id="loads" class="myButtons" value="Load Data" onclick="loaddatass()">    <input type="text" id="quantity"   onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);" style="text-align: left;" onchange="calculatedata(this.id);"  ></td>
-	   <td align="center" class="ff">   <input type="text" id="focs"     onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"     ></td>
-	   <td  align="center"class="ff"> <input type="text" id="extrafocs"     onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"     ></td>
-	   <td align="center">   <input type="text" id="uprice"    onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"  onchange="calculatedata(this.id);" style="text-align: right;"></td>
-	   <td align="center"> &nbsp;</td>
-  </tr>
-  <tr>
-	<td align="center">Total</td> 
-	<td align="center">Discount% </td>
-	<td align="center">Discount</td> 
-	<td align="center">Net Amount</td>  
-	<td align="center">Tax%</td>  
-	<td align="center">Tax Amount</td>  
-	<td    align="center">Net Total</td>   
-    <td align="center" class="ff">Multi_Batch</td> 
-    <td align="center" class="ff">Batch</td>
-    <td align="center" class="ff">ExpDate</td>   
-    <td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
-  </tr>
-  <tr>
-	<td align="center"><input type="text" id="totamt" tabindex="-1"      style="text-align: right;"   ></td>
-	<td align="center"><input type="text" id="dispers"     onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"  onchange="calculatedata(this.id);"  style="text-align: right;"  ></td>
-	<td align="center"><input type="text" id="dict"    onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"    onchange="calculatedata(this.id);"  style="text-align: right;"  ></td>
-  	<td align="center"><input type="text" id="amounts" tabindex="-1"    style="text-align: right;" ></td> 
-	<td align="center"><input type="text" id="taxpers"  tabindex="-1"       style="text-align: right;"  onchange="calculatedata(this.id);" ></td>  
-	<td align="center"><input type="text" id="taxamounts"   tabindex="-1"   onkeypress="javascript:return isNumber1 (event);"  style="text-align: right;" ></td>
-	<td align="center"><input type="text" id="taxamountstotal" tabindex="-1"    onkeypress="javascript:return isNumber1 (event);"  style="text-align: right;" ></td>  
-	<td align="center" class="ff"><input type="checkbox" id="multi"style="text-align: right;" onchange="chkmultis()" > </td>
-	<td align="center" class="ff"><input type="text" id="batch"    onkeydown="getbatch(event)" > </td>
-	<td  class="ff"><div id="expdate" name="expdate" value='<s:property value="expdate"/>'></div> </td> 
-	<td align="center"><input type="hidden" id="cleardata">&nbsp; <input type="button" id="setbtn"  class="btn" onclick="setgrid()" value="ADD" ></td>
- </tr>
- </table> 
-</fieldset>  --%>
-<div id="divMCPGrid"><jsp:include page="multipleCashPurchaseGrid.jsp"></jsp:include></div><br/>
-<input type="hidden" id="mode" name="mode"/>
-<input type="hidden" id="deleted" name="deleted" value='<s:property value="deleted"/>'/>
-<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
-<input type="hidden" id="gridlength" name="gridlength"/>
-<div hidden="true" id="maindate" name="maindate" value='<s:property value="maindate"/>'></div>
-<input type="hidden" id="hidmaindate" name="hidmaindate" value='<s:property value="hidmaindate"/>'/>
-<input type="hidden" name="txtforsearch" id="txtforsearch" value='<s:property value="txtforsearch"/>'>
-<input type="hidden" id="txttrno" name="txttrno" value='<s:property value="txttrno"/>'/>
-<input type="hidden" id="txttranid" name="txttranid" value='<s:property value="txttranid"/>'/>
-<input type="hidden" id="vendorid" name="vendorid" value='<s:property value="vendorid"/>'/>
-<input type="hidden" id="vendor" name="vendor" value='<s:property value="vendor"/>'/>
-<input type="hidden" id="txtvndortotal" name="txtvndortotal" value='<s:property value="txtvndortotal"/>'/>
-<input type="hidden" id="taxchk" name="taxchk" value='<s:property value="taxchk"/>'/>
-<input type="hidden" id="trno" name="trno" value='<s:property value="trno"/>'/>
-<input type="hidden" id="posted" name="posted" value='<s:property value="posted"/>'/>   
-<input type="hidden" id="prdsetrowno" name="prdsetrowno" value='<s:property value="prdsetrowno"/>'/>
+            <label class="lbl-right" style="width:80px;">Ref. No.</label>
+            <input type="text" id="txtrefno" name="txtrefno" onkeypress="return isNumberKey(event)" value='<s:property value="txtrefno"/>' style="width:120px;" />
+
+            <label class="lbl-right" style="width:80px; margin-left:auto;">Doc No.</label>
+            <input type="text" id="docno" name="txtpettycashdocno" value='<s:property value="txtpettycashdocno"/>' tabindex="-1" style="width:120px;" />
+
+            <button id="btnpost" class="myButton" type="button" onclick="funPost()">Post</button>
+            <button id="btnunpost" class="myButton" type="button" onclick="unPost();">Unpost</button>
+            <!-- <button class="myButton" type="button" id="btnvaluechange" name="btnvaluechange" onclick="funwarningopen();">Value Change</button> -->
+        </div>
+    </div>
+
+    <div class="middle-panel">
+        <span class="middle-panel-title">Cash</span>
+
+        <div class="field-row">
+            <label class="lbl-right" style="width:80px;">Cash</label>
+            <div class="input-search-container" style="width: 140px;">
+                <input type="text" id="txtaccid" name="txtaccid" placeholder="Press F3 to Search" value='<s:property value="txtaccid"/>' onkeydown="getAcc(event);" />
+                <svg class="magnifier-icon" onclick="var d=$('#jqxmcpdate').jqxDateTimeInput('getDate'); $('#maindate').jqxDateTimeInput('val', d); accountSearchContent('<%=contextPath%>/com/finance/accountsDetailsSearch.jsp?date='+d); $('#txtforsearch').val(2);" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+            <input type="text" id="txtaccname" name="txtaccname" value='<s:property value="txtaccname"/>' style="flex:1;" tabindex="-1" />
+            <input type="hidden" id="txtdocno" name="txtdocno" value='<s:property value="txtdocno"/>' />
+
+            <label class="lbl-right" style="width:70px; margin-left:auto;">Currency</label>
+            <select id="cmbcurrency" name="cmbcurrency" style="width:120px;" value='<s:property value="cmbcurrency"/>' onload="getRatevalue(this.value,$('#jqxmcpdate').val());" onchange="getRatevalue(this.value,$('#jqxmcpdate').val());">
+                <option></option>
+            </select>
+            <input type="hidden" id="hidcmbcurrency" name="hidcmbcurrency" value='<s:property value="hidcmbcurrency"/>' />
+            <input type="hidden" id="hidcurrencytype" name="hidcurrencytype" value='<s:property value="hidcurrencytype"/>' />
+
+            <label class="lbl-right" style="width:50px;">Rate</label>
+            <input type="text" id="txtrate" name="txtrate" style="width:110px; text-align:right;" value='<s:property value="txtrate"/>' onblur="funRoundRate(this.value,this.id);" tabindex="-1" />
+        </div>
+
+        <div class="field-row" style="margin-bottom:0;">
+            <label class="lbl-right" style="width:80px;">Round Off</label>
+            <input type="hidden" id="grandtot" name="grandtot" value='<s:property value="grandtot"/>' />
+            <input type="text" id="txtroundoff" name="txtroundoff" style="width:120px; text-align:right;" value='<s:property value="txtroundoff"/>' onblur="funRoundAmt(this.value,this.id);" onchange="funcalc();" />
+
+            <label class="lbl-right" style="width:70px;">Amount</label>
+            <input type="text" id="txtamount" name="txtamount" style="width:120px; text-align:right;" value='<s:property value="txtamount"/>' readonly onblur="funRoundAmt(this.value,this.id);" tabindex="-1" />
+
+            <label class="lbl-right" style="width:90px;">Base Amount</label>
+            <input type="text" id="txtbaseamount" name="txtbaseamount" style="width:120px; text-align:right;" readonly value='<s:property value="txtbaseamount"/>' tabindex="-1" />
+
+            <label class="lbl-right" style="width:80px;">Description</label>
+            <input type="text" id="txtdescription" name="txtdescription" value='<s:property value="txtdescription"/>' style="flex:1;" />
+        </div>
+    </div>
+
+    <%-- <fieldset id="psearch">
+    <legend>Item Details</legend>
+       <table width="100% "  >   
+       <tr> 
+	       <td align="center">Product ID</td>
+	       <td align="center" colspan="2">Product Name</td>
+	       <td align="center" style="width:15%;"  >Brand</td>
+	       <td align="center">Unit</td>
+	       <td  width="6%" align="center">Qty</td>
+	       <td align="center" class="ff" >FOC</td>
+	       <td align="center" class="ff" > Extra FOC</td> 
+	       <td align="center"> Unit price</td>
+	       <td align="center"> &nbsp;</td>
+       </tr>
+       <tr>
+	       <td align="center"><div id="part"><jsp:include page="part.jsp"></jsp:include></div> </td>
+	       <td colspan="2" align="center"> <div id="pnames"><jsp:include page="name.jsp"></jsp:include></div> </td> 
+	       <td align="center" ><input type="text" id="brand" ><input type="hidden" id="collqty" ></td>
+	       <td align="center"> <select    id="unit"   >   </select>      </td>  
+	       <td width="6%" align="center"> <input type="hidden" id="loads" class="myButtons" value="Load Data" onclick="loaddatass()">    <input type="text" id="quantity"   onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);" style="text-align: left;" onchange="calculatedata(this.id);"  ></td>
+	       <td align="center" class="ff">   <input type="text" id="focs"     onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"     ></td>
+	       <td  align="center"class="ff"> <input type="text" id="extrafocs"     onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"     ></td>
+	       <td align="center">   <input type="text" id="uprice"    onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"  onchange="calculatedata(this.id);" style="text-align: right;"></td>
+	       <td align="center"> &nbsp;</td>
+      </tr>
+      <tr>
+	    <td align="center">Total</td> 
+	    <td align="center">Discount% </td>
+	    <td align="center">Discount</td> 
+	    <td align="center">Net Amount</td>  
+	    <td align="center">Tax%</td>  
+	    <td align="center">Tax Amount</td>  
+	    <td    align="center">Net Total</td>   
+        <td align="center" class="ff">Multi_Batch</td> 
+        <td align="center" class="ff">Batch</td>
+        <td align="center" class="ff">ExpDate</td>   
+        <td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+      </tr>
+      <tr>
+	    <td align="center"><input type="text" id="totamt" tabindex="-1"      style="text-align: right;"   ></td>
+	    <td align="center"><input type="text" id="dispers"     onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"  onchange="calculatedata(this.id);"  style="text-align: right;"  ></td>
+	    <td align="center"><input type="text" id="dict"    onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber1 (event);"    onchange="calculatedata(this.id);"  style="text-align: right;"  ></td>
+  	    <td align="center"><input type="text" id="amounts" tabindex="-1"    style="text-align: right;" ></td> 
+	    <td align="center"><input type="text" id="taxpers"  tabindex="-1"       style="text-align: right;"  onchange="calculatedata(this.id);" ></td>  
+	    <td align="center"><input type="text" id="taxamounts"   tabindex="-1"   onkeypress="javascript:return isNumber1 (event);"  style="text-align: right;" ></td>
+	    <td align="center"><input type="text" id="taxamountstotal" tabindex="-1"    onkeypress="javascript:return isNumber1 (event);"  style="text-align: right;" ></td>  
+	    <td align="center" class="ff"><input type="checkbox" id="multi"style="text-align: right;" onchange="chkmultis()" > </td>
+	    <td align="center" class="ff"><input type="text" id="batch"    onkeydown="getbatch(event)" > </td>
+	    <td  class="ff"><div id="expdate" name="expdate" value='<s:property value="expdate"/>'></div> </td> 
+	    <td align="center"><input type="hidden" id="cleardata">&nbsp; <input type="button" id="setbtn"  class="btn" onclick="setgrid()" value="ADD" ></td>
+     </tr>
+     </table> 
+    </fieldset>  --%>
+
+    <div class="middle-panel">
+        <span class="middle-panel-title">Purchase Entries</span>
+        <div id="divMCPGrid" class="grid-container">
+            <jsp:include page="multipleCashPurchaseGrid.jsp"></jsp:include>
+        </div>
+    </div>
+
+    <div style="display:none;">
+        <input type="hidden" id="mode" name="mode"/>
+        <input type="hidden" id="deleted" name="deleted" value='<s:property value="deleted"/>'/>
+        <input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
+        <input type="hidden" id="gridlength" name="gridlength"/>
+        <div hidden="true" id="maindate" name="maindate" value='<s:property value="maindate"/>'></div>
+        <input type="hidden" id="hidmaindate" name="hidmaindate" value='<s:property value="hidmaindate"/>'/>
+        <input type="hidden" name="txtforsearch" id="txtforsearch" value='<s:property value="txtforsearch"/>'/>
+        <input type="hidden" id="txttrno" name="txttrno" value='<s:property value="txttrno"/>'/>
+        <input type="hidden" id="txttranid" name="txttranid" value='<s:property value="txttranid"/>'/>
+        <input type="hidden" id="vendorid" name="vendorid" value='<s:property value="vendorid"/>'/>
+        <input type="hidden" id="vendor" name="vendor" value='<s:property value="vendor"/>'/>
+        <input type="hidden" id="txtvndortotal" name="txtvndortotal" value='<s:property value="txtvndortotal"/>'/>
+        <input type="hidden" id="taxchk" name="taxchk" value='<s:property value="taxchk"/>'/>
+        <input type="hidden" id="trno" name="trno" value='<s:property value="trno"/>'/>
+        <input type="hidden" id="posted" name="posted" value='<s:property value="posted"/>'/>
+        <input type="hidden" id="prdsetrowno" name="prdsetrowno" value='<s:property value="prdsetrowno"/>'/>
+    </div>
+
 </div>
-</form>  
-<div id="productSearchwindow">
-	   <div></div>
-	</div>	
-<div id="McpGridWindow">
-	<div></div><div></div>
-</div>  
-				
-<div id="accountDetailsFromWindow">
-	<div></div><div></div>
-</div>  
-	 
-<div id="costTypeSearchGridWindow">
-	<div></div><div></div>
-</div> 
+</form>
+<div id="productSearchwindow"><div></div></div>
+<div id="McpGridWindow"><div></div><div></div></div>
+<div id="accountDetailsFromWindow"><div></div><div></div></div>
+<div id="costTypeSearchGridWindow"><div></div><div></div></div>
+<div id="costCodeSearchWindow"><div></div><div></div></div>
+<div id="vendorinfowindow"><div></div><div></div></div>
 
-<div id="costCodeSearchWindow">
-	<div></div><div></div>
-</div> 
-
-<div id="vendorinfowindow">
-	<div></div><div></div>
-</div>  
-	
 </div>
 </body>
 </html>

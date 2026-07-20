@@ -416,9 +416,158 @@
 </script>
 
 <style>
+/* =========================================================
+   SCOPED UI: Modern Layout Adapted for Table Structure
+========================================================= */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 24px 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+}
+
+#mainBG {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+#frmContraTrans input[type="text"],
+#frmContraTrans select,
+.textbox { 
+    height: 24px !important; 
+    width: 100% !important;
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    box-shadow: none !important;
+    outline: none;
+}
+
+#frmContraTrans input[type="text"]:focus,
+#frmContraTrans select:focus,
+.textbox:focus { 
+    border-color: #007bff; 
+}
+
+#frmContraTrans input[readonly],
+#frmContraTrans input:disabled,
+#frmContraTrans select:disabled,
+.textbox[readonly] { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+fieldset {
+    border: 1px solid #c5d3e0; 
+    padding: 8px 10px 8px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 10px;
+    height: 100%; 
+    box-sizing: border-box;
+}
+
+legend {
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    font-family: Arial, sans-serif;
+    border-left: 3px solid #0056b3;
+    line-height: normal; 
+    margin-left: -2px; 
+}
+
+#frmContraTrans table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; 
+    table-layout: fixed; 
+}
+
+#frmContraTrans td {
+    padding: 0 5px;
+    vertical-align: middle;
+    font-family: Arial, sans-serif; 
+    font-size: 12px; 
+    color: #333;
+}
+
+#frmContraTrans td[align="right"],
+#frmContraTrans div[align="right"] {
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 10px;
+}
+
+form label.error {
+    color: red;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+}
+
+.myButton, .myButtons {
+    height: 24px !important;
+    line-height: 22px !important;
+    padding: 0 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: none;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border: none;
+    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
+    color: #ffffff;
+    white-space: nowrap;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.myButton:hover, .myButtons:hover { 
+    background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%); 
+}
+
 .hidden-scrollbar {
-  overflow: auto;
-  height: 530px;
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    padding-right: 5px;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
+
+/* JQX Widget Overrides for 24px Alignment */
+.jqx-datetimeinput-input { 
+    height: 24px !important; 
+    line-height: 24px !important; 
+    margin-top: 0px !important; 
+    padding-top: 0px !important;
+    box-sizing: border-box !important;
+    font-size: 12px !important;
+}
+.jqx-action-button {
+    height: 24px !important;
 }
 </style>
 
@@ -428,123 +577,139 @@
 <form id="frmContraTrans" action="saveContraTrans" method="post" autocomplete="off">
 <jsp:include page="../../../../header.jsp"></jsp:include><br/>
 
-<div  class='hidden-scrollbar'>
+<div class='hidden-scrollbar'>
 
-<table width="100%">
-  <tr>
-    <td width="3%" height="42" align="right">Date</td>
-    <td width="11%"><div id="jqxContraTransDate" name="jqxContraTransDate" onchange="datechange();" onblur="datechange();" value='<s:property value="jqxContraTransDate"/>'></div>
-    <input type="hidden" id="hidjqxContraTransDate" name="hidjqxContraTransDate" value='<s:property value="hidjqxContraTransDate"/>'/></td>
-    <td width="21%" align="left">&nbsp;</td>
-    <td width="9%" align="right">Ref. No.</td>
-    <td width="29%"><input type="text" id="txtrefno" name="txtrefno" style="width:40%;" value='<s:property value="txtrefno"/>'/></td>
-    <td width="6%" align="right">Doc No.</td>
-    <td width="21%"><input type="text" id="docno" name="txtcontratransdocno" style="width:50%;" value='<s:property value="txtcontratransdocno"/>' tabindex="-1"/>
-    <button class="myButton" type="button" id="btnvaluechange" name="btnvaluechange" onclick="funwarningopen();">Value Change</button></td>
-  </tr>
-</table>
+<fieldset>
+    <legend>General Info</legend>
+    <table width="100%">
+      <tr>
+        <td width="8%" align="right">Date</td>
+        <td width="15%">
+            <div id="jqxContraTransDate" name="jqxContraTransDate" onchange="datechange();" onblur="datechange();" value='<s:property value="jqxContraTransDate"/>'></div>
+            <input type="hidden" id="hidjqxContraTransDate" name="hidjqxContraTransDate" value='<s:property value="hidjqxContraTransDate"/>'/>
+        </td>
+        <td width="10%" align="right">Ref. No.</td>
+        <td width="25%"><input type="text" id="txtrefno" name="txtrefno" value='<s:property value="txtrefno"/>'/></td>
+        <td width="10%" align="right">Doc No.</td>
+        <td width="32%">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="text" id="docno" name="txtcontratransdocno" value='<s:property value="txtcontratransdocno"/>' tabindex="-1" readonly style="flex:1;"/>
+                <button class="myButton" type="button" id="btnvaluechange" name="btnvaluechange" onclick="funwarningopen();">Value Change</button>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">Description</td>
+        <td colspan="5"><input type="text" id="txtdescription" name="txtdescription" value='<s:property value="txtdescription"/>'/></td>
+      </tr>
+    </table>
+</fieldset>
 
 <table width="100%">
 <tr>
-<td width="50%">
+<td width="50%" style="vertical-align: top;">
 <fieldset>
+<legend>Payment From</legend>
 <table width="100%">
   <tr>
-    <td width="7%" align="right">Type</td>
-    <td width="16%"><select id="cmbtype" name="cmbtype" style="width:90%;" onchange="clearClientInfoFrom();funchequedate();" value='<s:property value="cmbtype"/>'>
+    <td width="6%" align="right">Type</td>
+    <td width="16%"><select id="cmbtype" name="cmbtype" onchange="clearClientInfoFrom();funchequedate();" value='<s:property value="cmbtype"/>'>
     <option value="CASH">Cash</option><option value="BANK">Bank</option></select>
     <input type="hidden" id="hidcmbtype" name="hidcmbtype" value='<s:property value="hidcmbtype"/>'/></td>
-    <td><input type="text" id="txtfromaccid" name="txtfromaccid" style="width:90%;" readonly placeholder="Press F3 to Search" value='<s:property value="txtfromaccid"/>'  onkeydown="getAcc(event);"/></td>
-    <td colspan="2"><input type="text" id="txtfromaccname" name="txtfromaccname" readonly style="width:58%;" value='<s:property value="txtfromaccname"/>' tabindex="-1"/>
+    <td><input type="text" id="txtfromaccid" name="txtfromaccid" readonly placeholder="Press F3 to Search" value='<s:property value="txtfromaccid"/>'  onkeydown="getAcc(event);"/></td>
+    <td colspan="2"><input type="text" id="txtfromaccname" name="txtfromaccname" readonly value='<s:property value="txtfromaccname"/>' tabindex="-1"/>
     <input type="hidden" id="txtfromdocno" name="txtfromdocno" value='<s:property value="txtfromdocno"/>'/></td>
   </tr>
   <tr>
     <td align="right">Currency</td>
-    <td width="16%"><select id="cmbfromcurrency" name="cmbfromcurrency" style="width:71%;" value='<s:property value="cmbfromcurrency"/>' onchange="getRate(this.value,$('#jqxContraTransDate').val());">
+    <td width="16%"><select id="cmbfromcurrency" name="cmbfromcurrency" value='<s:property value="cmbfromcurrency"/>' onchange="getRate(this.value,$('#jqxContraTransDate').val());">
       <option></option></select>
       <input type="hidden" id="hidcmbfromcurrency" name="hidcmbfromcurrency" value='<s:property value="hidcmbfromcurrency"/>'/>
       <input type="hidden" id="hidfromcurrencytype" name="hidfromcurrencytype" value='<s:property value="hidfromcurrencytype"/>'/></td>
     <td colspan="2" align="right">Rate</td>
-    <td width="39%"><input type="text" id="txtfromrate" name="txtfromrate" style="width:35%;text-align: right;" value='<s:property value="txtfromrate"/>' onblur="funRoundRate(this.value,this.id);getBaseAmountFrom();" tabindex="-1"/></td>
+    <td width="39%"><input type="text" id="txtfromrate" name="txtfromrate" style="text-align: right;" value='<s:property value="txtfromrate"/>' onblur="funRoundRate(this.value,this.id);getBaseAmountFrom();" tabindex="-1"/></td>
   </tr>
   <tr>
-   <td align="right"><input type="checkbox" id="chckpdc" name="chckpdc" onclick="funCheck();funPDCDate($('#hidchckpdc').val(),$('#jqxContraTransDate').jqxDateTimeInput('getDate'),$('#jqxChequeDate').jqxDateTimeInput('getDate'));">&nbsp;PDC
+   <td align="right" style="white-space:nowrap;">
+       <input type="checkbox" id="chckpdc" name="chckpdc" style="vertical-align: middle; margin-right: 4px; height:auto !important; width:auto !important;" onclick="funCheck();funPDCDate($('#hidchckpdc').val(),$('#jqxContraTransDate').jqxDateTimeInput('getDate'),$('#jqxChequeDate').jqxDateTimeInput('getDate'));"> PDC
    <input type="hidden" id="hidchckpdc" name="hidchckpdc" value='<s:property value="hidchckpdc"/>'/>
    <input type="hidden" id="txtpdcacno" name="txtpdcacno" value='<s:property value="txtpdcacno"/>'/></td>
    <td align="right">Cheque No.</td>
-   <td width="17%"><input type="text" id="txtchequeno" name="txtchequeno" style="width:100%;" value='<s:property value="txtchequeno"/>' /></td>
+   <td width="17%"><input type="text" id="txtchequeno" name="txtchequeno" value='<s:property value="txtchequeno"/>' /></td>
    <td width="21%" align="right">Cheque Date</td>
-   <td align="left"><div id="jqxChequeDate" name="jqxChequeDate" onchange="funPDCDate($('#hidchckpdc').val(),$('#jqxContraTransDate').jqxDateTimeInput('getDate'),$('#jqxChequeDate').jqxDateTimeInput('getDate'));" value='<s:property value="jqxChequeDate"/>'></div>
-    <input type="hidden" id="hidjqxChequeDate" name="hidjqxChequeDate" value='<s:property value="hidjqxChequeDate"/>'/></td>
+   <td align="left">
+       <div id="jqxChequeDate" name="jqxChequeDate" onchange="funPDCDate($('#hidchckpdc').val(),$('#jqxContraTransDate').jqxDateTimeInput('getDate'),$('#jqxChequeDate').jqxDateTimeInput('getDate'));" value='<s:property value="jqxChequeDate"/>'></div>
+       <input type="hidden" id="hidjqxChequeDate" name="hidjqxChequeDate" value='<s:property value="hidjqxChequeDate"/>'/>
+   </td>
    </tr>
   <tr>
     <td align="right">Amount</td>
-    <td><input type="text" id="txtfromamount" name="txtfromamount" style="width:90%;text-align: right;" value='<s:property value="txtfromamount"/>' onblur="funRoundAmt(this.value,this.id);getBaseAmountFrom();" /></td>
+    <td><input type="text" id="txtfromamount" name="txtfromamount" style="text-align: right;" value='<s:property value="txtfromamount"/>' onblur="funRoundAmt(this.value,this.id);getBaseAmountFrom();" /></td>
     <td colspan="2"  align="right">Base Amount</td>
-    <td><input type="text" id="txtfrombaseamount" name="txtfrombaseamount" style="width:34%;text-align: right;" value='<s:property value="txtfrombaseamount"/>' tabindex="-1"/></td>
-  </tr>
-   <tr>
-    <td align="right">Description</td>
-    <td colspan="4"><input type="text" id="txtdescription" name="txtdescription" style="width:73%;" value='<s:property value="txtdescription"/>'/></td>
+    <td><input type="text" id="txtfrombaseamount" name="txtfrombaseamount" style="text-align: right;" value='<s:property value="txtfrombaseamount"/>' tabindex="-1" readonly/></td>
   </tr>
 </table>
 </fieldset>
 </td>
 
-<td width="50%">
+<td width="50%" style="vertical-align: top;">
 <fieldset>
 <legend>Payment To</legend>
 <table width="100%">
 <tr>
-    <td colspan="2" align="center"><input type="checkbox" id="chckib" name="chckib" onclick="funCheckIb();">&nbsp;Inter-Branch
-    <input type="hidden" id="hidchckib" name="hidchckib" value='<s:property value="hidchckib"/>'/></td>
+    <td colspan="2" align="center" style="white-space:nowrap;">
+        <input type="checkbox" id="chckib" name="chckib" style="vertical-align: middle; margin-right: 4px; height:auto !important; width:auto !important;" onclick="funCheckIb();"> Inter-Branch
+        <input type="hidden" id="hidchckib" name="hidchckib" value='<s:property value="hidchckib"/>'/>
+    </td>
     <td width="20%" align="right">Branch</td>
-    <td colspan="2"><select id="cmbbranch" name="cmbbranch" style="width:40%;" value='<s:property value="cmbbranch"/>'>
+    <td colspan="2"><select id="cmbbranch" name="cmbbranch" value='<s:property value="cmbbranch"/>'>
       <option value=""></option></select>
     <input type="hidden" id="hidcmbbranch" name="hidcmbbranch" value='<s:property value="hidcmbbranch"/>'/></td>
   </tr>
   <tr>
     <td width="6%" align="right">Type</td>
-    <td width="10%"><select id="cmbtotype" name="cmbtotype" style="width:90%;" onchange="clearClientInfoTo();" value='<s:property value="cmbtotype"/>'>
+    <td width="10%"><select id="cmbtotype" name="cmbtotype" onchange="clearClientInfoTo();" value='<s:property value="cmbtotype"/>'>
     <option value="CASH">Cash</option><option value="BANK">Bank</option></select>
     <input type="hidden" id="hidcmbtotype" name="hidcmbtotype" value='<s:property value="hidcmbtotype"/>'/></td>
-    <td width="20%"><input type="text" id="txttoaccid" name="txttoaccid" style="width:80%;" readonly placeholder="Press F3 to Search" value='<s:property value="txttoaccid"/>' onkeydown="getAccType(event);"/></td>
-    <td colspan="2"><input type="text" id="txttoaccname" name="txttoaccname" style="width:53%;" readonly value='<s:property value="txttoaccname"/>' tabindex="-1"/>
+    <td width="20%"><input type="text" id="txttoaccid" name="txttoaccid" readonly placeholder="Press F3 to Search" value='<s:property value="txttoaccid"/>' onkeydown="getAccType(event);"/></td>
+    <td colspan="2"><input type="text" id="txttoaccname" name="txttoaccname" readonly value='<s:property value="txttoaccname"/>' tabindex="-1"/>
     <input type="hidden" id="txttodocno" name="txttodocno" value='<s:property value="txttodocno"/>'/>
     <input type="hidden" id="txttotranid" name="txttotranid" value='<s:property value="txttotranid"/>'/>
     <input type="hidden" id="txttotrno" name="txttotrno" value='<s:property value="txttotrno"/>'/></td>
   </tr>
   <tr>
     <td align="right">Currency</td>
-    <td colspan="2"><select id="cmbtocurrency" name="cmbtocurrency" style="width:50%;" value='<s:property value="cmbtocurrency"/>' onchange="getRatevalue(this.value,$('#jqxContraTransDate').val());">
+    <td colspan="2"><select id="cmbtocurrency" name="cmbtocurrency" value='<s:property value="cmbtocurrency"/>' onchange="getRatevalue(this.value,$('#jqxContraTransDate').val());">
       <option></option></select>
       <input type="hidden" id="hidcmbtocurrency" name="hidcmbtocurrency" value='<s:property value="hidcmbtocurrency"/>'/>
       <input type="hidden" id="hidtocurrencytype" name="hidtocurrencytype" value='<s:property value="hidtocurrencytype"/>'/></td>
     <td width="20%" align="right">Rate</td>
-    <td width="57%"><input type="text" id="txttorate" name="txttorate" style="width:30%;text-align: right;" value='<s:property value="txttorate"/>' onblur="funRoundRate(this.value,this.id);getBaseAmountTo();getCrTotal();" tabindex="-1"/></td>
+    <td width="57%"><input type="text" id="txttorate" name="txttorate" style="text-align: right;" value='<s:property value="txttorate"/>' onblur="funRoundRate(this.value,this.id);getBaseAmountTo();getCrTotal();" tabindex="-1"/></td>
   </tr>
   <tr>
     <td align="right">Amount</td>
-    <td colspan="2"><input type="text" id="txttoamount" name="txttoamount" style="width:50%;text-align: right;" value='<s:property value="txttoamount"/>' onblur="funRoundAmt(this.value,this.id);getBaseAmountTo();getCrTotal();" /></td>
+    <td colspan="2"><input type="text" id="txttoamount" name="txttoamount" style="text-align: right;" value='<s:property value="txttoamount"/>' onblur="funRoundAmt(this.value,this.id);getBaseAmountTo();getCrTotal();" /></td>
     <td align="right">Base Amount</td>
-    <td><input type="text" id="txttobaseamount" name="txttobaseamount" style="width:30%;text-align: right;" value='<s:property value="txttobaseamount"/>' tabindex="-1"/></td>
+    <td><input type="text" id="txttobaseamount" name="txttobaseamount" style="text-align: right;" value='<s:property value="txttobaseamount"/>' tabindex="-1" readonly/></td>
   </tr>
 </table>
 </fieldset>
 </td>
 </tr></table>
 
+<div style="display:none;">
 <input type="hidden" id="mode" name="mode"/>
 <input type="hidden" id="deleted" name="deleted" value='<s:property value="deleted"/>'/>
 <input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
 <input type="hidden" id="gridlength" name="gridlength"/>
-<div hidden="true" id="maindate" name="maindate" value='<s:property value="maindate"/>'></div>
+<div hidden id="maindate" name="maindate" value='<s:property value="maindate"/>'></div>
 <input type="hidden" id="hidmaindate" name="hidmaindate" value='<s:property value="hidmaindate"/>'/>
 <input type="hidden" name="txtfromorto" id="txtfromorto" value='<s:property value="txtfromorto"/>'>
 <input type="hidden" id="txttrno" name="txttrno" value='<s:property value="txttrno"/>'/>
 <input type="hidden" id="txtvalidation" name="txtvalidation" value='<s:property value="txtvalidation"/>'/>
 <input type="hidden" id="txtibvalidation" name="txtibvalidation" value='<s:property value="txtibvalidation"/>'/>
 <input type="hidden" id="txtpdcdatevalidation" name="txtpdcdatevalidation" value='<s:property value="txtpdcdatevalidation"/>'/>
+</div>
 </div>
 </form>
 
