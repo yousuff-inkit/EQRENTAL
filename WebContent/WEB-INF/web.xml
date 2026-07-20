@@ -33,11 +33,15 @@
 		com.emailsmsautogenerate.EmailSmsAutoContextListener 
 		</listener-class>
 	 </listener> -->
-	<!-- <listener>
+	 
+	 
+<!-- 	<listener>
 		<listener-class>
 			com.dashboard.equipment.equiputildownload.EquipUtilContextListener
 		</listener-class>
 	</listener> -->
+	
+	
   <filter-mapping>
     <filter-name>struts2</filter-name>
     <url-pattern>/error/*</url-pattern>
