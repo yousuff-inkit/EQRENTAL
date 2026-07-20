@@ -9,11 +9,6 @@
 <link href="<%=contextPath%>/css/body.css" media="screen" rel="stylesheet" type="text/css" />
 <title>GatewayERP(i)</title>
 
-<style type="text/css">
-#search {
-    background-color: #E0ECF8;
-}
-</style>
 
 	<script type="text/javascript">
 	$(document).ready(function () {
@@ -56,24 +51,80 @@
 		}
 
 	</script>
-<body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td width="7%" align="right" style="font-size:9px;">Cost Code</td>
-    <td width="38%"><input type="text" name="txtcostcodes" id="txtcostcodes" style="width:80%;height:20px;" value='<s:property value="txtcostcodes"/>'></td>
-    <td width="9%" align="right" style="font-size:9px;"><label name="lblregnositename" id="lblregnositename"></label></td>
-    <td width="33%"><input type="text" name="txtregno" id="txtregno" style="width:60%;height:20px;" value='<s:property value="txtregno"/>'>
-    <input type="hidden" name="txtcosttype" id="txtcosttype" value='<s:property value="txtcosttype"/>'></td>
-    <td width="13%" align="center"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr><td align="right" style="font-size:9px;">Name</td>
-  <td colspan="4"><input type="text" name="txtcostcodesname" id="txtcostcodesname" style="width:60%;height:20px;" value='<s:property value="txtcostcodesname"/>'></td>
-  </tr>
-  <tr>
-    <td colspan="5"><div id="refreshdiv"><jsp:include page="costCodeDetailsSearchGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+<body bgcolor="#f5f7fa">
+
+<div id="search" class="modern-ui">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td align="right" width="8%">Cost Code</td>
+                <td width="27%">
+                    <input type="text"
+                           name="txtcostcodes"
+                           id="txtcostcodes"
+                           style="width:100%;"
+                           value='<s:property value="txtcostcodes"/>'>
+                </td>
+
+                <td align="right" width="8%">
+                    <label name="lblregnositename" id="lblregnositename"></label>
+                </td>
+
+                <td width="27%">
+                    <input type="text"
+                           name="txtregno"
+                           id="txtregno"
+                           style="width:100%;"
+                           value='<s:property value="txtregno"/>'>
+
+                    <input type="hidden"
+                           name="txtcosttype"
+                           id="txtcosttype"
+                           value='<s:property value="txtcosttype"/>'>
+                </td>
+
+                <td width="20%" align="left" style="padding-left:8px;">
+                    <input type="button"
+                           name="btnsearch"
+                           id="btnsearch"
+                           class="myButton"
+                           value="Search"
+                           onclick="loadSearch();">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td align="right">Name</td>
+
+                <td colspan="4">
+                    <input type="text"
+                           name="txtcostcodesname"
+                           id="txtcostcodesname"
+                           style="width:100%;"
+                           value='<s:property value="txtcostcodesname"/>'>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdiv">
+            <jsp:include page="costCodeDetailsSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
