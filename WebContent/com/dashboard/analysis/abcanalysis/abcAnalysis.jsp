@@ -9,88 +9,208 @@
 <title>GatewayERP(i)</title>
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <style type="text/css">
-.myButtons {
-	-moz-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	-webkit-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
-	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
-	background-color:#768d87;
-	border:1px solid #566963;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	
-	font-size:8pt;
-	
-	padding:3px 17px;
-	text-decoration:none;
-	text-shadow:0px -1px 0px #2b665e;
-}
-.myButtons:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
-	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
-	background-color:#6c7c7c;
-}
-.myButtons:active {
-	position:relative;
-	top:1px;
+/* ===== MASTER LAYOUT (Modern Flexbox) ===== */
+html, body, #mainBG {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
 }
 
-.myButtons1 {
-	display: inline-block;
-	margin-right:4px;
-	margin-left:4px; 
-  margin-bottom: 0;
-  font-weight: normal;
-  line-height: 1.3;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: #fff;
-  background-color: grey;
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
-.myButtons1:hover {
-	  color: #fff;
-  background-color: #31b0d5;
-  
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px; 
+    flex: 0 0 280px; 
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
 }
-.myButtons1:active {
-  color: #fff;
-  background-color: #31b0d5;
-  
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px; 
 }
-.myButtons1:focus {
-  color: #fff;
-  background-color: grey;
+
+/* Cards */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Tables */
+.release-filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.release-filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select,
+.release-filter-table input[type="text"],
+.release-filter-table select {
+    width: 100%;
+    height: 24px;             
+    padding: 2px 8px;         
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;       
+    font-size: 12px;          
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+}
+
+/* Textarea styling */
+.search-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 11px;
+    background-color: #f3f6f9;
+    resize: none;
+    margin-top: 10px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Readonly / disabled look */
+input[readonly],
+input:disabled,
+.release-filter-table input[readonly],
+.release-filter-table input:disabled,
+select:disabled {
+    background-color: #f3f6f9 !important;
+    color: #555;
+    border-color: #e1e8ed;
+}
+
+/* jqx date/time containers */
+.release-filter-table div[id^="fromdate"],
+.release-filter-table div[id^="todate"] {
+    width: 100%;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-size: 12px;
+    color: #333;
+    padding: 5px 0 10px 0;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+}
+.radio-group input[type="radio"] {
+    margin-right: 4px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-submit {
+    width: 100%;
+    height: 30px;            
+    padding: 0 12px;         
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 4px;      
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 30px;       
+    transition: background 0.2s;
+}
+
+.btn-submit:hover {
+    background: #1d4ed8;
+}
+
+.btn-submit:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.release-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* Inline action flex */
+.inline-action-row {
+    display: flex;
+    gap: 5px;
+}
+.inline-action-row select {
+    flex: 1;
+}
+.btn-icon {
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+    text-align: center;
+}
+
+/* ===== RIGHT CONTENT AREA ===== */
+.main-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.grid-content-container {
+    flex: 1;
+    padding: 15px;
+    overflow: auto; 
+    box-sizing: border-box;
 }
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		 $("#fromdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-		 $("#todate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+		 $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+		 $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 		   
 		 $('#clientSearchWindow').jqxWindow({ width: '62%', height: '65%',  maxHeight: '85%' ,maxWidth: '80%' , title: 'Client Search' ,position: { x: 250, y: 60 }, theme: 'energyblue', keyboardCloseKey: 27});
 		 $('#clientSearchWindow').jqxWindow('close');
@@ -112,21 +232,6 @@
 	     var oneyearbackdate=new Date(new Date(oneyeardate).setDate(oneyeardate.getDate()));
 	     $('#fromdate ').jqxDateTimeInput('setDate', new Date(oneyearbackdate));
 	   
-	     /* $(".chcksummary").click(function() {
-	 	        selectedBox = this.id;
-
-	 	        $(".chcksummary").each(function() {
-	 	            if ( this.id == selectedBox )
-	 	            {
-	 	                this.checked = true;
-	 	            }
-	 	            else
-	 	            {
-	 	                this.checked = false;
-	 	            };        
-	 	        });
-	 	    });     */
-	 		 
 	     document.getElementById("rdall").checked=true;
 	});
 	
@@ -249,24 +354,6 @@
 		x.open("GET", "getGridColumnCalculation.jsp?fromdate="+fromdate+"&todate="+todate, true);
 		x.send();
    }
-	
-	/* function clientcheck(){
-		if(document.getElementById("chckclient").checked){
-			 document.getElementById("hidchckclient").value = 1;document.getElementById("hidchckcategory").value = 0;
-		 }
-		 else{
-			 document.getElementById("hidchckclient").value = 0;
-		 }
-	 } */
-	
-	/* function categorycheck(){
-		if(document.getElementById("chckcategory").checked){
-			 document.getElementById("hidchckcategory").value = 1;document.getElementById("hidchckclient").value = 0;
-		 }
-		 else{
-			 document.getElementById("hidchckcategory").value = 0;
-		 }
-	 } */
 	
 	function summaryDisable(){
 		if(document.getElementById("rdall").checked==true){
@@ -434,100 +521,117 @@
 </script>
 </head>
 <body onload="getBranch();summaryDisable();">
-<div id="mainBG" class="homeContent" data-type="background"> 
-<div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%"  >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr>
-	 <td align="right"><label class="branch">From</label></td>
-     <td align="left"><div id="fromdate" name="fromdate" value='<s:property value="fromdate"/>'></div></td></tr> 
-	<tr>
-	<td align="right"><label class="branch">To</label></td>
-    <td align="left"><div id="todate" name="todate" value='<s:property value="todate"/>'></div></td>
-	</tr>  
-	<tr><td colspan="2">
-	  <fieldset><legend><b><label class="branch">Report Type</label></b></legend>
-	  <table width="100%">
-      <tr>
-      <td width="40%" align="left"><input type="radio" id="rdall" name="rdo" onclick="summaryDisable();" value="rdall"><label for="rdall" class="branch">All</label></td>
-      <td width="60%">&nbsp;</td>
-      </tr>
-      <tr>
-      <td align="left"><input type="radio" id="rdsummary" name="rdo" onclick="summaryDisable();" value="rdsummary"><label for="rdsummary" class="branch">Summary</label></td>
-      <td>
-      
-      <select id="cmbsummarytype" name="cmbsummarytype" style="width:80%;" onchange="clearAccountInfo();" value='<s:property value="cmbsummarytype"/>'>
-      <option value="">--Select--</option><option value="CRM">Client</option><option value="CAT">Client Category</option>
-	  <option value="PCASE">Client Status</option><option value="SLM">Salesman</option></select>
-      
-      <%--<fieldset>
-       <table width="100%">
-      <tr><td><input type="checkbox" id="chckclient" class="chcksummary" name="chckclient" value="" onchange="clientcheck();" onclick="$(this).attr('value', this.checked ? 1 : 0)" /><label class="branch">Client</label>
-              <input type="hidden" id="hidchckclient" name="hidchckclient" value='<s:property value="hidchckclient"/>'/></td>
-      </tr>
-      <tr><td><input type="checkbox" id="chckcategory" class="chcksummary" name="chckcategory" value="" onchange="categorycheck();" onclick="$(this).attr('value', this.checked ? 1 : 0)" /><label class="branch">Category</label>
-              <input type="hidden" id="hidchckcategory" name="hidchckcategory" value='<s:property value="hidchckcategory"/>'/></td>
-      </tr>
-     </table> 
-      </fieldset>--%>
-      
-      </td>
-      </tr>
-      </table></fieldset>
-	</td></tr>  
-	<tr><td colspan="2">
-	<table width="100%">
-  <tr>
-    <td align="right"><label class="branch">Search By</label></td>
-    <td align="left"><select name="searchby" id="searchby"><option value="">--Select--</option>
-	<option value="client">Client</option><option value="clientcat">Client Category</option>
-	<option value="clientstatus">Client Status</option><option value="clientslm">Salesman</option></select></td>
-    <td><button type="button" name="btnadditem" id="additem" class="myButtons1" onClick="setSearch();">+</button></td>
-    <td><button type="button" name="btnremoveitem" id="btnremoveitem" class="myButtons1" onclick="setRemove();">-</button></td>
-  </tr>
-  <tr>
-    <td colspan="4" align="center"><textarea id="searchdetails" style="height:140px;width:230px;font: 10px Tahoma;resize:none" name="searchdetails" readonly="readonly"><s:property value="searchdetails"></s:property></textarea>
-    </td>
-  </tr>
-</table></td></tr>
-	<tr><td colspan="2"><center><input type="button" name="btnclear" id="btnclear" value="Clear" class="myButtons" onclick="funClearData();"></center></td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2"><input type="hidden" name="client" id="client"><input type="hidden" name="hidclient" id="hidclient">
-			  <input type="hidden" name="clientcat" id="clientcat"><input type="hidden" name="hidclientcat" id="hidclientcat">
-			  <input type="hidden" name="clientstatus" id="clientstatus"><input type="hidden" name="hidclientstatus" id="hidclientstatus">
-			  <input type="hidden" name="clientslm" id="clientslm"><input type="hidden" name="hidclientslm" id="hidclientslm"></td></tr>  
-	</table>
-	</fieldset>
-</td>
-<td width="80%">
-	<table width="100%">
-		<tr>
-			 <td><div id="analysisDiv"><jsp:include page="abcAnalysisGrid.jsp"></jsp:include></div></td>
-		</tr>
-	</table>
-</tr>
-</table>
-</div>
 
-<div id="clientSearchWindow">
-	<div></div><div></div>
-</div>
-<div id="clientCategorySearchWindow">
-	<div></div><div></div>
-</div>
-<div id="salesmanSearchWindow">
-	<div></div><div></div>
-</div>
-<div id="clientStatusSearchWindow">
-	<div></div><div></div>
-</div>
+<div id="mainBG" class="homeContent" data-type="background"> 
+    <div class="master-container">
+
+        <!-- Sidebar / Filter Section -->
+        <div class="sidebar-filters">
+            <div class="sidebar-scroll-content">
+                <div class="filter-card">
+
+                    <table class="release-filter-table">
+                        <tr>
+                            <td class="label-cell">From</td>
+                            <td><div id="fromdate" name="fromdate" value='<s:property value="fromdate"/>'></div></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">To</td>
+                            <td><div id="todate" name="todate" value='<s:property value="todate"/>'></div></td>
+                        </tr>
+                    </table>
+
+                    <div class="radio-group" style="padding-top: 15px;">
+                        <label>
+                            <input type="radio" id="rdall" name="rdo" onclick="summaryDisable();" value="rdall">
+                            All
+                        </label>
+                        <label>
+                            <input type="radio" id="rdsummary" name="rdo" onclick="summaryDisable();" value="rdsummary">
+                            Summary
+                        </label>
+                    </div>
+
+                    <table class="release-filter-table">
+                        <tr>
+                            <td class="label-cell">Type</td>
+                            <td>
+                                <select id="cmbsummarytype" name="cmbsummarytype" onchange="clearAccountInfo();" value='<s:property value="cmbsummarytype"/>'>
+                                    <option value="">--Select--</option>
+                                    <option value="CRM">Client</option>
+                                    <option value="CAT">Client Category</option>
+                                    <option value="PCASE">Client Status</option>
+                                    <option value="SLM">Salesman</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Search By</td>
+                            <td>
+                                <div class="inline-action-row">
+                                    <select name="searchby" id="searchby">
+                                        <option value="">--Select--</option>
+                                        <option value="client">Client</option>
+                                        <option value="clientcat">Client Category</option>
+                                        <option value="clientstatus">Client Status</option>
+                                        <option value="clientslm">Salesman</option>
+                                    </select>
+                                    <button type="button" name="btnadditem" id="additem" class="btn-submit btn-icon" onClick="setSearch();">+</button>
+                                    <button type="button" name="btnremoveitem" id="btnremoveitem" class="btn-submit btn-icon" onclick="setRemove();">-</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <textarea id="searchdetails" name="searchdetails" rows="8" readonly class="search-textarea"><s:property value="searchdetails"></s:property></textarea>
+
+                    <div class="release-actions">
+                        <button type="button" name="btnclear" id="btnclear" class="btn-submit" onclick="funClearData();">Clear</button>
+                    </div>
+
+                    <!-- Hidden Fields -->
+                    <input type="hidden" name="client" id="client">
+                    <input type="hidden" name="hidclient" id="hidclient">
+                    <input type="hidden" name="clientcat" id="clientcat">
+                    <input type="hidden" name="hidclientcat" id="hidclientcat">
+                    <input type="hidden" name="clientstatus" id="clientstatus">
+                    <input type="hidden" name="hidclientstatus" id="hidclientstatus">
+                    <input type="hidden" name="clientslm" id="clientslm">
+                    <input type="hidden" name="hidclientslm" id="hidclientslm">
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid / Data Section -->
+        <div class="main-content-area">
+            
+            <div class="top-toolbar-container">
+                <jsp:include page="../../heading.jsp"></jsp:include>
+            </div>
+
+            <div class="grid-content-container">
+                <div id="analysisDiv"><jsp:include page="abcAnalysisGrid.jsp"></jsp:include></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+    <div id="clientSearchWindow">
+        <div></div><div></div>
+    </div>
+    <div id="clientCategorySearchWindow">
+        <div></div><div></div>
+    </div>
+    <div id="salesmanSearchWindow">
+        <div></div><div></div>
+    </div>
+    <div id="clientStatusSearchWindow">
+        <div></div><div></div>
+    </div>
+
 </div>
 </body>
 </html>

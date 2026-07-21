@@ -10,42 +10,205 @@
 <title>GatewayERP(i)</title>
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
 <style type="text/css">
-.myButtons {
-	display: inline-block;
-	margin-right:4px;
-	margin-left:4px; 
-  margin-bottom: 0;
-  font-weight: normal;
-  line-height: 1.3;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: #fff;
-  background-color: grey;
+/* ===== MASTER LAYOUT (Modern Flexbox) ===== */
+html, body, #mainBG {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
 }
-.myButtons:hover {
-	  color: #fff;
-  background-color: #31b0d5;
-  
+
+form {
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
-.myButtons:active {
-  color: #fff;
-  background-color: #31b0d5;
-  
+
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
-.myButtons:focus {
-  color: #fff;
-  background-color: grey;
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px; 
+    flex: 0 0 280px; 
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
+}
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px; 
+}
+
+/* Cards */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Tables */
+.release-filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.release-filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select,
+.release-filter-table input[type="text"],
+.release-filter-table select {
+    width: 100%;
+    height: 24px;             
+    padding: 2px 8px;         
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;       
+    font-size: 12px;          
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+}
+
+/* Textarea styling */
+.search-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 11px;
+    background-color: #f3f6f9;
+    resize: none;
+    margin-top: 10px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Readonly / disabled look */
+input[readonly],
+input:disabled,
+.release-filter-table input[readonly],
+.release-filter-table input:disabled {
+    background-color: #f3f6f9 !important;
+    color: #555;
+    border-color: #e1e8ed;
+}
+
+/* jqx date/time containers */
+.release-filter-table div[id^="fromdate"],
+.release-filter-table div[id^="todate"] {
+    width: 100%;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-size: 12px;
+    color: #333;
+    padding: 5px 0 15px 0;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+}
+.radio-group input[type="radio"] {
+    margin-right: 4px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-submit {
+    width: 100%;
+    height: 30px;            
+    padding: 0 12px;         
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 4px;      
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 30px;       
+    transition: background 0.2s;
+}
+
+.btn-submit:hover {
+    background: #1d4ed8;
+}
+
+.btn-submit:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.release-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* Inline action flex */
+.inline-action-row {
+    display: flex;
+    gap: 5px;
+}
+.inline-action-row select {
+    flex: 1;
+}
+.btn-icon {
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+    text-align: center;
+}
+
+/* ===== RIGHT CONTENT AREA ===== */
+.main-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.grid-content-container {
+    flex: 1;
+    padding: 15px;
+    overflow: auto; 
+    box-sizing: border-box;
 }
 </style>
 
@@ -60,8 +223,8 @@ $(document).ready(function () {
 	   $("body").prepend("<div id='PleaseWait' style='display: none;position:absolute; z-index: 1;top:200px;right:520px;'><img src='../../../../icons/31load.gif'/></div>");
 	   $('#maingrids').hide();
  	   $('#maingrid').show();
-	   $("#fromdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy" });
-	   $("#todate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy" });
+	   $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy" });
+	   $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy" });
 	   $('#clientwindow').jqxWindow({ width: '50%',height: '60%',  maxHeight: '80%'  ,maxWidth: '50%' , title: 'Client Category Search' ,position: { x: 250, y: 60 }, keyboardCloseKey: 27});
 	   $('#clientwindow').jqxWindow('close');
 	   $('#clientsearchwindow').jqxWindow({ width: '49%', height: '65%',  maxHeight: '75%' ,maxWidth: '50%' , title: 'Client Search' ,position: { x: 250, y: 60 }, keyboardCloseKey: 27});
@@ -750,172 +913,152 @@ function chartSearchContent(url) {
 </script>
 </head>
 <body onload="getBranch();setValues();">
-<form id="frmSalesInvoiceList" method="post">
-<div id="mainBG" class="homeContent" data-type="background"> 
-<div class='hidden-scrollbar'>
-<table width="100%">
-<tr>
-<td width="23%" align="center">
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%" >
-	<jsp:include page="../../heading.jsp"></jsp:include>
+<form id="frmSalesInvoiceList" method="post" style="height: 100%;">
+    <div id="mainBG" class="homeContent" data-type="background"> 
+        <div class="master-container">
 
- <tr>
-   <td width="37%" align="right"><label class="branch">From Date</label></td><td width="63%"><div id="fromdate"></div></td></tr>
- <tr>
-   <td align="right"><label class="branch">To Date</label></td>
-   <td><div id="todate"></div></td>
- </tr>
-<!-- <tr><td colspan="2" align="center"><input type="radio" name="rdotype" id="rdomonthwise" value="monthwise" onchange="setType(this.value);">&nbsp;<label class="branch" id="lblmonthwise">Monthwise</label>&nbsp;
-<input type="radio" name="rdotype" id="rdobetweendates" value="dates" onchange="setType(this.value);" onclick="setType(this.value);">&nbsp;<label class="branch" id="lblbetweendates">Period</label>
-</td></tr> -->
-<input type="hidden" name="hidrdobetweendates" id="hidrdobetweendates">
-<input type="hidden" name="hidrdomonthwise" id="hidrdomonthwise">
-<tr>
-       <td  align="right"><label for="rdsummary" class="branch" >Summary</label></td>
-       <td  ><input type="radio" id="rdsummary" name="rdo" checked="checked" value="RS">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       <label for="rddetail" class="branch">Detail</label>
-       
-       &nbsp;<input type="radio" id="rddetail" name="rdo" value="RD"></td>
-       </tr>
-<tr>
-  <td colspan="2">
-  <table width="100%" >  
-  <tr>
-    <td width="29%" align="right"><label class="branch">Grouping</label></td>
-    <td width="71%" align="left"><select name="grpby1" id="grpby1" style="width:60%;">
-    <option value="">--Select--</option>
-    <option value="fleetno">Fleet No</option> 
-    <option value="brand">Brand</option>
-    <option value="model">Model</option>
-    <option value="yom">YOM</option>
-    <option value="mtype">Maintenance Type</option>
-    <option value="mdesc">Description</option>
-    </select>
-    </td>
-  </tr>
-  <tr>
-    <td width="29%" align="right"><label class="branch">Distribution</label></td>
-    <td width="71%" align="left"><select name="distribution" id="distribution" style="width:60%;">
-    <option value="">--Select--</option>
-    <option value="monthwise">Monthwise</option>
-    <option value="quarterwise">Quarterwise</option>
-    <option value="yearwise">Yearwise</option>
-     
-    </select>&nbsp;&nbsp;<!-- <input type="button" name="btnChart" id="btnChart" value="Chart" onclick="getChart();" class="myButtons"> -->
-    </td>
-  </tr>
-</table>
-</td>
-</tr>
+            <!-- Sidebar / Filter Section -->
+            <div class="sidebar-filters">
+                <div class="sidebar-scroll-content">
+                    <div class="filter-card">
 
-	<tr >
-	  <td align="right"><label class="branch">Filter</label></td>
-	  <td  align="left"><select name="searchby" id="searchby" style="width:60%;">    
-<option value="">--Select--</option>
-    <option value="fleet">Fleet NO</option>  
-     <option value="brand">Brand</option>
-    <option value="model">Model</option>
-    <option value="yom">YOM</option>
-     <option value="mtype">Maintenance Type</option>
+                        <!-- Hidden Fields from old layout setup -->
+                        <input type="hidden" name="hidrdobetweendates" id="hidrdobetweendates">
+                        <input type="hidden" name="hidrdomonthwise" id="hidrdomonthwise">
 
-    </select>&nbsp;<button type="button" name="btnadditem" id="additem" class="myButtons" onClick="setSearch();">+</button>&nbsp;&nbsp;<button  type="button" name="btnremoveitem" id="btnremoveitem" class="myButtons" onclick="setRemove();">-</button></td>
-	  </tr>
-	<tr >
-	  <td colspan="2"
-      align="right" ><textarea id="searchdetails" name="searchdetails" style="resize:none;font: 10px Tahoma;" rows="18" cols="50" readonly></textarea></td>
-	  </tr>
-	<tr >
-	<td colspan="2" style="border-top:2px solid #DCDDDE;"><center><input type="button" name="btnclear" id="btnclear" value="Clear" class="myButtons" onclick="funClearData();"></center>
-    </td>
-	</tr>
-		
-	</table>
-	</fieldset>
-</td>
-<td width="77%">
-	<table width="100%"> 
-		<tr>
-			 <td><div  hidden="true" id="maingrid"><jsp:include page="ListGrid.jsp"></jsp:include></div>   
-			 
-			 
-			 <div hidden="true"  id="maingrids"><jsp:include page="groupinggrid.jsp"></jsp:include></div>  
-			  <div id="distributiondiv"  hidden="true"><jsp:include page="monthwisegrid.jsp"></jsp:include>  </div>
-			 
-			 
-			 </td>
-			 
-			  <input type="hidden" name="hidmodel" id="hidmodel">
-			   <input type="hidden" name="hidyom" id="hidyom">
-			  <input type="hidden" name="hidbrand" id="hidbrand">
-			  	  <input type="hidden" name="yom" id="yom">
-			  <input type="hidden" name="brand" id="brand">
-			    <input type="hidden" name="model" id="model">
-			  		  <input type="hidden" name="fleet" id="fleet">
-			  <input type="hidden" name="hidfleet" id="hidfleet">
-			  <input type="hidden" name="mtype" id="mtype">
-			 <input type="hidden" name="hidmtype" id="hidmtype">
- 		  <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'>
-			  <input type="hidden" name="msg" id="msg" value='<s:property value="msg"/>'>
-			  <input type="hidden" name="hidclientcat" id="hidclientcat">
-			  <input type="hidden" name="hidclient" id="hidclient">
-			  <input type="hidden" name="hidgroup" id="hidgroup">  
-			 
-			   <input type="hidden" name="hidrentalagent" id="hidrentalagent">
-			  <input type="hidden" name="hidsalesman" id="hidsalesman">  
-			 
-		   <input type="hidden" name="clientcat" id="clientcat">
-			  <input type="hidden" name="client" id="client">
-			  <input type="hidden" name="group" id="group">  
-			
- 		  <input type="hidden" name="rentalagent" id="rentalagent">
-			  <input type="hidden" name="salesman" id="salesman"> 
-		
-	
-			  
-			 
-			  
-		</tr>
-	</table>
-</tr>
-</table>
-</div>
-<div id="clientwindow">
-<div></div>
-</div>
-<div id="clientsearchwindow">
-<div></div>
-</div>
-<div id="salesagentwindow">
-<div></div>
-</div>
-<div id="rentalagentwindow">
-<div></div>
-</div>
-<div id="brandwindow">
-<div></div>
-</div>
-<div id="modelwindow">
-<div></div>
-</div>
-<div id="groupwindow">
-<div></div>
-</div>
-<div id="yomwindow">
-<div></div>
-</div>
-<div id="mtypewindow">
-<div></div>
-</div>
-<div id="chartwindow">
-<div><img id="loadingImage" src="../../../../icons/31load.gif" style="position: absolute;vertical-align:middle;" /></div>
-</div>
-<div id="fleetwindow">
-<div><img id="loadingImage" src="../../../../icons/31load.gif" style="position: absolute;vertical-align:middle;text-align:center;top:50%;left:50%;" /></div>
-</div>
+                        <div class="radio-group">
+                            <label for="rdsummary">
+                                <input type="radio" id="rdsummary" name="rdo" checked="checked" value="RS">
+                                Summary
+                            </label>
+                            <label for="rddetail">
+                                <input type="radio" id="rddetail" name="rdo" value="RD">
+                                Detail
+                            </label>
+                        </div>
 
+                        <table class="release-filter-table">
+                            <tr>
+                                <td class="label-cell">From Date</td>
+                                <td><div id="fromdate"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">To Date</td>
+                                <td><div id="todate"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Grouping</td>
+                                <td>
+                                    <select name="grpby1" id="grpby1">
+                                        <option value="">--Select--</option>
+                                        <option value="fleetno">Fleet No</option> 
+                                        <option value="brand">Brand</option>
+                                        <option value="model">Model</option>
+                                        <option value="yom">YOM</option>
+                                        <option value="mtype">Maintenance Type</option>
+                                        <option value="mdesc">Description</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Distribution</td>
+                                <td>
+                                    <select name="distribution" id="distribution">
+                                        <option value="">--Select--</option>
+                                        <option value="monthwise">Monthwise</option>
+                                        <option value="quarterwise">Quarterwise</option>
+                                        <option value="yearwise">Yearwise</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Filter</td>
+                                <td>
+                                    <div class="inline-action-row">
+                                        <select name="searchby" id="searchby">    
+                                            <option value="">--Select--</option>
+                                            <option value="fleet">Fleet NO</option>  
+                                            <option value="brand">Brand</option>
+                                            <option value="model">Model</option>
+                                            <option value="yom">YOM</option>
+                                            <option value="mtype">Maintenance Type</option>
+                                        </select>
+                                        <button type="button" name="btnadditem" id="additem" class="btn-submit btn-icon" onClick="setSearch();">+</button>
+                                        <button type="button" name="btnremoveitem" id="btnremoveitem" class="btn-submit btn-icon" onclick="setRemove();">-</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
 
-</div>
+                        <textarea id="searchdetails" name="searchdetails" rows="8" readonly class="search-textarea"></textarea>
+
+                        <div class="release-actions">
+                            <button type="button" name="btnclear" id="btnclear" class="btn-submit" onclick="funClearData();">Clear</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Grid / Data Section -->
+            <div class="main-content-area">
+                
+                <div class="top-toolbar-container">
+                    <jsp:include page="../../heading.jsp"></jsp:include>
+                </div>
+
+                <div class="grid-content-container">
+                    <div hidden="true" id="maingrid"><jsp:include page="ListGrid.jsp"></jsp:include></div>   
+                    <div hidden="true" id="maingrids"><jsp:include page="groupinggrid.jsp"></jsp:include></div>  
+                    <div id="distributiondiv" hidden="true"><jsp:include page="monthwisegrid.jsp"></jsp:include></div>
+
+                    <!-- Hidden fields for submission -->
+                    <input type="hidden" name="hidmodel" id="hidmodel">
+                    <input type="hidden" name="hidyom" id="hidyom">
+                    <input type="hidden" name="hidbrand" id="hidbrand">
+                    <input type="hidden" name="yom" id="yom">
+                    <input type="hidden" name="brand" id="brand">
+                    <input type="hidden" name="model" id="model">
+                    <input type="hidden" name="fleet" id="fleet">
+                    <input type="hidden" name="hidfleet" id="hidfleet">
+                    <input type="hidden" name="mtype" id="mtype">
+                    <input type="hidden" name="hidmtype" id="hidmtype">
+                    <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'>
+                    <input type="hidden" name="msg" id="msg" value='<s:property value="msg"/>'>
+                    <input type="hidden" name="hidclientcat" id="hidclientcat">
+                    <input type="hidden" name="hidclient" id="hidclient">
+                    <input type="hidden" name="hidgroup" id="hidgroup">  
+                    <input type="hidden" name="hidrentalagent" id="hidrentalagent">
+                    <input type="hidden" name="hidsalesman" id="hidsalesman">  
+                    <input type="hidden" name="clientcat" id="clientcat">
+                    <input type="hidden" name="client" id="client">
+                    <input type="hidden" name="group" id="group">  
+                    <input type="hidden" name="rentalagent" id="rentalagent">
+                    <input type="hidden" name="salesman" id="salesman"> 
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Modals -->
+        <div id="clientwindow"><div></div></div>
+        <div id="clientsearchwindow"><div></div></div>
+        <div id="salesagentwindow"><div></div></div>
+        <div id="rentalagentwindow"><div></div></div>
+        <div id="brandwindow"><div></div></div>
+        <div id="modelwindow"><div></div></div>
+        <div id="groupwindow"><div></div></div>
+        <div id="yomwindow"><div></div></div>
+        <div id="mtypewindow"><div></div></div>
+        <div id="chartwindow">
+            <div><img id="loadingImage" src="../../../../icons/31load.gif" style="position: absolute;vertical-align:middle;" /></div>
+        </div>
+        <div id="fleetwindow">
+            <div><img id="loadingImageFleet" src="../../../../icons/31load.gif" style="position: absolute;vertical-align:middle;text-align:center;top:50%;left:50%;" /></div>
+        </div>
+
+    </div>
 </form>
 </body>
 </html>
