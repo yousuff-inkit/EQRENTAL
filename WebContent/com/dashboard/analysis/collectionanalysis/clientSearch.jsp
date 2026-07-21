@@ -82,46 +82,243 @@ $( "#btncancel_client" ).click(function() {
 		}
 
 	</script>
-<body bgcolor="#E0ECF8">
-<div id="search">
-<table width="100%">
-  <tr>
-    <td width="7%" align="right"><label class="formfont">Name</label></td>
-    <td colspan="5" align="left"><input type="text" name="Cl_name" id="Cl_name"  style="width:100%;height:20px;" value='<s:property value="Cl_name"/>'></td>
-    <td width="6%" align="center">&nbsp;</td>
-    <td width="14%" align="center"><input type="button" name="btnrasearch" id="btnrasearch" class="myButton" value="Search"  onClick="loadSearch();"></td>
-    </tr>
-  <tr>
-    <td align="right"><label class="formfont">License#</label></td>
-    <td width="12%" align="left"><input type="text" name="dr_Licence" id="dr_Licence" value='<s:property value="dr_Licence"/>' style="height:20px;"></td>
-    <td width="8%" align="right"><label class="formfont">Passport#</label></td>
-    <td width="17%" align="left"><input type="text" name="dr_Passport" id="dr_Passport" value='<s:property value="dr_Passport"/>' style="height:20px;"></td>
-    <td width="8%" align="right"><label class="formfont">Nationality</label></td>
-    <td width="14%" align="left"><input type="text" id="dr_Nation" name="dr_Nation" value='<s:property value="dr_Nation"/>' style="height:20px;"></td>
-    <td align="center">&nbsp;</td>
-    <td align="center"><button type="button" id="btnok_client" name="btnok" class="myButton">&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;</button></td>
-    
-    </tr>
-  <tr>
-    <td align="right"><span class="formfont">Mobile</span></td>
-    <td align="left"><input type="text" name="Cl_mob" id="Cl_mob" value='<s:property value="Cl_mob"/>' style="height:20px;"></td>
-    <td align="right"><span class="formfont">DOB</span></td>
-    <td align="left"><div id="dr_DOB" name="dr_DOB"  value='<s:property value="dr_DOB"/>'></div>
-    <input type="hidden" name="hiddr_DOB" id="hiddr_DOB" value='<s:property value="hiddr_DOB"/>'></td>
-    <td align="right">&nbsp;</td>
-    <td align="left">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-    <td align="center"><button type="button" id="btncancel_client" name="btncancel" class="myButton" >Cancel</button></td>
-  </tr>
-  <tr>
-    <td colspan="8">  <div id="refreshdiv">
-      
-   <jsp:include  page="clientSearchGrid.jsp"></jsp:include> 
-   
-   </div></td>
-    </tr>
-</table>
+<style type="text/css">
+/* =========================================================
+   SCOPED UI: Master Search UI
+========================================================= */
+body {
+    margin: 0;
+    background-color: #f5f7fa;
+}
 
-  </div>
+/* Main Wrapper */
+#search.modern-ui {
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif !important;
+    font-size: 12px !important;
+    color: #333;
+    padding: 10px;
+    background-color: #f5f7fa;
+}
+
+/* Search Panel */
+#search.modern-ui .search-panel {
+    background: #fff;
+    border: 1px solid #c5d3e0;
+    border-radius: 8px;
+    padding: 15px 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Grid Panel */
+#search.modern-ui .grid-container {
+    background: #fff;
+    border: 1px solid #c5d3e0;
+    border-radius: 8px;
+    padding: 5px;
+    min-height: 50px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Table */
+#search.modern-ui table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px 10px;
+}
+
+#search.modern-ui td {
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif !important;
+    font-size: 12px !important;
+    vertical-align: middle;
+}
+
+/* Labels */
+#search.modern-ui td[align="right"] {
+    color: #000 !important;
+    font-weight: normal !important;
+    white-space: nowrap;
+    padding-right: 5px;
+}
+
+/* Textboxes */
+#search.modern-ui input[type="text"] {
+    width: 100%;
+    height: 24px !important;
+    border: 1px solid #b8c6d8;
+    border-radius: 3px;
+    padding: 2px 6px;
+    box-sizing: border-box;
+    font-size: 12px !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    background: #fff !important;
+}
+
+#search.modern-ui input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.10);
+}
+
+/* jqx Date Input */
+#dr_DOB{
+    height:24px !important;
+    border:1px solid #b8c6d8;
+    border-radius:3px;
+    background:#fff;
+}
+
+/* Buttons */
+#search.modern-ui .myButton{
+    width:80px !important;
+    height:24px !important;
+    line-height:22px !important;
+    padding:0 15px !important;
+    font-size:11px !important;
+    font-weight:700 !important;
+    font-family:'Segoe UI',Arial,sans-serif !important;
+    color:#fff !important;
+    background:linear-gradient(135deg,#0b45a2 0%,#2563eb 100%) !important;
+    border:1px solid #083a8a !important;
+    border-radius:3px;
+    cursor:pointer;
+    text-transform:uppercase;
+}
+
+#search.modern-ui .myButton:hover{
+    background:linear-gradient(135deg,#083a8a 0%,#1d4ed8 100%) !important;
+}
+
+#refreshdiv{
+    margin-top:5px;
+}
+</style>
+
+</head>
+
+<body bgcolor="#f5f7fa">
+
+<div id="search" class="modern-ui">
+
+    <div class="search-panel">
+
+        <table>
+
+            <!-- ================= Row 1 ================= -->
+
+            <tr>
+
+                <td align="right" width="8%">Name</td>
+                <td width="28%">
+                    <input type="text"
+                           name="Cl_name"
+                           id="Cl_name"
+                           value='<s:property value="Cl_name"/>'>
+                </td>
+
+                <td align="right" width="8%">License#</td>
+                <td width="18%">
+                    <input type="text"
+                           name="dr_Licence"
+                           id="dr_Licence"
+                           value='<s:property value="dr_Licence"/>'>
+                </td>
+
+                <td align="right" width="8%">Passport#</td>
+                <td width="18%">
+                    <input type="text"
+                           name="dr_Passport"
+                           id="dr_Passport"
+                           value='<s:property value="dr_Passport"/>'>
+                </td>
+
+                <td width="12%" align="left">
+                    <input type="button"
+                           id="btnrasearch"
+                           name="btnrasearch"
+                           class="myButton"
+                           value="Search"
+                           onclick="loadSearch();">
+                </td>
+
+            </tr>
+
+            <!-- ================= Row 2 ================= -->
+
+            <tr>
+
+                <td align="right">Nationality</td>
+                <td>
+                    <input type="text"
+                           id="dr_Nation"
+                           name="dr_Nation"
+                           value='<s:property value="dr_Nation"/>'>
+                </td>
+
+                <td align="right">Mobile</td>
+                <td>
+                    <input type="text"
+                           name="Cl_mob"
+                           id="Cl_mob"
+                           value='<s:property value="Cl_mob"/>'>
+                </td>
+
+                <td align="right">DOB</td>
+                <td>
+                    <div id="dr_DOB"
+                         name="dr_DOB"
+                         value='<s:property value="dr_DOB"/>'>
+                    </div>
+
+                    <input type="hidden"
+                           name="hiddr_DOB"
+                           id="hiddr_DOB"
+                           value='<s:property value="hiddr_DOB"/>'>
+                </td>
+
+                <td align="left">
+                    <button type="button"
+                            id="btnok_client"
+                            name="btnok"
+                            class="myButton">
+                        OK
+                    </button>
+                </td>
+
+            </tr>
+
+            <!-- ================= Row 3 ================= -->
+
+            <tr>
+
+                <td colspan="6"></td>
+
+                <td align="left">
+                    <button type="button"
+                            id="btncancel_client"
+                            name="btncancel"
+                            class="myButton">
+                        Cancel
+                    </button>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdiv">
+
+            <jsp:include page="clientSearchGrid.jsp"></jsp:include>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

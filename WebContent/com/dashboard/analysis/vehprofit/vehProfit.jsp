@@ -10,42 +10,203 @@
 <title>GatewayERP(i)</title>
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
 <style type="text/css">
-.myButtons {
-	display: inline-block;
-	margin-right:4px;
-	margin-left:4px; 
-  margin-bottom: 0;
-  font-weight: normal;
-  line-height: 1.3;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: #fff;
-  background-color: grey;
+/* ===== MASTER LAYOUT (Modern Flexbox) ===== */
+html, body, #mainBG {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
 }
-.myButtons:hover {
-	  color: #fff;
-  background-color: #31b0d5;
-  
+
+form {
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
-.myButtons:active {
-  color: #fff;
-  background-color: #31b0d5;
-  
+
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
-.myButtons:focus {
-  color: #fff;
-  background-color: grey;
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px; 
+    flex: 0 0 280px; 
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
+}
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px; 
+}
+
+/* Cards */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Tables */
+.release-filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.release-filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select,
+.release-filter-table input[type="text"],
+.release-filter-table select {
+    width: 100%;
+    height: 24px;             
+    padding: 2px 8px;         
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;       
+    font-size: 12px;          
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+}
+
+/* Textarea styling */
+.search-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 11px;
+    background-color: #f3f6f9;
+    resize: none;
+    margin-top: 10px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Readonly / disabled look */
+input[readonly],
+input:disabled,
+.release-filter-table input[readonly],
+.release-filter-table input:disabled {
+    background-color: #f3f6f9 !important;
+    color: #555;
+    border-color: #e1e8ed;
+}
+
+/* jqx date/time containers */
+.release-filter-table div[id^="fromdate"],
+.release-filter-table div[id^="todate"] {
+    width: 100%;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-size: 12px;
+    color: #333;
+    padding: 5px 0 10px 0;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.radio-group input[type="radio"] {
+    margin-right: 4px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-submit {
+    width: 100%;
+    height: 30px;            
+    padding: 0 12px;         
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 4px;      
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 30px;       
+    transition: background 0.2s;
+}
+
+.btn-submit:hover {
+    background: #1d4ed8;
+}
+
+.btn-submit:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.release-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* Inline action flex */
+.inline-action-row {
+    display: flex;
+    gap: 5px;
+}
+.inline-action-row select {
+    flex: 1;
+}
+.btn-icon {
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+}
+
+/* ===== RIGHT CONTENT AREA ===== */
+.main-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.grid-content-container {
+    flex: 1;
+    padding: 15px;
+    overflow: auto; 
+    box-sizing: border-box;
 }
 </style>
 
@@ -57,8 +218,8 @@ $(document).ready(function () {
 	   $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1; display: none;"></div>');
 	     $("body").prepend("<div id='PleaseWait' style='display: none;position:absolute; z-index: 1;top:200px;right:750px;'><img src='../../../../icons/31load.gif'/></div>");
 	$('#vehdetaildiv').hide();
-	 $("#fromdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-	 $("#todate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+	 $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+	 $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 	
 	  $('#brandwindow').jqxWindow({ width: '50%', height: '60%',  maxHeight: '80%' ,maxWidth: '50%' , title: 'Brand Search' ,position: { x: 250, y: 60 }, keyboardCloseKey: 27});
 	   $('#brandwindow').jqxWindow('close');
@@ -375,106 +536,115 @@ function funreload(event)
 </script>
 </head>
 <body onload="getBranch();setValues();">
-<form id="frmSalesInvoiceList" method="post">
-<div id="mainBG" class="homeContent" data-type="background"> 
-<div class='hidden-scrollbar'>
-<table width="100%">
-<tr>
-<td width="23%" align="center">
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%">
-	<jsp:include page="../../heading.jsp"></jsp:include>
+<form id="frmSalesInvoiceList" method="post" style="height: 100%;">
+    <div id="mainBG" class="homeContent" data-type="background"> 
+        <div class="master-container">
 
- <tr>
-   <td width="37%" align="right"><label class="branch">From Date</label></td><td width="63%"><div id="fromdate"></div></td></tr>
- <tr>
-   <td align="right"><label class="branch">To Date</label></td>
-   <td><div id="todate"></div></td>
- </tr>
-  <tr>
-   <td align="center" colspan="2"><input type="radio" name="rdosummary" id="rdosummary" value="summary" onchange="setGrid(this.value);">
-   <label class="branch" for="rdosummary">Summary</label>&nbsp;&nbsp;<input type="radio" name="rdosummary" id="rdodetail" value="detail" onchange="setGrid(this.value);">
-   <label class="branch" for="rdodetail">Detail</label></td>
- </tr>
- <tr>
-   <td align="right"><label class="branch">Grouping 1</label></td>
-   <td><select name="grpby1" id="grpby1">
-   <option value="">--Select--</option>
-   <option value="brand">Brand</option>
-   <option value="model">Model</option>
-   <option value="group">Group</option>
-   <option value="yom">YOM</option></select></td>
- </tr>
-<tr>
-	<td align="right">
-	 <label class="branch">Search By</label>
-    </td>
-    <td>
-    <select name="searchby" id="searchby">
-    <option value="">--Select--</option>
-    <option value="brand">Brand</option>
-    <option value="model">Model</option>
-    <option value="group">Group</option>
-    <option value="yom">YOM</option>
-    <option value="fleet">Fleet</option>
-    </select>
-    &nbsp;&nbsp;<button type="button" name="btnadditem" id="additem" class="myButtons" onClick="setSearch();">+</button>&nbsp;&nbsp;<button  type="button" name="btnremoveitem" id="btnremoveitem" class="myButtons" onclick="setRemove();">-</button>
-    </td>
-	</tr>
-	<tr><td colspan="2"><textarea id="searchdetails" name="searchdetails" style="resize:none;font: 10px Tahoma;" rows="18" cols="50" readonly></textarea></td></tr>
-	<tr>
-	<td colspan="2" style="border-top:2px solid #DCDDDE;">
-	 
-	<center><input type="button" name="btnclear" id="btnclear" value="Clear" class="myButtons" onclick="funClearData();"></center>
-   <br><br>
-    </td>
-	</tr>
-		
-	</table>
-	</fieldset>
-</td>
-<td width="77%">
-	<table width="100%">
-		<tr>
-			 <td> <div id="vehprofitdiv"><jsp:include page="vehProfitGrid.jsp"></jsp:include></div> 
-			  <div id="vehdetaildiv"><jsp:include page="vehDetailGrid.jsp"></jsp:include></div>
-			 </td>
-			 <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'>
-			  <input type="hidden" name="msg" id="msg" value='<s:property value="msg"/>'>
-			  <input type="hidden" name="hidgroup" id="hidgroup">
-			  <input type="hidden" name="hidmodel" id="hidmodel">
-			  <input type="hidden" name="hidyom" id="hidyom">
-			  <input type="hidden" name="hidbrand" id="hidbrand">
-			  <input type="hidden" name="group" id="group">
-			  <input type="hidden" name="model" id="model">
-			  <input type="hidden" name="yom" id="yom">
-			  <input type="hidden" name="brand" id="brand">
-			  <input type="hidden" name="gridtype" id="gridtype">
-			  <input type="hidden" name="fleet" id="fleet">
-			  <input type="hidden" name="hidfleet" id="hidfleet">
-			  
-		</tr>
-	</table>
-</tr>
-</table>
-</div>
+            <!-- Sidebar / Filter Section -->
+            <div class="sidebar-filters">
+                <div class="sidebar-scroll-content">
+                    <div class="filter-card">
+                        
+                        <div class="radio-group">
+                            <label for="rdosummary">
+                                <input type="radio" name="rdosummary" id="rdosummary" value="summary" onchange="setGrid(this.value);">
+                                Summary
+                            </label>
+                            <label for="rdodetail">
+                                <input type="radio" name="rdosummary" id="rdodetail" value="detail" onchange="setGrid(this.value);">
+                                Detail
+                            </label>
+                        </div>
 
-</div>
-<div id="brandwindow">
-<div></div>
-</div>
-<div id="modelwindow">
-<div></div>
-</div>
-<div id="groupwindow">
-<div></div>
-</div>
-<div id="yomwindow">
-<div></div>
-</div>
-<div id="fleetwindow">
-<div></div>
-</div>
+                        <table class="release-filter-table">
+                            <tr>
+                                <td class="label-cell">From Date</td>
+                                <td><div id="fromdate"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">To Date</td>
+                                <td><div id="todate"></div></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Grouping 1</td>
+                                <td>
+                                    <select name="grpby1" id="grpby1">
+                                        <option value="">--Select--</option>
+                                        <option value="brand">Brand</option>
+                                        <option value="model">Model</option>
+                                        <option value="group">Group</option>
+                                        <option value="yom">YOM</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Search By</td>
+                                <td>
+                                    <div class="inline-action-row">
+                                        <select name="searchby" id="searchby">
+                                            <option value="">--Select--</option>
+                                            <option value="brand">Brand</option>
+                                            <option value="model">Model</option>
+                                            <option value="group">Group</option>
+                                            <option value="yom">YOM</option>
+                                            <option value="fleet">Fleet</option>
+                                        </select>
+                                        <button type="button" name="btnadditem" id="additem" class="btn-submit btn-icon" onClick="setSearch();">+</button>
+                                        <button type="button" name="btnremoveitem" id="btnremoveitem" class="btn-submit btn-icon" onclick="setRemove();">-</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <textarea id="searchdetails" name="searchdetails" rows="8" readonly class="search-textarea"></textarea>
+
+                        <div class="release-actions">
+                            <button type="button" name="btnclear" id="btnclear" class="btn-submit" onclick="funClearData();">Clear</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Grid / Data Section -->
+            <div class="main-content-area">
+                
+                <div class="top-toolbar-container">
+                    <jsp:include page="../../heading.jsp"></jsp:include>
+                </div>
+
+                <div class="grid-content-container">
+                    <div id="vehprofitdiv"><jsp:include page="vehProfitGrid.jsp"></jsp:include></div> 
+                    <div id="vehdetaildiv"><jsp:include page="vehDetailGrid.jsp"></jsp:include></div>
+                    
+                    <!-- Hidden fields for submission -->
+                    <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'>
+                    <input type="hidden" name="msg" id="msg" value='<s:property value="msg"/>'>
+                    <input type="hidden" name="hidgroup" id="hidgroup">
+                    <input type="hidden" name="hidmodel" id="hidmodel">
+                    <input type="hidden" name="hidyom" id="hidyom">
+                    <input type="hidden" name="hidbrand" id="hidbrand">
+                    <input type="hidden" name="group" id="group">
+                    <input type="hidden" name="model" id="model">
+                    <input type="hidden" name="yom" id="yom">
+                    <input type="hidden" name="brand" id="brand">
+                    <input type="hidden" name="gridtype" id="gridtype">
+                    <input type="hidden" name="fleet" id="fleet">
+                    <input type="hidden" name="hidfleet" id="hidfleet">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Modals -->
+        <div id="brandwindow"><div></div></div>
+        <div id="modelwindow"><div></div></div>
+        <div id="groupwindow"><div></div></div>
+        <div id="yomwindow"><div></div></div>
+        <div id="fleetwindow"><div></div></div>
+
+    </div>
 </form>
 </body>
 </html>

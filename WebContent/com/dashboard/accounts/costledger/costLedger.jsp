@@ -8,40 +8,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GatewayERP(i)</title>
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
+
 <style type="text/css">
-.account {
-	color: black;
-	background-color: #E0ECF8;
-	width: 100%;
-	height: 28px;
-	font-family: Myriad Pro;
-	font-weight: bold;
+/* ===== MASTER LAYOUT (Modern Flexbox) ===== */
+html, body, #mainBG {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
 }
-.accname {
-	color: black;
-	background-color: #E0ECF8;
-	width: 100%;
-	font-family: comic sans ms;
+
+form {
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
-.textbox {
-    border: 0;
-    height: 25px;
-    width: 20%;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    box-shadow: 1px 1px 0 0 #E0ECF8, 5px 5px 40px 2px #E0ECF8 inset;
-    -moz-box-shadow: 1px 1px 0 0 #E0ECF8, 5px 5px 40px 2px #E0ECF8 inset;
-    -webkit-box-shadow: 1px 1px 0 0 #E0ECF8, 5px 5px 40px 2px #E0ECF8 inset;
-    -webkit-background-clip: padding-box;
-    outline: 0;
+
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px; 
+    flex: 0 0 280px; 
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
+}
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px; 
+}
+
+/* Cards */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Tables */
+.release-filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.release-filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select,
+.release-filter-table input[type="text"],
+.release-filter-table select {
+    width: 100%;
+    height: 24px;             
+    padding: 2px 8px;         
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;       
+    font-size: 12px;          
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+}
+
+/* Readonly / disabled look */
+input[readonly],
+input:disabled,
+.release-filter-table input[readonly],
+.release-filter-table input:disabled {
+    background-color: #f3f6f9 !important;
+    color: #555;
+    border-color: #e1e8ed;
+}
+
+/* jqx date/time containers */
+.release-filter-table div[id^="fromdate"],
+.release-filter-table div[id^="todate"] {
+    width: 100%;
+}
+
+.radio-group, .checkbox-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: #333;
+    padding: 2px 0;
+}
+
+.radio-group label, .checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.radio-group input[type="radio"], .checkbox-group input[type="checkbox"] {
+    margin-right: 4px;
+}
+
+/* ===== RIGHT CONTENT AREA ===== */
+.main-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.cost-center-banner {
+    padding: 10px 15px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e1e8ed;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.cost-center-banner span {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.grid-content-container {
+    flex: 1;
+    padding: 15px;
+    overflow: auto; 
+    box-sizing: border-box;
+}
+
+.summary-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 15px;
+    background: #f8fafc;
+    border-top: 1px solid #e1e8ed;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 10px;
+}
+
+.summary-footer input {
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+    color: #1e293b;
 }
 </style>
+
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		 $("#fromdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-		 $("#todate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+		 $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+		 $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 		 
 		 $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1; display: none;"></div>');
 	     $("body").prepend("<div id='PleaseWait' style='display: none;position:absolute; z-index: 1;top:180px;right:550px;'><img src='../../../../icons/31load.gif'/></div>");
@@ -232,83 +377,99 @@
 		 }
 	}
 	
-	
 </script>
 </head>
 <body onload="getBranch();getCostType();">
 <div id="mainBG" class="homeContent" data-type="background"> 
-<form id="frmCostLedger" action="saveCostLedger" method="post" autocomplete="off">
-<div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%"  >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	<tr><td colspan="2"><input type="checkbox" id="chckuptodate" name="chckuptodate" value="" onclick="funCheck();" onchange="checkuptodate();" onclick="$(this).attr('value', this.checked ? 1 : 0)" />
-    <input type="hidden" id="hidchckuptodate" name="hidchckuptodate" value='<s:property value="hidchckuptodate"/>'/></td></tr>
-	<tr>
-	<td align="right"><label class="branch">Period</label></td>
-    <td align="left"><div id="fromdate" name="fromdate" value='<s:property value="fromdate"/>'></div></td></tr> 
-	<tr>
-	<td align="right"><label class="branch">To</label></td>
-    <td align="left"><div id="todate" name="todate" value='<s:property value="todate"/>'></div></td>
-	</tr>  
-	<tr><td colspan="2">&nbsp;</td></tr> 
-	<tr><td colspan="2">
-	<table width="100%"><tr><td width="20%" align="right"><label class="branch">Cost Type</label></td>
-	<td width="80%" align="left"><select id="cmbcosttype" name="cmbcosttype" style="width:60%;" onchange="clearCostCodeInfo();" value='<s:property value="cmbcosttype"/>'></select>
-    </td></tr>
-    <tr><td align="right"><label class="branch">Cost Code</label></td>
-	<td align="left"><input type="text" id="txtcostcodeid" name="txtcostcodeid" style="width:70%;height:20px;" readonly placeholder="Press F3 to Search" value='<s:property value="txtcostcodeid"/>' onkeydown="getCostCode(event);"/></td></tr> 
-	<tr><td>&nbsp;</td>
-	<td><input type="text" id="txtcostcodename" name="txtcostcodename" style="width:100%;height:20px;" readonly value='<s:property value="txtcostcodename"/>' tabindex="-1"/>
-    <input type="hidden" id="txtcostcode" name="txtcostcode" value='<s:property value="txtcostcode"/>'/>
-    </td></tr></table>
-    </td></tr> 
-	<tr><td colspan="2">
-	  <fieldset><legend><b><label class="branch">Report Type</label></b></legend>
-	   <table width="100%">
-       <tr>
-       <td width="48%" align="center"><input type="radio" id="rdsummary" name="rdo" onclick="radioClick();" value="rdsummary"><label for="rdsummary" class="branch">Summary</label></td>
-       <td width="52%" align="center"><input type="radio" id="rddetailed" name="rdo" onclick="radioClick();" value="rddetailed"><label for="rddetailed" class="branch">Detailed</label></td>
-       </tr>
-       </table>
-	  </fieldset>
-	</td></tr> 
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	</table>
-	</fieldset>
-</td>
-<td width="80%">
-	<table width="100%">
-	    <tr><td><label class="account">Cost Center :&nbsp;</label><label class="accname" name="lblaccountname" id="lblaccountname"></label></td></tr> 
-		<tr>
-			 <td><div id="costLedgerSummaryDiv"><jsp:include page="costLedgerSummaryGrid.jsp"></jsp:include></div>
-			 <div id="costLedgerDetailedDiv" hidden="true"><jsp:include page="costLedgerDetailGrid.jsp"></jsp:include></div></td>
-		</tr>
-	</table>
-</tr>
-</table>
-<table width="100%">
-<tr>
-		<td width="92%" align="right" style="font-family: Myriad Pro;font-size: 12px;font-weight: bold;">Net Amount :&nbsp;</td>
-        <td width="8%" align="left"><input type="text" class="textbox" id="txtnetamount" name="txtnetamount" style="width:80%;text-align: right;" value='<s:property value="txtnetamount"/>'/></td>
-</tr>
-</table>
+    <form id="frmCostLedger" action="saveCostLedger" method="post" autocomplete="off">
+        <div class="master-container">
 
-</div>
-</form>
-<div id="costCodeDetailsWindow">
-	<div></div><div></div>
-</div>
+            <!-- Sidebar / Filter Section -->
+            <div class="sidebar-filters">
+                <div class="sidebar-scroll-content">
+                    <div class="filter-card">
+                        
+                        <div class="checkbox-group" style="margin-bottom: 10px; justify-content: flex-end;">
+                            <label>
+                                <input type="checkbox" id="chckuptodate" name="chckuptodate" value="" onclick="funCheck();" onchange="checkuptodate();" onclick="$(this).attr('value', this.checked ? 1 : 0)" />
+                                Up To Date
+                            </label>
+                            <input type="hidden" id="hidchckuptodate" name="hidchckuptodate" value='<s:property value="hidchckuptodate"/>'/>
+                        </div>
+
+                        <table class="release-filter-table">
+                            <tr>
+                                <td class="label-cell">Period</td>
+                                <td><div id="fromdate" name="fromdate" value='<s:property value="fromdate"/>'></div></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">To</td>
+                                <td><div id="todate" name="todate" value='<s:property value="todate"/>'></div></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Cost Type</td>
+                                <td>
+                                    <select id="cmbcosttype" name="cmbcosttype" onchange="clearCostCodeInfo();" value='<s:property value="cmbcosttype"/>'></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Cost Code</td>
+                                <td>
+                                    <input type="text" id="txtcostcodeid" name="txtcostcodeid" readonly placeholder="Press F3 to Search" value='<s:property value="txtcostcodeid"/>' onkeydown="getCostCode(event);"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell"></td>
+                                <td>
+                                    <input type="text" id="txtcostcodename" name="txtcostcodename" readonly value='<s:property value="txtcostcodename"/>' tabindex="-1"/>
+                                    <input type="hidden" id="txtcostcode" name="txtcostcode" value='<s:property value="txtcostcode"/>'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Report Type</td>
+                                <td>
+                                    <div class="radio-group">
+                                        <label><input type="radio" id="rdsummary" name="rdo" onclick="radioClick();" value="rdsummary">Summary</label>
+                                        <label><input type="radio" id="rddetailed" name="rdo" onclick="radioClick();" value="rddetailed">Detailed</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Grid / Data Section -->
+            <div class="main-content-area">
+                
+                <div class="top-toolbar-container">
+                    <jsp:include page="../../heading.jsp"></jsp:include>
+                </div>
+
+                <div class="cost-center-banner">
+                    Cost Center : <span name="lblaccountname" id="lblaccountname"></span>
+                </div>
+
+                <div class="grid-content-container">
+                    <div id="costLedgerSummaryDiv"><jsp:include page="costLedgerSummaryGrid.jsp"></jsp:include></div>
+                    <div id="costLedgerDetailedDiv" hidden="true"><jsp:include page="costLedgerDetailGrid.jsp"></jsp:include></div>
+                </div>
+                
+                <div class="summary-footer">
+                    <label>Net Amount :</label>
+                    <input type="text" id="txtnetamount" name="txtnetamount" value='<s:property value="txtnetamount"/>'/>
+                </div>
+
+            </div>
+
+        </div> 
+    </form>
+    
+    <!-- Modals -->
+    <div id="costCodeDetailsWindow">
+        <div></div><div></div>
+    </div>
 </div> 
 </body>
 </html>
