@@ -1,3 +1,4 @@
+<link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />
 <jsp:include page="../../../../includes.jsp"></jsp:include>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%
@@ -10,143 +11,236 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GatewayERP(i)</title>
-<link href="../../../../css/dashboard.css" media="screen"
-	rel="stylesheet" type="text/css" />
-
-<%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%>
 
 <style type="text/css">
-.myButtons {
-	-moz-box-shadow: inset 0px -1px 3px 0px #91b8b3;
-	-webkit-box-shadow: inset 0px -1px 3px 0px #91b8b3;
-	box-shadow: inset 0px -1px 3px 0px #91b8b3;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87
-		), color-stop(1, #6c7c7c));
-	background: -moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background: -webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background: -o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background: -ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87',
-		endColorstr='#6c7c7c', GradientType=0);
-	background-color: #768d87;
-	border: 1px solid #566963;
-	display: inline-block;
-	cursor: pointer;
-	color: #ffffff;
-	font-size: 8pt;
-	padding: 3px 17px;
-	text-decoration: none;
-	text-shadow: 0px -1px 0px #2b665e;
+/* ===== MASTER LAYOUT (Modern Flexbox) ===== */
+html, body, #mainBG {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
 }
 
-.myButtons:hover {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c
-		), color-stop(1, #768d87));
-	background: -moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background: -webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background: -o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background: -ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c',
-		endColorstr='#768d87', GradientType=0);
-	background-color: #6c7c7c;
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
 
-.myButtons:active {
-	position: relative;
-	top: 1px;
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px; 
+    flex: 0 0 280px; 
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
+}
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px; 
+}
+
+/* Cards */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Tables */
+.filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select, textarea,
+.filter-table input[type="text"],
+.filter-table select {
+    width: 100%;
+    height: 24px;             
+    padding: 2px 8px;         
+    border: 1px solid #ccd6e0;
+    border-radius: 4px;       
+    font-size: 12px;          
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+    outline: none;
+}
+
+/* Readonly / disabled look */
+input[readonly],
+input:disabled,
+.filter-table input[readonly],
+.filter-table input:disabled {
+    background-color: #f3f6f9 !important;
+    color: #555;
+    border-color: #e1e8ed;
+    cursor: pointer;
+}
+
+input::placeholder {
+    color: #9aa4b2;
+    opacity: 1;
+}
+
+/* ===== BUTTONS ===== */
+.btn-submit {
+    width: 100%;
+    height: 30px;            
+    padding: 0 12px;         
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 4px;      
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 30px;       
+    transition: background 0.2s;
+    text-align: center;
+}
+
+.btn-submit:hover {
+    background: #1d4ed8;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+/* ===== RIGHT CONTENT AREA ===== */
+.main-content-area {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.grid-content-container {
+    flex: 1;
+    padding: 15px;
+    overflow: auto; 
+    box-sizing: border-box;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Misc */
+#loadgriddata, #loaddetaildata {
+    border: 1px solid #e3e8ee;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 </style>
 
 <script type="text/javascript">
 	$(document).ready(function() {
-						$('#loaddetaildata').hide();
+        $('#loaddetaildata').hide();
+        $('#loadgriddata').show();
+        
+        $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1001; display: none;"></div>');
+        $("body").prepend("<div id='PleaseWait' style='display: none;position:absolute; z-index: 1002;top:180px;right:550px;'><img src='../../../../icons/31load.gif'/></div>");
 
-						$('#loadgriddata').show();
-						$("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1; display: none;"></div>');
-						$("body").prepend("<div id='PleaseWait' style='display: none;position:absolute; z-index: 1;top:180px;right:550px;'><img src='../../../../icons/31load.gif'/></div>");
+        $('#txtclientname').dblclick(function() {
+            accountsSearchContent('clientAccountDetailsSearch.jsp');
+        });
+        
+        $('#accountDetailsWindow').jqxWindow({
+            width : '51%',
+            height : '58%',
+            maxHeight : '70%',
+            maxWidth : '51%',
+            title : 'Accounts Search',
+            position : { x : 300, y : 87 },
+            theme : 'energyblue',
+            showCloseButton : true,
+            keyboardCloseKey : 27
+        });
+        $('#accountDetailsWindow').jqxWindow('close');
 
-						$('#txtclientname').dblclick(function() {
-											accountsSearchContent('clientAccountDetailsSearch.jsp');
-						});
-						
-						$('#accountDetailsWindow').jqxWindow({
-							width : '51%',
-							height : '58%',
-							maxHeight : '70%',
-							maxWidth : '51%',
-							title : 'Accounts Search',
-							position : {
-								x : 300,
-								y : 87
-							},
-							theme : 'energyblue',
-							showCloseButton : true,
-							keyboardCloseKey : 27
-						});
-						$('#accountDetailsWindow').jqxWindow('close');
+        $('#printWindow').jqxWindow({
+            width : '30%',
+            height : '19%',
+            maxHeight : '50%',
+            maxWidth : '40%',
+            title : 'Print',
+            position : { x : 300, y : 87 },
+            theme : 'energyblue',
+            showCloseButton : true,
+            keyboardCloseKey : 27
+        });
+        $('#printWindow').jqxWindow('close');
 
-						$('#printWindow').jqxWindow({
-							width : '30%',
-							height : '19%',
-							maxHeight : '50%',
-							maxWidth : '40%',
-							title : 'Print',
-							position : {
-								x : 300,
-								y : 87
-							},
-							theme : 'energyblue',
-							showCloseButton : true,
-							keyboardCloseKey : 27
-						});
-						$('#printWindow').jqxWindow('close');
+        // Uniform 24px date inputs
+        $("#fromdate").jqxDateTimeInput({
+            width : '100%',
+            height : '24px',
+            formatString : "dd.MM.yyyy"
+        });
+        $("#todate").jqxDateTimeInput({
+            width : '100%',
+            height : '24px',
+            formatString : "dd.MM.yyyy"
+        });
+        
+        var fromdates = new Date($('#fromdate').jqxDateTimeInput('getDate'));
+        var onemounth = new Date(new Date(fromdates).setMonth(fromdates.getMonth() - 1));
 
-						$("#fromdate").jqxDateTimeInput({
-							width : '125px',
-							height : '15px',
-							formatString : "dd.MM.yyyy"
-						});
-						$("#todate").jqxDateTimeInput({
-							width : '125px',
-							height : '15px',
-							formatString : "dd.MM.yyyy"
-						});
-						var fromdates = new Date($('#fromdate')
-								.jqxDateTimeInput('getDate'));
-						var onemounth = new Date(new Date(fromdates)
-								.setMonth(fromdates.getMonth() - 1));
+        $('#fromdate').jqxDateTimeInput('setDate',new Date(onemounth));
+        $('#todate').on('change',function(event) {
+            var fromdates = new Date($('#fromdate').jqxDateTimeInput('getDate'));
+            var todates = new Date($('#todate').jqxDateTimeInput('getDate')); 
+            if (fromdates > todates) {
+                $.messager.alert('Message','To Date Less Than From Date  ','warning');
+                return false;
+            }
+        });
 
-						$('#fromdate').jqxDateTimeInput('setDate',new Date(onemounth));
-						$('#todate').on('change',function(event) {
-							var fromdates = new Date($('#fromdate').jqxDateTimeInput('getDate'));
+        funbnkdetls();
 
-							var todates = new Date($('#todate').jqxDateTimeInput('getDate')); //del date
-
-							if (fromdates > todates) {
-
-								$.messager.alert('Message','To Date Less Than From Date  ','warning');
-									return false;
-								}
-						});
-
-						funbnkdetls();
-
-	
-		$('#cmbbranch').change(function(event){
-			funreload(event);
-		})
+        $('#cmbbranch').change(function(event){
+            funreload(event);
+        })
 	});
 	
 	function funExportBtn() {
-	/* 	var rds = $('#summ').val();
-		if (rds == "summ") {
-			JSONToCSVCon(projectlistexcel, 'Service Sale List', true);
-		} else {
-			JSONToCSVCon(detaillistexcel, 'Service Sale Detail List', true);
-		} */
-		
 		var rds = $('#summ').val();
 		if (rds == "summ") {
 			$("#loadgriddata").excelexportjs({
@@ -157,7 +251,6 @@
 				columns: getColumns("jqxloaddataGrid") ,   
 				worksheetName:"Service Sale List"
 				});
-			
 		}else{
 			$("#loaddetaildata").excelexportjs({
 				containerid: "loaddetaildata", 
@@ -167,20 +260,15 @@
 				columns: getColumns("jqxloaddetailGrid") ,   
 				worksheetName:"Service Sale Detail List"
 				});
-			
 		}
 	}
 
 	function funreload(event) {
 		var fromdates = new Date($('#fromdate').jqxDateTimeInput('getDate'));
-		// out date
-		var todates = new Date($('#todate').jqxDateTimeInput('getDate')); //del date
+		var todates = new Date($('#todate').jqxDateTimeInput('getDate'));
 
 		if (fromdates > todates) {
-
-			$.messager.alert('Message', 'To Date Less Than From Date  ',
-					'warning');
-
+			$.messager.alert('Message', 'To Date Less Than From Date  ', 'warning');
 			return false;
 		}
 
@@ -201,13 +289,11 @@
 							+ fromdate + "&tos=" + todate + "&rds=" + rds
 							+ "&clientid="+ clientid + "&zoneid=" + 1);
 		}
-
 	}
 
 	function getClientAccount(event) {
 		var rds = $('#ctype').val();
 		if (rds == 'ALL') {
-
 		}
 		var x = event.keyCode;
 		if (x == 114) {
@@ -226,15 +312,11 @@
 	function funsumm() {
 		if (document.getElementById("summ").value == "summ") {
 			$('#loaddetaildata').hide();
-
 			$('#loadgriddata').show();
-
 			$('#btnprint').show();
 		} else {
 			$('#loaddetaildata').show();
-
 			$('#loadgriddata').hide();
-
 			$('#btnprint').hide();
 		}
 	}
@@ -246,7 +328,6 @@
 				var items = x.responseText.trim();
 				if (parseInt(items) > 0) {
 					document.getElementById("hidbnk").value = 1;
-
 				} else {
 					document.getElementById("hidbnk").value = 0;
 				}
@@ -272,7 +353,6 @@
 			
 		if ($("#hidbnk").val()==1) {
 			PrintContent('printVoucherWindow.jsp');
-			win.focus();
 		} else {
 			var docnos = ""
 			for (var i = 0; i < selectedrows.length; i++) {
@@ -297,144 +377,86 @@
 			$('#printWindow').jqxWindow('bringToFront');
 		});
 	}
-	
 </script>
 </head>
+
 <body onload="getBranch();">
-	<div id="mainBG" class="homeContent" data-type="background">
-		<div class='hidden-scrollbar'>
+	<div id="mainBG" class="homeContent">
+		<div class="master-container">
 
-			<table width="100% ">
-				<tr>
-					<td width="20%">
-						<fieldset style="background: #ECF8E0;">
-							<table width="100%">
-								<jsp:include page="../../heading.jsp"></jsp:include>
-
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td align="right"><label class="branch">From</label></td>
-									<td align="left"><div id='fromdate' name='fromdate'
-											value='<s:property value="fromdate"/>'></div></td>
-								</tr>
-
-
-								<tr>
-									<td align="right"><label class="branch">To</label></td>
-									<td align="left"><div id='todate' name='todate'
-											value='<s:property value="todate"/>'></div></td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td align="right"><label class="branch">Type</label></td>
-									<td><select id="summ" name="summ" style="width: 70%;"
-										onchange="funsumm()">
-											<option value="summ">Summary</option>
-											<option value="">Detail</option>
-
-
-									</select></td>
-								</tr>
-
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td align="right"><label class="branch">Client</label></td>
-									<td align="left"><input style="height: 19px" ; type="text"
-										id="txtclientname" name="txtclientname"
-										style="width:100%;height:20px;" readonly="readonly"
-										placeholder="Press F3 to Search"
-										value='<s:property value="txtclientname"/>'
-										onkeydown="getClientAccount(event);" /></td>
-								</tr>
-								<tr>
-									<td colspan="2"><input type="hidden"
-										id="txtclientaccountdocno" name="txtclientaccountdocno"
-										value='<s:property value="txtclientaccountdocno"/>' /></td>
-								</tr>
-
-								<tr>
-									<td colspan="2" style="border-top: 2px solid #DCDDDE;">
-										<div style="text-align: center;">
-											<input type="button" name="btnprint" id="btnprint"
-												value="Print" class="myButtons" onclick="funPrintData();">
-										</div>
-									</td>
-								</tr>
-
-
-
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-
-							</table>
-							<table>
-
-								<tr>
-									<td><input type="hidden" id="trno" name="trno"
-										value='<s:property value="trno"/>'></td>
-								</tr>
-
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-								<tr>
-									<td colspan="2">&nbsp;</td>
-								</tr>
-
-							</table>
-						</fieldset> <input type="hidden" id="acno" name="acno"
-						value='<s:property value="acno"/>'> <input type="hidden"
-						id="zoneid" name="zoneid" value='<s:property value="zoneid"/>'>
-						
-							     <input type="hidden" id="hidbnk" name="hidbnk"  value='<s:property value="hidbnk"/>'/>
-					</td>
-					<td width="80%">
-						<table width="100%">
+			<!-- ================= LEFT SIDEBAR ================= -->
+			<div class="sidebar-filters">
+				
+				<div class="sidebar-scroll-content">
+					
+					<!-- Search Filters Card -->
+					<div class="filter-card">
+						<table class="filter-table">
 							<tr>
-								<td><div id="loadgriddata">
-										<jsp:include page="gridDetails.jsp"></jsp:include>
-									</div></td>
+								<td class="label-cell">From</td>
+								<td><div id='fromdate' name='fromdate' value='<s:property value="fromdate"/>'></div></td>
 							</tr>
 							<tr>
-								<td><div id="loaddetaildata">
-										<jsp:include page="detailGrid.jsp"></jsp:include>
-									</div></td>
+								<td class="label-cell">To</td>
+								<td><div id='todate' name='todate' value='<s:property value="todate"/>'></div></td>
 							</tr>
-
+							<tr>
+								<td class="label-cell">Type</td>
+								<td>
+									<select id="summ" name="summ" onchange="funsumm()">
+										<option value="summ">Summary</option>
+										<option value="">Detail</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="label-cell">Client</td>
+								<td>
+									<input type="text" id="txtclientname" name="txtclientname" readonly="readonly" placeholder="Press F3 to Search" value='<s:property value="txtclientname"/>' onkeydown="getClientAccount(event);" />
+								</td>
+							</tr>
 						</table>
-				</tr>
-			</table>
+						
+						<div class="action-buttons">
+							<button type="button" name="btnprint" id="btnprint" class="btn-submit" onclick="funPrintData();">Print</button>
+						</div>
+					</div>
+
+					<!-- Hidden Data -->
+					<div style="display:none;">
+						<input type="hidden" id="txtclientaccountdocno" name="txtclientaccountdocno" value='<s:property value="txtclientaccountdocno"/>' />
+						<input type="hidden" id="trno" name="trno" value='<s:property value="trno"/>'>
+						<input type="hidden" id="acno" name="acno" value='<s:property value="acno"/>'> 
+						<input type="hidden" id="zoneid" name="zoneid" value='<s:property value="zoneid"/>'>
+						<input type="hidden" id="hidbnk" name="hidbnk"  value='<s:property value="hidbnk"/>'/>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- ================= RIGHT SIDE (GRIDS) ================= -->
+			<div class="main-content-area">
+				
+				<div class="top-toolbar-container">
+					<jsp:include page="../../heading.jsp"></jsp:include>
+				</div>
+
+				<div class="grid-content-container">
+					<div id="loadgriddata">
+						<jsp:include page="gridDetails.jsp"></jsp:include>
+					</div>
+					<div id="loaddetaildata" style="display:none;">
+						<jsp:include page="detailGrid.jsp"></jsp:include>
+					</div>
+				</div>
+
+			</div>
 
 		</div>
-		<div id="accountDetailsWindow">
-			<div></div>
-		</div>
-
-		<div id="printWindow">
-			<div></div>
-		</div>
+		
+		<!-- POPUPS -->
+		<div id="accountDetailsWindow"><div></div></div>
+		<div id="printWindow"><div></div></div>
+	</div>
 </body>
 </html>
