@@ -13,110 +13,7 @@
 <link href="<%=contextPath%>/css/body.css" media="screen" rel="stylesheet" type="text/css" />
 
 </style>
-<style>
-/* =========================================================
-   SCOPED UI: Strict Pixel Grid Alignment & Modern Inputs
-========================================================= */
-body {
-    margin: 0;
-    background-color: #fff;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-}
 
-.modern-ui {
-    font-size: 12px;
-    color: #333;
-    padding: 10px;
-    box-sizing: border-box;
-    width: 100%;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-}
-
-/* Master Input Heights - Explicit Font Family Added */
-.modern-ui input[type="text"],
-.modern-ui select {
-    height: 24px !important;
-    border: 1px solid #b8c6d8;
-    border-radius: 3px;
-    padding: 2px 6px;
-    font-size: 12px;
-    font-weight: normal !important; 
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    box-sizing: border-box;
-    background-color: #fff;
-    color: #333;
-    width: 100%;
-}
-
-.modern-ui input[type="text"]:focus,
-.modern-ui select:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-/* Panel Styling - Pure White */
-.modern-ui .search-panel {
-    background-color: #fff !important; 
-    border: 1px solid #c5d3e0;
-    border-radius: 4px;
-    padding: 15px 10px;
-    margin-bottom: 10px;
-}
-
-/* Table Alignment - STRICT PERCENTAGE GRID */
-.modern-ui table {
-    border-collapse: separate;
-    border-spacing: 5px 8px; 
-    width: 100%;
-    table-layout: fixed; /* Locks columns from squishing */
-}
-
-.modern-ui td {
-    vertical-align: middle;
-    padding: 0;
-}
-
-.modern-ui .lbl-right { 
-    text-align: right; 
-    color: #444;
-    font-size: 12px; 
-    font-weight: 600;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    white-space: nowrap; 
-    padding-right: 5px;
-}
-
-/* Modern Search Button */
-.modern-ui .myButton {
-    height: 26px !important; 
-    line-height: 24px !important;
-    padding: 0 30px;
-    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
-    color: #fff !important;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold; 
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
-    transition: all 0.2s;
-    text-transform: uppercase;
-}
-
-.modern-ui .myButton:hover {
-    background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%);
-    transform: translateY(-1px);
-}
-
-/* Data Grid Container */
-.modern-ui .grid-container {
-    border: 1px solid #c5d3e0;
-    border-radius: 4px;
-    background: #fff;
-    overflow: hidden;
-}
-</style>
 	<script type="text/javascript">
 	$(document).ready(function () {
 		 $("#searchsalesinvdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy",value:null});
@@ -142,35 +39,163 @@ body {
 		}
  
 	</script>
-<body bgcolor="#E0ECF8">
-	<div id=search>
-  		<table width="100%" >
-    		<tr>
-			    <td width="12%" align="right">Doc No</td>
-			    <td width="14%" align="left"><input type="text" name="searchsalesinvvocno" id="searchsalesinvvocno"></td>
-			    <td width="7%" align="right">Date</td>
-			    <td width="13%" align="left"><div id="searchsalesinvdate" name="searchsalesinvdate"></div></td>
-			    <td width="13%" align="right">Mobile</td>
-			    <td width="15%" align="left"><input type="text" name="searchmobile" id="searchmobile" ></td>
-			    <td width="12%" align="right">&nbsp;</td>
-			    <td width="14%" align="left">&nbsp;</td>
-    		</tr>
-  			<tr>
-			    <td align="right">Name</td>
-			    <td colspan="3" align="left"><input type="text" name="searchname" id="searchname" style="width:99%;"></td>
-			    <td align="right">A/c No</td>
-			    <td align="left"><input type="text" name="searchacno" id="searchacno"></td>
-			    <td align="right">&nbsp;</td>
-			    <td align="center"><input type="button" name="btnSearchExt" id="btnSearchExt" class="myButton" value="Search" onClick="mainloadSearch();"></td>
-  			</tr>
-  			<tr>
-  				<td colspan="8">
-   					<div id="srefreshdiv">
-   						<jsp:include page="salesInvSearchGrid.jsp"></jsp:include> 
-  					</div>
-  				</td>
-  			</tr>
- 		</table>
-	</div>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:130px;
+}
+
+.medium-input{
+    width:170px;
+}
+
+.large-input{
+    width:280px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
+<body>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">Doc No</td>
+                <td>
+                    <input type="text"
+                           id="searchsalesinvvocno"
+                           name="searchsalesinvvocno"
+                           class="search-input small-input">
+                </td>
+
+                <td class="lbl-right">Date</td>
+                <td>
+                    <div id="searchsalesinvdate"
+                         name="searchsalesinvdate"></div>
+                </td>
+
+                <td class="lbl-right">Mobile</td>
+                <td>
+                    <input type="text"
+                           id="searchmobile"
+                           name="searchmobile"
+                           class="search-input medium-input">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="lbl-right">Name</td>
+                <td colspan="3">
+                    <input type="text"
+                           id="searchname"
+                           name="searchname"
+                           class="search-input large-input">
+                </td>
+
+                <td class="lbl-right">A/c No</td>
+                <td>
+                    <input type="text"
+                           id="searchacno"
+                           name="searchacno"
+                           class="search-input medium-input">
+                </td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="btnSearchExt"
+                        class="myButton"
+                        onclick="mainloadSearch();"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#fff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="srefreshdiv">
+            <jsp:include page="salesInvSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

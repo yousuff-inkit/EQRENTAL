@@ -99,42 +99,168 @@ function getGroup() {
 		}
  
 	</script>
-<body bgcolor="#E0ECF8">
-<div id=search>
-  <table width="100%" >
-    <tr>
-    <td width="12%" align="right">Doc No</td>
-    <td width="14%" align="left"><input type="text" name="searchdocno" id="searchdocno"></td>
-    <td width="7%" align="right">Date</td>
-    <td width="13%" align="left"><div id="searchdate" name="searchdate"></div></td>
-    <td width="13%" align="right">Color</td>
-    <td width="15%" align="left"><select name="searchcolor" id="searchcolor" ><option value="">--Select--</option></select></td>
-    <td width="12%" align="right">&nbsp;</td>
-    <td width="14%" align="left">&nbsp;</td>
-    </tr>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
 
-  <tr>
-    <td align="right">Fleet No</td>
-    <td align="left"><input type="text" name="searchfleetno" id="searchfleetno" ></td>
-    <td align="right">Asset id</td>
-    <td align="left"><input type="text" name="searchregno" id="searchregno"></td>
-    <td align="right">Group</td>
-    <td align="left"><select name="searchgroup" id="searchgroup" ><option value="">--Select--</option></select></td>
-    <td align="right">&nbsp;</td>
-    <td align="center"><input type="button" name="btnSearchExt" id="btnSearchExt" class="myButton" value="Search" onClick="mainloadSearch();"></td>
-  </tr>
-  <tr>
-  <td colspan="8">
-   <div id="srefreshdiv">
-      
-   <jsp:include  page="fleetSearch.jsp"></jsp:include> 
-   
-  </div>
-  </td>
-  </tr>
- </table>
+#search{
+    padding:10px;
+    background:#fff;
+}
 
-   
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:130px;
+}
+
+.medium-input{
+    width:170px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
+<body>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">Doc No</td>
+                <td>
+                    <input type="text"
+                           id="searchdocno"
+                           name="searchdocno"
+                           class="search-input small-input">
+                </td>
+
+                <td class="lbl-right">Date</td>
+                <td>
+                    <div id="searchdate" name="searchdate"></div>
+                </td>
+
+                <td class="lbl-right">Color</td>
+                <td>
+                    <select id="searchcolor"
+                            name="searchcolor"
+                            class="search-input medium-input">
+                        <option value="">--Select--</option>
+                    </select>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="lbl-right">Fleet No</td>
+                <td>
+                    <input type="text"
+                           id="searchfleetno"
+                           name="searchfleetno"
+                           class="search-input medium-input">
+                </td>
+
+                <td class="lbl-right">Asset Id</td>
+                <td>
+                    <input type="text"
+                           id="searchregno"
+                           name="searchregno"
+                           class="search-input medium-input">
+                </td>
+
+                <td class="lbl-right">Group</td>
+                <td>
+                    <select id="searchgroup"
+                            name="searchgroup"
+                            class="search-input medium-input">
+                        <option value="">--Select--</option>
+                    </select>
+                </td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="btnSearchExt"
+                        class="myButton"
+                        onclick="mainloadSearch();"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#fff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="srefreshdiv">
+            <jsp:include page="fleetSearch.jsp"></jsp:include>
+        </div>
+
+    </div>
+
 </div>
+
 </body>
 </html>
