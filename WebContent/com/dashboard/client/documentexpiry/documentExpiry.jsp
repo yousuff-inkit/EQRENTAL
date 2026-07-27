@@ -47,15 +47,174 @@
 	position:relative;
 	top:1px;
 }
+
+/* ===== MASTER LAYOUT ===== */
+html, body, #mainBG, .hidden-scrollbar {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
+}
+
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px;
+    flex: 0 0 280px;
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
+}
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px;
+}
+
+/* Cards Layout Rules */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Internal Presentation Tables */
+.filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 80px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select,
+.filter-table input[type="text"],
+.filter-table select {
+    width: 100%;
+    height: 24px !important;
+    padding: 2px 8px !important;
+    border: 1px solid #ccd6e0 !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+    outline: none;
+}
+
+/* Readonly fields override */
+input[readonly],
+input:disabled {
+    background-color: #f3f6f9 !important;
+    color: #555;
+    border-color: #e1e8ed;
+}
+
+/* jqx Date Container Mapping Rules */
+.filter-table div[id^="uptodate"],
+.filter-table div[id^="date"] {
+    width: 100%;
+}
+
+/* Checkbox & Radio layout */
+input[type="radio"] {
+    margin: 0 4px 0 0;
+    vertical-align: middle;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4e5e71;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* ===== MASTER 30px BUTTON SYSTEM ===== */
+.btn-submit, .myButton {
+    height: 30px !important;
+    padding: 0 12px !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    line-height: 30px !important;
+    white-space: nowrap;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.btn-submit:hover, .myButton:hover {
+    background: #1d4ed8 !important;
+}
+
+/* ===== RIGHT CONTENT AREA ===== */
+.main-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.scrollable-grid-area {
+    flex: 1;
+    padding: 15px 20px;
+    overflow: auto;
+    box-sizing: border-box;
+}
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function () {
 		 document.getElementById('activeradio').checked=true;    
-		 $("#uptodate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-		 $("#date").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-		 $("#expiryDate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+		 $("#uptodate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+		 $("#date").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+		 $("#expiryDate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 		 
 		 $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1; display: none;"></div>');
 		 $("body").prepend("<div id='PleaseWait' style='display: none;position:absolute; z-index: 1;top:180px;right:550px;'><img src='../../../../icons/31load.gif'/></div>");
@@ -223,55 +382,83 @@
 <body onload="getBranch();getProcess();disable();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%" >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td align="right"><label class="branch">Up To</label></td>
-     <td align="left"><div id="uptodate" name="uptodate" value='<s:property value="uptodate"/>'></div></td></tr>
-     <tr><td align="right"><label class="branch">Client</label></td><td align="left"><input type="text" name="clientname" id="clientname" placeholder="Press F3 To Search" readonly="readonly" onKeyDown="getclinfo(event);" onclick="this.placeholder='' "  style="height:20px;width:90%;" value='<s:property value="clientname"/>'></td></tr>                 
-	 <tr><td align="left" colspan="2"><input type="radio" id="inactiveradio" name="activity"><label class="branch">Inactive</label>
-	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" id="activeradio" name="activity"><label class="branch">Active</label></td>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-     <tr><td colspan="2" align="center"><textarea id="clientinfo" style="height:80px;width:200px;font: 10px Tahoma;resize:none" name="clientinfo"  readonly="readonly"><s:property value="clientinfo" ></s:property></textarea></td></tr>
-     <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td align="right"><label class="branch">Process</label></td>
-	 <td align="left"><select name="cmbprocess" id="cmbprocess" style="width:40%;" name="cmbprocess"  value='<s:property value="cmbprocess"/>'></select></td></tr>
-	 <tr><td align="right"><label class="branch">Date</label></td>
-     <td align="left"><div id="date" name="date" value='<s:property value="date"/>'></div></td></tr>
-     <tr><td align="right"><label class="branch">Remarks</label></td>
-	 <td align="left"><input type="text" id="txtremarks" name="txtremarks" style="width:100%;height:20px;" value='<s:property value="txtremarks"/>'/></td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2" align="center"><input type="button" class="myButtons" name="clear" id="clear"  value="Clear" onclick="funClearData();">
-	 <button class="myButton" type="button" id="btnupdate" name="btnupdate" onclick="funUpdate(event);">Update</button></td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>	
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>	
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2"><div hidden="true" id='expiryDate' name='expiryDate' value='<s:property value="expiryDate"/>'></div>
-	 <input type="hidden" id="txtcldocno" name="txtcldocno" style="width:100%;height:20px;" value='<s:property value="txtcldocno"/>'/>
-     <input type="hidden" id="txtdriver" name="txtdriver" style="width:100%;height:20px;" value='<s:property value="txtdriver"/>'/>
-     <input type="hidden" id="txtbranch" name="txtbranch" style="width:100%;height:20px;" value='<s:property value="txtbranch"/>'/>
-     <input type="hidden" id="cldocno" name="cldocno" style="width:100%;height:20px;" value='<s:property value="cldocno"/>'/>      
-     <input type="hidden" id="txtdocument" name="txtdocument" style="width:100%;height:20px;" value='<s:property value="txtdocument"/>'/></td></tr>
-  </table>
-</fieldset>
 
-</td>
-<td width="80%">
-	<table width="100%">
-		<tr><td><div id="documentExpiryDiv"><jsp:include page="documentExpiryGrid.jsp"></jsp:include></div><br/></td></tr>
-		<tr><td><div id="detailDiv"><jsp:include page="detailGrid.jsp"></jsp:include></div></td></tr>
-	</table>
-</td></tr></table>
+<div class="master-container">
+
+	<div class="sidebar-filters">
+		<div class="sidebar-scroll-content">
+
+			<div class="filter-card">
+				<table class="filter-table">
+					<tr>
+						<td class="label-cell">Up To</td>
+						<td><div id="uptodate" name="uptodate" value='<s:property value="uptodate"/>'></div></td>
+					</tr>
+					<tr>
+						<td class="label-cell">Client</td>
+						<td><input type="text" name="clientname" id="clientname" placeholder="Press F3 To Search" readonly="readonly" onKeyDown="getclinfo(event);" onclick="this.placeholder='' " value='<s:property value="clientname"/>'></td>
+					</tr>
+				</table>
+				<div class="radio-group">
+					<label><input type="radio" id="inactiveradio" name="activity">Inactive</label>
+					<label><input type="radio" id="activeradio" name="activity">Active</label>
+				</div>
+			</div>
+
+			<div class="filter-card">
+				<textarea id="clientinfo" style="height:80px;width:100%;font: 10px Tahoma;resize:none;box-sizing:border-box;" name="clientinfo"  readonly="readonly"><s:property value="clientinfo" ></s:property></textarea>
+			</div>
+
+			<div class="filter-card">
+				<table class="filter-table">
+					<tr>
+						<td class="label-cell">Process</td>
+						<td><select name="cmbprocess" id="cmbprocess" value='<s:property value="cmbprocess"/>'></select></td>
+					</tr>
+					<tr>
+						<td class="label-cell">Date</td>
+						<td><div id="date" name="date" value='<s:property value="date"/>'></div></td>
+					</tr>
+					<tr>
+						<td class="label-cell">Remarks</td>
+						<td><input type="text" id="txtremarks" name="txtremarks" value='<s:property value="txtremarks"/>'/></td>
+					</tr>
+				</table>
+				<div style="text-align: center; margin-top: 10px;">
+					<input type="button" class="myButtons" name="clear" id="clear"  value="Clear" onclick="funClearData();">
+					<button class="myButton" type="button" id="btnupdate" name="btnupdate" onclick="funUpdate(event);">Update</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="main-content-wrapper">
+		<div class="top-toolbar-container">
+			<jsp:include page="../../heading.jsp"></jsp:include>
+		</div>
+		<div class="scrollable-grid-area">
+			<div id="documentExpiryDiv"><jsp:include page="documentExpiryGrid.jsp"></jsp:include></div>
+			<div id="detailDiv"><jsp:include page="detailGrid.jsp"></jsp:include></div>
+		</div>
+	</div>
+
+</div>
+
+<!-- Hidden Inputs Maintained Outside Layout Flow -->
+<div style="display:none;">
+	<div id='expiryDate' name='expiryDate' value='<s:property value="expiryDate"/>'></div>
+	<input type="hidden" id="txtcldocno" name="txtcldocno" value='<s:property value="txtcldocno"/>'/>
+	<input type="hidden" id="txtdriver" name="txtdriver" value='<s:property value="txtdriver"/>'/>
+	<input type="hidden" id="txtbranch" name="txtbranch" value='<s:property value="txtbranch"/>'/>
+	<input type="hidden" id="cldocno" name="cldocno" value='<s:property value="cldocno"/>'/>
+	<input type="hidden" id="txtdocument" name="txtdocument" value='<s:property value="txtdocument"/>'/>
+</div>
+
 </div>
 <div id="clientwindow">  
    <div></div>
 </div>
 </div>
 </body>
+</html>

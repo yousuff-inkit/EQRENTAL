@@ -147,59 +147,264 @@
 	}
 	
 </script>
+
+<style>
+/* ===== MASTER LAYOUT ===== */
+html, body, #mainBG, .hidden-scrollbar {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #f4f7f9;
+}
+
+.master-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar-filters {
+    width: 280px; 
+    flex: 0 0 280px; 
+    background: #fff;
+    border-right: 1px solid #e1e8ed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0,0,0,.05);
+    z-index: 10;
+}
+
+.sidebar-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 15px 25px; 
+}
+
+/* Cards Layout Rules */
+.filter-card {
+    background: #f8fafc;
+    border: 1px solid #e3e8ee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+/* Internal Presentation Tables */
+.filter-table {
+    width: 100%;
+    border-spacing: 0 10px;
+}
+
+.filter-table .label-cell {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 12px;
+    color: #4e5e71;
+    font-weight: 600;
+    width: 70px;
+}
+
+/* ===== UNIFORM 24px INPUTS & SELECTS ===== */
+input[type="text"], select,
+.filter-table input[type="text"],
+.filter-table select {
+    width: 100%;
+    height: 24px !important;             
+    padding: 2px 8px !important;         
+    border: 1px solid #ccd6e0 !important;
+    border-radius: 4px !important;       
+    font-size: 12px !important;          
+    background-color: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+    outline: none;
+}
+
+/* Select specific styling */
+select {
+    padding: 2px 24px 2px 8px !important; 
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234e5e71' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 12px;
+}
+
+/* Readonly fields override */
+input[readonly],
+input:disabled,
+select:disabled {
+    background-color: #f3f6f9 !important;
+    color: #7e8c9a;
+    border-color: #e1e8ed !important;
+    cursor: not-allowed;
+}
+
+/* jqx Date Container Mapping Rules */
+.filter-table div[id^="uptodate"],
+.filter-table div[id^="date"] {
+    width: 100%;
+}
+
+/* ===== MASTER 30px BUTTON SYSTEM ===== */
+.btn-submit, .myButton {
+    width: 100%;
+    height: 30px !important;            
+    padding: 0 12px !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    line-height: 30px !important;
+    white-space: nowrap;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.btn-submit:hover, .myButton:hover {
+    background: #1d4ed8 !important;
+}
+
+.btn-submit:disabled, .myButton:disabled {
+    background: #9ca3af !important;
+    color: #f3f4f6 !important;
+    cursor: not-allowed;
+}
+
+/* ===== RIGHT CONTENT AREA (Horizontally Aligned Heading) ===== */
+.main-content-wrapper {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+}
+
+.scrollable-grid-area {
+    flex: 1;
+    padding: 15px 20px;
+    overflow: auto; 
+    box-sizing: border-box;
+}
+</style>
 </head>
 <body onload="getBranch();getProcess();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%"  >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td align="right"><label class="branch">Up To</label></td>
-     <td align="left"><div id="uptodate" name="uptodate" value='<s:property value="uptodate"/>'></div></td></tr> 
-	<tr><td colspan="2">&nbsp;</td></tr> 
-	<tr><td align="right"><label class="branch">Process</label></td>
-	<td align="left"><select name="cmbprocess" id="cmbprocess" style="width:40%;" name="cmbprocess"  value='<s:property value="cmbprocess"/>'></select></td></tr>
-	<tr><td align="right"><label class="branch">Doc No</label></td>
-	<td align="left"><input type="text" id="txtdocno" name="txtdocno" style="width:60%;height:20px;" readonly="readonly" value='<s:property value="txtdocno"/>'/></td></tr>
-    <tr><td align="right"><label class="branch">Date</label></td>
-    <td align="left"><div id="date" name="date" value='<s:property value="date"/>'></div></td></tr> 
-    <tr><td align="right"><label class="branch">Client</label></td>
-	<td align="left"><input type="text" id="txtclientname" name="txtclientname" style="width:100%;height:20px;" readonly="readonly" value='<s:property value="txtclientname"/>'/>
-    <input type="hidden" id="txtcldocno" name="txtcldocno" value='<s:property value="txtcldocno"/>'/></td></tr> 
-	<tr><td align="right"><label class="branch">Amount</label></td>
-	<td align="left"><input type="text" id="txtamount" name="txtamount" style="width:70%;height:20px;text-align: right;" onblur="funRoundAmt(this.value,this.id);" value='<s:property value="txtamount"/>'/></td></tr> 
-	<tr><td align="right"><label class="branch">Remarks</label></td>
-	<td align="left"><input type="text" id="txtremarks" name="txtremarks" style="width:100%;height:20px;" value='<s:property value="txtremarks"/>'/></td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2" align="center"><button class="myButton" type="button" id="btnupdate" name="btnupdate" onclick="funUpdate(event);">Update</button></td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2"><input type="hidden" name="txtbrhid" id="txtbrhid" style="height:20px;width:70%;" value='<s:property value="txtbrhid"/>'>
-	<input type="hidden" name="txtrtype" id="txtrtype" style="height:20px;width:70%;" value='<s:property value="txtrtype"/>'>
-	<input type="hidden" name="txttypeid" id="txttypeid" style="height:20px;width:70%;" value='<s:property value="txttypeid"/>'>
-	<input type="hidden" name="txtagreement" id="txtagreement" style="height:20px;width:70%;" value='<s:property value="txtagreement"/>'>
-	<input type="hidden" name="txtagreementno" id="txtagreementno" style="height:20px;width:70%;" value='<s:property value="txtagreementno"/>'></td></tr>
-	</table>
-	</fieldset>
-</td>
-<td width="80%">
-	<table width="100%">
-		<tr>
-			 <td><div id="clientRequestDiv"><jsp:include page="clientRequestGrid.jsp"></jsp:include></div></td>
-		</tr>
-	</table>
-</tr>
-</table>
+
+<div class="master-container">
+
+    <!-- ================= LEFT PANEL (SIDEBAR) ================= -->
+    <div class="sidebar-filters">
+        <div class="sidebar-scroll-content">
+
+            <div class="filter-card">
+                <table class="filter-table">
+                    <tr>
+                        <td class="label-cell">Up To</td>
+                        <td>
+                            <div id="uptodate" name="uptodate" value='<s:property value="uptodate"/>'></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="filter-card">
+                <table class="filter-table">
+                    <tr>
+                        <td class="label-cell">Process</td>
+                        <td>
+                            <select name="cmbprocess" id="cmbprocess" value='<s:property value="cmbprocess"/>'></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Doc No</td>
+                        <td>
+                            <input type="text" id="txtdocno" name="txtdocno" readonly="readonly" value='<s:property value="txtdocno"/>'/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Date</td>
+                        <td>
+                            <div id="date" name="date" value='<s:property value="date"/>'></div>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td class="label-cell">Client</td>
+                        <td>
+                            <input type="text" id="txtclientname" name="txtclientname" readonly="readonly" value='<s:property value="txtclientname"/>'/>
+                            <input type="hidden" id="txtcldocno" name="txtcldocno" value='<s:property value="txtcldocno"/>'/>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td class="label-cell">Amount</td>
+                        <td>
+                            <input type="text" id="txtamount" name="txtamount" style="text-align: right;" onblur="funRoundAmt(this.value,this.id);" value='<s:property value="txtamount"/>'/>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td class="label-cell">Remarks</td>
+                        <td>
+                            <input type="text" id="txtremarks" name="txtremarks" value='<s:property value="txtremarks"/>'/>
+                        </td>
+                    </tr>
+                </table>
+                <button class="myButton" type="button" id="btnupdate" name="btnupdate" onclick="funUpdate(event);">Update</button>
+            </div>
+
+            <!-- Hidden Inputs Maintained Safely Outside Visual Layout -->
+            <div style="display:none;">
+                <input type="hidden" name="txtbrhid" id="txtbrhid" value='<s:property value="txtbrhid"/>'>
+                <input type="hidden" name="txtrtype" id="txtrtype" value='<s:property value="txtrtype"/>'>
+                <input type="hidden" name="txttypeid" id="txttypeid" value='<s:property value="txttypeid"/>'>
+                <input type="hidden" name="txtagreement" id="txtagreement" value='<s:property value="txtagreement"/>'>
+                <input type="hidden" name="txtagreementno" id="txtagreementno" value='<s:property value="txtagreementno"/>'>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= RIGHT PANEL (WORKSPACE GRIDS) ================= -->
+    <div class="main-content-wrapper">
+        
+        <!-- Horizontally Aligned Heading Toolbar -->
+        <div class="top-toolbar-container">
+            <jsp:include page="../../heading.jsp"></jsp:include>
+        </div>
+
+        <div class="scrollable-grid-area">
+            <div id="clientRequestDiv">
+                <jsp:include page="clientRequestGrid.jsp"></jsp:include>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 </div> 
+</div>
 </body>
 </html>
