@@ -9,6 +9,9 @@
 <title>GatewayERP(i)</title>
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <style type="text/css">
+/* kept as-is: not referenced in this file's own markup, but may be used by
+   included grid/header fragments (accidentHistoryGrid.jsp, serviceHistoryGrid.jsp,
+   heading.jsp) which aren't visible here — left in place rather than risk breaking them */
 .account {
 	color: black;
 	background-color: #E0ECF8;
@@ -23,50 +26,116 @@
 	width: 100%;
 	font-family: comic sans ms;
 }
-.myButtons {
-	-moz-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	-webkit-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
-	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
-	background-color:#768d87;
-	border:1px solid #566963;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	
-	font-size:8pt;
-	
-	padding:3px 17px;
-	text-decoration:none;
-	text-shadow:0px -1px 0px #2b665e;
+
+/* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
+.master-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
-.myButtons:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
-	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
-	background-color:#6c7c7c;
+.sidebar-filters {
+    flex: 0 0 330px;
+    width: 330px;
+    height: 100%;
+    background: #ECF8E0;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
-.myButtons:active {
-	position:relative;
-	top:1px;
+.sidebar-scroll-content {
+    padding: 12px;
+    box-sizing: border-box;
+}
+.filter-card {
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+.filter-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.filter-table td {
+    padding: 4px 6px;
+    box-sizing: border-box;
+}
+.label-cell {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4e5e71;
+    text-align: right;
+    white-space: nowrap;
+}
+.filter-table input[type="text"],
+.filter-table select,
+.filter-table textarea {
+    width: 100%;
+    height: 24px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+.filter-table textarea {
+    height: 195px;
+    resize: none;
+    font: 10px Tahoma;
+}
+.main-content-wrapper {
+    flex: 1 1 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-width: 0;
+}
+.top-toolbar-container {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e8ed;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+.scrollable-grid-area {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 10px 15px;
+}
+.button-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 4px 6px;
+}
+.btn-submit,
+.myButton {
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 30px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.btn-submit:hover,
+.myButton:hover {
+    background: #1d4ed8;
 }
 </style>
 <script type="text/javascript">
 
 	$(document).ready(function () {
 		 
-		 $("#fromdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-		 $("#todate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+		 $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+		 $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 		 
 		 $('#vehicleDetailsWindow').jqxWindow({width: '51%', height: '58%',  maxHeight: '70%' ,maxWidth: '51%' , title: 'Vehicle Search',position: { x: 300, y: 87 } , theme: 'energyblue', showCloseButton: true, keyboardCloseKey: 27});
 		 $('#vehicleDetailsWindow').jqxWindow('close');
@@ -206,45 +275,73 @@
 <body onload="getBranch();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%"  >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr>
-	 <td align="right"><label class="branch">Period</label></td>
-     <td align="left"><div id="fromdate" name="fromdate" value='<s:property value="fromdate"/>'></div></td></tr> 
-	<tr>
-	<td align="right"><label class="branch">To</label></td>
-    <td align="left"><div id="todate" name="todate" value='<s:property value="todate"/>'></div></td>
-	</tr> 
-	<tr><td align="right"><label class="branch">Review</label></td>
-	<td align="left"><select id="cmbtype" name="cmbtype" style="width:70%;" value='<s:property value="cmbtype"/>'>
-    <option value="">--Select--</option><option value="1">Accident History</option><option value="2">Service History</option></select></td></tr> 
-	 <tr>
-	 <td align="right"><label class="branch">Vehicle</label></td>
-     <td align="left"><input type="text" id="txtvehicle" name="txtvehicle" style="width:80%;height:20px;" readonly="readonly" placeholder="Press F3 to Search" value='<s:property value="txtvehicle"/>' ondblclick="funSearchdblclick();" onkeydown="getVehicle(event);"/>
-     <input type="hidden" id="txtfleetno" name="txtfleetno" style="width:80%;height:20px;" value='<s:property value="txtfleetno"/>'></td></tr> 
-    <tr><td colspan="2">&nbsp;</td></tr> 
-	<tr><td colspan="2" align="center"><textarea id="vehinfo" style="height:195px;width:200px;font: 10px Tahoma;resize:none" name="vehinfo"  readonly="readonly"  ><s:property value="vehinfo" ></s:property></textarea></td></tr> 
-	<tr><td colspan="2"><input type="hidden" id="txtvehdocno" name="txtvehdocno" style="width:80%;height:20px;" value='<s:property value="txtvehdocno"/>'/></td></tr>
-	<tr><td colspan="2" align="center"><input type="button" class="myButtons" name="clear" id="clear"  value="Clear" onclick="funClearInfo();">
-	<button class="myButton" type="button" id="btnMaintenancePrint" name="btnMaintenancePrint" onclick="funMaintenancePrint();">Print</button></td></tr>
-	</table>
-	</fieldset>
-</td>
-<td width="80%">
-	<table width="100%">
-		<tr>
-			 <td><div id="accidentHistoryDiv"><jsp:include page="accidentHistoryGrid.jsp"></jsp:include></div>
-			 <div id="serviceHistoryDiv" hidden="true"><jsp:include page="serviceHistoryGrid.jsp"></jsp:include></div></td>
-		</tr>   
-	</table>
-</tr>
-</table>
+
+<div class="master-container">
+
+    <!-- Sidebar filters (Bug 2: no <table> wrapper, flex: 0 0 330px) -->
+    <div class="sidebar-filters">
+        <div class="sidebar-scroll-content">
+            <div class="filter-card">
+                <table class="filter-table">
+                    <tr>
+                        <td class="label-cell">Period</td>
+                        <td align="left"><div id="fromdate" name="fromdate" value='<s:property value="fromdate"/>'></div></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">To</td>
+                        <td align="left"><div id="todate" name="todate" value='<s:property value="todate"/>'></div></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Review</td>
+                        <td align="left">
+                            <select id="cmbtype" name="cmbtype" value='<s:property value="cmbtype"/>'>
+                                <option value="">--Select--</option>
+                                <option value="1">Accident History</option>
+                                <option value="2">Service History</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Vehicle</td>
+                        <td align="left">
+                            <input type="text" id="txtvehicle" name="txtvehicle" readonly="readonly" placeholder="Press F3 to Search" value='<s:property value="txtvehicle"/>' ondblclick="funSearchdblclick();" onkeydown="getVehicle(event);"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <textarea id="vehinfo" name="vehinfo" readonly="readonly"><s:property value="vehinfo"></s:property></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="button-row">
+                            <input type="button" class="myButton" name="clear" id="clear" value="Clear" onclick="funClearInfo();">
+                            <button class="myButton" type="button" id="btnMaintenancePrint" name="btnMaintenancePrint" onclick="funMaintenancePrint();">Print</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content: heading.jsp moved to top toolbar (Bug 1) -->
+    <div class="main-content-wrapper">
+        <div class="top-toolbar-container">
+            <jsp:include page="../../heading.jsp"></jsp:include>
+        </div>
+        <div class="scrollable-grid-area">
+            <div id="accidentHistoryDiv"><jsp:include page="accidentHistoryGrid.jsp"></jsp:include></div>
+            <div id="serviceHistoryDiv" hidden="true"><jsp:include page="serviceHistoryGrid.jsp"></jsp:include></div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<!-- Hidden fields pulled out of layout flow (Bug 6) -->
+<div style="display:none;">
+    <input type="hidden" id="txtfleetno" name="txtfleetno" value='<s:property value="txtfleetno"/>'>
+    <input type="hidden" id="txtvehdocno" name="txtvehdocno" value='<s:property value="txtvehdocno"/>'/>
 </div>
 
 <div id="vehicleDetailsWindow">
