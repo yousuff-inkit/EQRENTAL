@@ -13,53 +13,108 @@
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
 <style>
-.myButtons {
-	-moz-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	-webkit-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
-	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
-	background-color:#768d87;
-	border:1px solid #566963;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	
-	font-size:8pt;
-	
-	padding:3px 17px;
-	text-decoration:none;
-	text-shadow:0px -1px 0px #2b665e;
-}
-.myButtons:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
-	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
-	background-color:#6c7c7c;
-}
-.myButtons:active {
-	position:relative;
-	top:1px;
-}
-
-     
-      
-
+    /* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
+    .master-container {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .sidebar-filters {
+        flex: 0 0 330px;
+        width: 330px;
+        height: 100%;
+        background: #ECF8E0;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .sidebar-scroll-content {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+    .filter-card {
+        background: #ffffff;
+        border: 1px solid #e1e8ed;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+    .filter-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .filter-table td {
+        padding: 4px 6px;
+        box-sizing: border-box;
+    }
+    .label-cell {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4e5e71;
+        text-align: right;
+        white-space: nowrap;
+    }
+    .filter-table input[type="text"],
+    .filter-table select {
+        width: 100%;
+        height: 24px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+    .main-content-wrapper {
+        flex: 1 1 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+    .top-toolbar-container {
+        width: 100%;
+        padding: 10px 15px;
+        background: #ffffff;
+        border-bottom: 1px solid #e1e8ed;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+    .scrollable-grid-area {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 10px 15px;
+    }
+    .button-row {
+        text-align: center;
+        padding: 4px 6px;
+    }
+    .btn-submit,
+    .myButton {
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        line-height: 30px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-submit:hover,
+    .myButton:hover {
+        background: #1d4ed8;
+    }
+    .hidden-fields {
+        display: none;
+    }
 </style>
 <script type="text/javascript">
 
 $(document).ready(function () {
 	
-	 $("#uptodate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+	 $("#uptodate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
     /* Partial Pie Chart Starts*/
 	$("#cmbbranch").attr('hidden',true);
     
@@ -458,110 +513,112 @@ function funreload(event)
 <body onload="hiddenbrh();getAllocateBranch();dis();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%">
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%">
-	<jsp:include page="../../heading.jsp"></jsp:include>
 
-	  <tr><td colspan="2">&nbsp;</td></tr> 
+<div class="master-container">
 
+    <!-- Sidebar filters (Bug 2: no <table> wrapper, flex: 0 0 330px) -->
+    <div class="sidebar-filters">
+        <div class="sidebar-scroll-content">
 
-    <tr><td align="right"><label class="branch">Reg No</label></td>
-	 <td align="left"><input type="text" id="regno" style="height:20px;width:70%;" name="regno" placeholder="Press F3 To Search" onfocus="this.placeholder = ''" readonly="readonly" value='<s:property value="regno"/>' onkeydown="getregno(event);" > </td></tr>
-   <tr><td align="right"><label class="branch">Tag No</label></td>
-	 <td align="left"><input type="text" id="tagno" style="height:20px;width:70%;" name="tagno" placeholder="Press F3 To Search" onfocus="this.placeholder = ''" readonly="readonly" value='<s:property value="tagno"/>' onkeydown="gettagno(event);" > </td></tr>
-   
-    <tr><td width="20%" align="right"><label class="branch">Up To</label></td><td align="left"><div id='uptodate' name='uptodate' value='<s:property value="uptodate"/>'></div></td></tr> 
-     <!-- <tr><td colspan="2">&nbsp;</td></tr> 
-      <tr><td colspan="2">&nbsp;</td></tr> 
-      
-       <tr><td colspan="2">&nbsp;</td></tr> 
-        <tr><td colspan="2">&nbsp;</td></tr>  -->
-        
-   <tr><td  align="center" colspan="2"><input type="Button" name="driverUpdate" id="driverUpdate" class="myButton" value="ALLOCATE" onclick="funallocate()">&nbsp;<input type="button" class="myButtons" name="clear" id="clear"  value="Clear" onclick="funcleardata()"></td> </tr>     
-	<tr><td colspan="2">
-		<fieldset>
-			<legend>Manual Allocate</legend>
-			<table width="100%" >
-            	<tr>
-            		<td width="24%" align="right"><label class="branch">Salik Tag</label></td>
-            		<td align="left"><input type="text" id="saliktag"  readonly="readonly"   style="height:20px;"  name="saliktag" value='<s:property value="saliktag"/>'></td>
-            	</tr>
-             	<tr>
-             		<td width="20%" align="right"><label class="branch">Fleet No</label></td>
-             		<td align="left"><input type="text" id="fleet_no" placeholder="Press F3 TO Search"  readonly="readonly" onkeydown="getfleet(event);"  style="height:20px;"  name="fleet_no" value='<s:property value="fleet_no"/>'></td>
-             	</tr>
-             	<tr>
-             		<td width="20%" align="right"><label class="branch">Type</label></td>
-             		<td align="left">
-             			<select id="trftype" style="height:20px;width:86%; " onchange="cleardatas()" > 
-             				<option value="RAG">Rental</option>
-             				<option value="LAG">Lease</option>
-             				<option value="STF">Staff</option>
-             				<option value="DRV">Driver</option>
-             			</select>
-             		</td>
-             	</tr>
-    			<tr>
-    				<td width="20%" align="right"><label class="branch">Branch</label></td>
-    				<td align="left"> 
-          				<select id="cmballocatebranch" style="height:20px;width:86%; " name="cmballocatebranch"   value='<s:property value="cmballocatebranch"/>'>
-      						<option value="">--Select--</option>
-      					</select>
-      				</td>
-      			</tr>
-      			<tr>
-      				<td width="20%" align="right"><label class="branch">Convict</label></td>
-      				<td align="left"><input type="text" id="typesearch"  placeholder="Press F3 TO Search" readonly="readonly"    onkeydown="gettypessearch(event)" onclick="this.placeholder='' "  style="height:20px;"  name="typesearch" value='<s:property value="typesearch"/>'></td>
-      			</tr>
-              	<tr><td colspan="2">&nbsp;</td></tr> 
-                <tr><td  align="center" colspan="2"><input type="Button" name="allocates" id="allocates" class="myButton" value="Manual" onclick="funoneallocate()"></td></tr>  
+            <div class="filter-card">
+                <table class="filter-table">
+                    <tr>
+                        <td class="label-cell">Reg No</td>
+                        <td align="left">
+                            <input type="text" id="regno" name="regno" placeholder="Press F3 To Search" onfocus="this.placeholder = ''" readonly="readonly" value='<s:property value="regno"/>' onkeydown="getregno(event);">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Tag No</td>
+                        <td align="left">
+                            <input type="text" id="tagno" name="tagno" placeholder="Press F3 To Search" onfocus="this.placeholder = ''" readonly="readonly" value='<s:property value="tagno"/>' onkeydown="gettagno(event);">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Up To</td>
+                        <td align="left"><div id='uptodate' name='uptodate' value='<s:property value="uptodate"/>'></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="button-row">
+                            <input type="Button" name="driverUpdate" id="driverUpdate" class="myButton" value="ALLOCATE" onclick="funallocate()">&nbsp;
+                            <input type="button" class="myButton" name="clear" id="clear" value="Clear" onclick="funcleardata()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-          <tr><td colspan="2"><input type="hidden" id="gridlength" name="gridlength"></td></tr> 
-          <tr><td colspan="2"><input type="hidden" id="rentaldoc" name="rentaldoc"></td></tr> 
-          <tr><td colspan="2"><input type="hidden" id="leasedoc" name="leasedoc"></td></tr> 
-          <tr><td colspan="2"><input type="hidden" id="drdoc" name="drdoc"></td></tr> 
-         <tr><td colspan="2"><input type="hidden" id="staffdoc" name="staffdoc"></td></tr> 
+            <div class="filter-card">
+                <fieldset>
+                    <legend>Manual Allocate</legend>
+                    <table class="filter-table">
+                        <tr>
+                            <td class="label-cell">Salik Tag</td>
+                            <td align="left"><input type="text" id="saliktag" name="saliktag" readonly="readonly" value='<s:property value="saliktag"/>'></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Fleet No</td>
+                            <td align="left"><input type="text" id="fleet_no" name="fleet_no" placeholder="Press F3 TO Search" readonly="readonly" onkeydown="getfleet(event);" value='<s:property value="fleet_no"/>'></td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Type</td>
+                            <td align="left">
+                                <select id="trftype" onchange="cleardatas()">
+                                    <option value="RAG">Rental</option>
+                                    <option value="LAG">Lease</option>
+                                    <option value="STF">Staff</option>
+                                    <option value="DRV">Driver</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Branch</td>
+                            <td align="left">
+                                <select id="cmballocatebranch" name="cmballocatebranch" value='<s:property value="cmballocatebranch"/>'>
+                                    <option value="">--Select--</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Convict</td>
+                            <td align="left"><input type="text" id="typesearch" name="typesearch" placeholder="Press F3 TO Search" readonly="readonly" onkeydown="gettypessearch(event)" onclick="this.placeholder='' " value='<s:property value="typesearch"/>'></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="button-row">
+                                <input type="Button" name="allocates" id="allocates" class="myButton" value="Manual" onclick="funoneallocate()">
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
 
-	</table>
-	
-	    
-	</fieldset>
-	</td></tr>
-<!--          <tr><td colspan="2">&nbsp;</td></tr> 
-         
+        </div>
 
-          <tr><td colspan="2">&nbsp;</td></tr> 
-           <tr><td colspan="2">&nbsp;</td></tr> 
-            
-              <tr><td colspan="2">&nbsp;</td></tr> 
-    <tr><td colspan="2">&nbsp;</td></tr> 
-     <tr><td colspan="2">&nbsp;</td></tr> 
-      <tr><td colspan="2">&nbsp;</td></tr> 
-           
-       <tr><td colspan="2">&nbsp;</td></tr> 
-          <tr><td colspan="2">&nbsp;</td></tr>  -->
-        <tr><td colspan="2"><input type="hidden" id="gridlength" name="gridlength"></td></tr> 
- 
+        <div id="imgdiv" style="position:absolute; z-index: 1;top:200;right:600;"><div hidden="true" id="hidediv"><img alt="Search User" src="<%=contextPath%>/icons/31load.gif"> </div></div>
+    </div>
 
-	</table>
-	<div id="imgdiv" style="position:absolute; z-index: 1;top:200;right:600;"><div hidden="true" id="hidediv"><img  alt="Search User" src="<%=contextPath%>/icons/31load.gif"> </div></div>
-	</fieldset>
-</td>
-<td width="80%">
-<form action="">
-	<table width="100%">
-		<tr>
- <td><div id="allodiv"><jsp:include page="allocatelistGrid.jsp"></jsp:include></div></td>
- 
-		</tr>
-	</table>
-	</form>
-	</td>
-</tr>
-</table>
+    <!-- Main content: heading.jsp moved to top toolbar (Bug 1) -->
+    <div class="main-content-wrapper">
+        <div class="top-toolbar-container">
+            <jsp:include page="../../heading.jsp"></jsp:include>
+        </div>
+        <div class="scrollable-grid-area">
+            <form action="">
+                <div id="allodiv"><jsp:include page="allocatelistGrid.jsp"></jsp:include></div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- Hidden fields pulled out of layout flow (Bug 6) -->
+<div class="hidden-fields">
+    <input type="hidden" id="gridlength" name="gridlength">
+    <input type="hidden" id="rentaldoc" name="rentaldoc">
+    <input type="hidden" id="leasedoc" name="leasedoc">
+    <input type="hidden" id="drdoc" name="drdoc">
+    <input type="hidden" id="staffdoc" name="staffdoc">
+</div>
+
 </div>
 <div id="regwindow"><div></div>
 </div>

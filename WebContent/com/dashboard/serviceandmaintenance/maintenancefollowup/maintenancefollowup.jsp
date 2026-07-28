@@ -1,4 +1,5 @@
 
+
 <jsp:include page="../../../../includes.jsp"></jsp:include>    
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
@@ -12,11 +13,111 @@
 <title>GatewayERP(i)</title>
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
+
+<style type="text/css">
+    /* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
+    .master-container {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .sidebar-filters {
+        flex: 0 0 330px;
+        width: 330px;
+        height: 100%;
+        background: #ECF8E0;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .sidebar-scroll-content {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+    .filter-card {
+        background: #ffffff;
+        border: 1px solid #e1e8ed;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+    .filter-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .filter-table td {
+        padding: 4px 6px;
+        box-sizing: border-box;
+    }
+    .label-cell {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4e5e71;
+        text-align: right;
+        white-space: nowrap;
+    }
+    .filter-table input[type="text"],
+    .filter-table select {
+        width: 100%;
+        height: 24px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+    .main-content-wrapper {
+        flex: 1 1 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+    .top-toolbar-container {
+        width: 100%;
+        padding: 10px 15px;
+        background: #ffffff;
+        border-bottom: 1px solid #e1e8ed;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+    .scrollable-grid-area {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 10px 15px;
+    }
+    .button-row {
+        text-align: center;
+        padding: 4px 6px;
+    }
+    .btn-submit,
+    .myButton {
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        line-height: 30px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-submit:hover,
+    .myButton:hover {
+        background: #1d4ed8;
+    }
+    .hidden-fields {
+        display: none;
+    }
+</style>
+
 <script type="text/javascript">
 
 $(document).ready(function () {
 	
-	 $("#dateDue").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+	 $("#dateDue").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 
 });
 
@@ -203,62 +304,65 @@ function disitems()
 <body onload="getBranch();getinfo();disitems();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%" >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 
-	 
-	 <tr><td align="right"><label class="branch">Fleet NO</label></td>
-	 <td align="left"><input type="text" id="fleetno" style="height:20px;width:70%;" name="fleetno"  value='<s:property value="fleetno"/>' readonly="readonly"> </td></tr>
-	<tr> <td  align="right"><label class="branch">Process</label></td><td align="left">
- <select name="cmbinfo" id="cmbinfo" style="width:70%;" name="cmbinfo"  value='<s:property value="cmbinfo"/>' onchange="funchangeinfo()">
-       
 
-</select></td></tr>
+<div class="master-container">
 
-	<tr><td  align="right" ><label class="branch">Date</label></td><td align="left"><div id='dateDue' name='dateDue' value='<s:property value="dateDue"/>'></div>
-                   </td></tr>
-	 <tr><td align="right"><label class="branch">Remarks </label></td><td align="left"><input type="text" id="remarks" style="height:20px;width:88%;" name="remarks"  value='<s:property value="remarks"/>'> </td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td  align="center" colspan="2"><input type="Button" name="driverUpdate" id="driverUpdate" class="myButton" value="UPDATE" onclick="funupdate()"></td> </tr>
-	
-	 <tr><td colspan="2">&nbsp;</td></tr>  
- 	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>	
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>	
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	  <tr><td colspan="2">&nbsp;</td></tr>
- </table>
-   <input type="hidden" name="branchids" id="branchids" style="height:20px;width:70%;" value='<s:property value="branchids"/>' >
- <input type="hidden" name="rentaldoc" id="rentaldoc" style="height:20px;width:70%;" value='<s:property value="rentaldoc"/>' >
-	 
-	    <input type="hidden" name="grgid" id="grgid" style="height:20px;width:70%;" value='<s:property value="grgid"/>' >
- <input type="hidden" name="fleetno" id="fleetno" style="height:20px;width:70%;" value='<s:property value="fleetno"/>' >
-	 
-   </fieldset>
+    <!-- Sidebar filters (Bug 2: no <table> wrapper, flex: 0 0 330px) -->
+    <div class="sidebar-filters">
+        <div class="sidebar-scroll-content">
+            <div class="filter-card">
+                <table class="filter-table">
+                    <tr>
+                        <td class="label-cell">Fleet NO</td>
+                        <td align="left"><input type="text" id="fleetno" name="fleetno" value='<s:property value="fleetno"/>' readonly="readonly"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Process</td>
+                        <td align="left">
+                            <select name="cmbinfo" id="cmbinfo" value='<s:property value="cmbinfo"/>' onchange="funchangeinfo()">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Date</td>
+                        <td align="left"><div id='dateDue' name='dateDue' value='<s:property value="dateDue"/>'></div></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Remarks</td>
+                        <td align="left"><input type="text" id="remarks" name="remarks" value='<s:property value="remarks"/>'></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="button-row">
+                            <input type="Button" name="driverUpdate" id="driverUpdate" class="myButton" value="UPDATE" onclick="funupdate()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 
-</td>
-<td width="80%">
-	<table width="100%">
-		<tr>
-			  <td><div id="duedatediv"><jsp:include page="mainGrid.jsp"></jsp:include></div><br>
-			  </td> 
-		</tr>
-		
-		<tr>
-		<td colspan="2" align="left" ><div id="detaildiv"><jsp:include page="detailgrid.jsp"></jsp:include></div></td></tr>
-	</table>
-</tr>
-</table>
+    <!-- Main content: heading.jsp moved to top toolbar (Bug 1) -->
+    <div class="main-content-wrapper">
+        <div class="top-toolbar-container">
+            <jsp:include page="../../heading.jsp"></jsp:include>
+        </div>
+        <div class="scrollable-grid-area">
+            <div id="duedatediv"><jsp:include page="mainGrid.jsp"></jsp:include></div>
+            <div id="detaildiv"><jsp:include page="detailgrid.jsp"></jsp:include></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Hidden fields pulled out of layout flow (Bug 6) -->
+<div class="hidden-fields">
+    <input type="hidden" name="branchids" id="branchids" value='<s:property value="branchids"/>'>
+    <input type="hidden" name="rentaldoc" id="rentaldoc" value='<s:property value="rentaldoc"/>'>
+    <input type="hidden" name="grgid" id="grgid" value='<s:property value="grgid"/>'>
+    <input type="hidden" name="fleetno" id="fleetno" value='<s:property value="fleetno"/>'>
+</div>
+
 </div>
 </div>
 </body>
+</html>

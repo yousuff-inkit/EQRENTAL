@@ -11,50 +11,112 @@
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 
 <style type="text/css">
-.myButtons {
-	-moz-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	-webkit-box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	box-shadow:inset 0px -1px 3px 0px #91b8b3;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
-	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
-	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
-	background-color:#768d87;
-	border:1px solid #566963;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	
-	font-size:8pt;
-	
-	padding:3px 17px;
-	text-decoration:none;
-	text-shadow:0px -1px 0px #2b665e;
-}
-.myButtons:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
-	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
-	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
-	background-color:#6c7c7c;
-}
-.myButtons:active {
-	position:relative;
-	top:1px;
-}
+    /* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
+    .master-container {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .sidebar-filters {
+        flex: 0 0 330px;
+        width: 330px;
+        height: 100%;
+        background: #ECF8E0;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .sidebar-scroll-content {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+    .filter-card {
+        background: #ffffff;
+        border: 1px solid #e1e8ed;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+    .filter-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .filter-table td {
+        padding: 4px 6px;
+        box-sizing: border-box;
+    }
+    .label-cell {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4e5e71;
+        text-align: right;
+        white-space: nowrap;
+    }
+    .filter-table input[type="text"],
+    .filter-table select {
+        width: 100%;
+        height: 24px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+    .main-content-wrapper {
+        flex: 1 1 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+    .top-toolbar-container {
+        width: 100%;
+        padding: 10px 15px;
+        background: #ffffff;
+        border-bottom: 1px solid #e1e8ed;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+    .scrollable-grid-area {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 10px 15px;
+    }
+    .button-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 6px;
+    }
+    .btn-submit,
+    .myButton {
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        line-height: 30px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-submit:hover,
+    .myButton:hover {
+        background: #1d4ed8;
+    }
+    .hidden-fields {
+        display: none;
+    }
 
-.icon1 {
-	width: 2.5em;
-	height: 2em;
-	border: none;
-	background-color: #ECF8E0;
-}
+    /* .icon1 kept - distinct icon-button style, actively used, not a master-button variant */
+    .icon1 {
+        width: 2.5em;
+        height: 2em;
+        border: none;
+        background-color: #ECF8E0;
+    }
 </style>
 
 <script type="text/javascript">
@@ -401,66 +463,79 @@
 <body onload="getBranch();getIDPDetails();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%" >
-<tr>
-<td width="20%" >
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%"  >
-	<jsp:include page="../../heading.jsp"></jsp:include>
-		
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">
-	  <fieldset><legend><b><label class="branch">Report Type</label></b></legend>
-	   <table width="100%">
-       <tr>
-       <td width="48%" align="center"><input type="radio" id="rddriverlist" name="rdo" onchange="radioClick();" value="rddriverlist"><label for="rddriverlist" class="branch">Driver List</label></td>
-       <td width="52%" align="center"><input type="radio" id="rddeletedriver" name="rdo" onchange="radioClick();" value="rddeletedriver"><label for="rddeletedriver" class="branch">Delete Driver</label></td>
-       </tr>
-       <tr>
-       <td colspan="2" align="center"><input type="radio" id="rdadditionaldriver" name="rdo" onchange="radioClick();" value="rdadditionaldriver"><label for="rdadditionaldriver" class="branch">Add Additional Driver</label></td>
-       </tr>
-       </table>
-	  </fieldset>
-	</td></tr> 
-	<tr><td align="right"><label class="branch">Client Name</label></td>
-	<td align="left"><input type="text" id="txtclientname" name="txtclientname" style="width:100%;height:20px;" readonly="readonly" placeholder="Press F3 to Search" value='<s:property value="txtclientname"/>' onkeydown="getClient(event);"/>
-    <input type="hidden" id="txtcldocno" name="txtcldocno" style="width:100%;height:20px;" value='<s:property value="txtcldocno"/>'/></td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td align="left"><input type="button" class="myButtons" name="clear" id="clear"  value="Clear" onclick="funClearData();"></td>
-		<td align="center"><button type="button" class="icon1" id="btnadd" title="Add Additional Driver" onclick="funAdd(event);">
-					<img alt="Add Additional Driver" src="<%=contextPath%>/icons/driverAdd.png">
-			</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button type="button" class="icon1" id="btndelete" title="Delete Driver" onclick="funDelete(event);">
-					<img alt="Delete Driver" src="<%=contextPath%>/icons/driverDelete.png">
-			</button>			
-			</td></tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2"><input type="hidden" name="mode" id="mode" style="height:20px;width:70%;" value='<s:property value="mode"/>'>
-	<input type="hidden" name="txtselecteddrivers" id="txtselecteddrivers" style="height:20px;width:70%;" value='<s:property value="txtselecteddrivers"/>'>
-	<input type="hidden" name="docno" id="docno" style="height:20px;width:70%;" value='<s:property value="docno"/>'>
-	<input type="hidden" id="idpdetailsallowed" name="idpdetailsallowed" style="height:20px;width:70%;"></td></tr>
-	</table>
-	</fieldset>
-</td>
-<td width="80%">
-	<table width="100%">
-		<tr>
-			 <td><div id="driverListDiv"><jsp:include page="driverListGrid.jsp"></jsp:include></div>
-			 <div id="addDriverDiv" hidden="true"><jsp:include page="addDriverGrid.jsp"></jsp:include></div>
-			 <div id="deleteDriverDiv" hidden="true"><jsp:include page="deleteDriverGrid.jsp"></jsp:include></div>
-			 </td>
-		</tr>
-	</table>
-</tr>
-</table>
+
+<div class="master-container">
+
+    <!-- Sidebar filters (Bug 2: no <table> wrapper, flex: 0 0 330px) -->
+    <div class="sidebar-filters">
+        <div class="sidebar-scroll-content">
+
+            <div class="filter-card">
+                <fieldset><legend><b><label class="branch">Report Type</label></b></legend>
+                    <table width="100%">
+                        <tr>
+                            <td width="48%" align="center"><input type="radio" id="rddriverlist" name="rdo" onchange="radioClick();" value="rddriverlist"><label for="rddriverlist" class="branch">Driver List</label></td>
+                            <td width="52%" align="center"><input type="radio" id="rddeletedriver" name="rdo" onchange="radioClick();" value="rddeletedriver"><label for="rddeletedriver" class="branch">Delete Driver</label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center"><input type="radio" id="rdadditionaldriver" name="rdo" onchange="radioClick();" value="rdadditionaldriver"><label for="rdadditionaldriver" class="branch">Add Additional Driver</label></td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+
+            <div class="filter-card">
+                <table class="filter-table">
+                    <tr>
+                        <td class="label-cell">Client Name</td>
+                        <td align="left">
+                            <input type="text" id="txtclientname" name="txtclientname" readonly="readonly" placeholder="Press F3 to Search" value='<s:property value="txtclientname"/>' onkeydown="getClient(event);"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="button-row">
+                            <input type="button" class="myButton" name="clear" id="clear" value="Clear" onclick="funClearData();">
+                            <span>
+                                <button type="button" class="icon1" id="btnadd" title="Add Additional Driver" onclick="funAdd(event);">
+                                    <img alt="Add Additional Driver" src="<%=contextPath%>/icons/driverAdd.png">
+                                </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="icon1" id="btndelete" title="Delete Driver" onclick="funDelete(event);">
+                                    <img alt="Delete Driver" src="<%=contextPath%>/icons/driverDelete.png">
+                                </button>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main content: heading.jsp moved to top toolbar (Bug 1) -->
+    <div class="main-content-wrapper">
+        <div class="top-toolbar-container">
+            <jsp:include page="../../heading.jsp"></jsp:include>
+        </div>
+        <div class="scrollable-grid-area">
+            <div id="driverListDiv"><jsp:include page="driverListGrid.jsp"></jsp:include></div>
+            <div id="addDriverDiv" hidden="true"><jsp:include page="addDriverGrid.jsp"></jsp:include></div>
+            <div id="deleteDriverDiv" hidden="true"><jsp:include page="deleteDriverGrid.jsp"></jsp:include></div>
+        </div>
+    </div>
+
 </div>
+
+<!-- Hidden fields pulled out of layout flow (Bug 6) -->
+<div class="hidden-fields">
+    <input type="hidden" id="txtcldocno" name="txtcldocno" value='<s:property value="txtcldocno"/>'/>
+    <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'>
+    <input type="hidden" name="txtselecteddrivers" id="txtselecteddrivers" value='<s:property value="txtselecteddrivers"/>'>
+    <input type="hidden" name="docno" id="docno" value='<s:property value="docno"/>'>
+    <input type="hidden" id="idpdetailsallowed" name="idpdetailsallowed">
+</div>
+
+</div>
+
 <div id="clientDetailsWindow">
 	<div></div>
 </div>

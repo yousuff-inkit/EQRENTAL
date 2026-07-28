@@ -12,6 +12,85 @@
 <title>GatewayERP(i)</title>
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
+
+<style type="text/css">
+    /* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
+    .master-container {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .sidebar-filters {
+        flex: 0 0 330px;
+        width: 330px;
+        height: 100%;
+        background: #ECF8E0;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .sidebar-scroll-content {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+    .filter-card {
+        background: #ffffff;
+        border: 1px solid #e1e8ed;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+    .filter-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .filter-table td {
+        padding: 4px 6px;
+        box-sizing: border-box;
+    }
+    .label-cell {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4e5e71;
+        text-align: right;
+        white-space: nowrap;
+    }
+    .filter-table input[type="text"],
+    .filter-table select {
+        width: 100%;
+        height: 24px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+    .main-content-wrapper {
+        flex: 1 1 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+    .top-toolbar-container {
+        width: 100%;
+        padding: 10px 15px;
+        background: #ffffff;
+        border-bottom: 1px solid #e1e8ed;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+    .scrollable-grid-area {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 10px 15px;
+    }
+    .hidden-fields {
+        display: none;
+    }
+</style>
 <script type="text/javascript">
 
 $(document).ready(function () {
@@ -23,8 +102,8 @@ $(document).ready(function () {
      $("body").prepend("<div id='subPleaseWait' style='display: none;position:absolute; z-index: 1;top:280px;left:100px;'><img src='../../../../icons/31load.gif'/></div>");
 	
 	
-	 $("#fromdate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
-	 $("#todate").jqxDateTimeInput({ width: '125px', height: '15px',formatString:"dd.MM.yyyy"});
+	 $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+	 $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
 	 var fromdates=new Date($('#fromdate').jqxDateTimeInput('getDate'));
 	 var onemounth=new Date(new Date(fromdates).setMonth(fromdates.getMonth()-1)); 
 	    
@@ -129,68 +208,78 @@ function funExportBtn()
 <body onload="getBranch();hiddenbrh();increcvcheck();">
 <div id="mainBG" class="homeContent" data-type="background"> 
 <div class='hidden-scrollbar'>
-<table width="100%">
-<tr>
-<td width="20%">
-    <fieldset style="background: #ECF8E0;">
-	<table width="100%" >
-	<jsp:include page="../../heading.jsp"></jsp:include>
- 
-	<!--  <tr><td colspan="2">&nbsp;</td></tr> -->
-<!--  <tr><td colspan="2" align="center"><label class="branch">Detail</label><input type="checkbox" id="det_chk"  name="det_chk" value="0"   onclick="funsetaval()" >
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>  -->
-	 <tr><td colspan="2">&nbsp;</td></tr>
-	  <tr><td  align="right" ><label class="branch">From</label></td><td align="left"><div id='fromdate' name='fromdate' value='<s:property value="fromdate"/>'></div>
-                    </td></tr>
-                     <tr><td  align="right" ><label class="branch">To</label></td><td align="left"><div id='todate' name='todate' value='<s:property value="todate"/>'></div>
-                    </td></tr>
-                    
-                    	
-<tr><td colspan="2"></td></tr>
-<tr><td colspan="2" align="center"><input type="checkbox" id="chckincrecv" name="chckincrecv" value="" onchange="increcvcheck();" onclick="$(this).attr('value', this.checked ? 1 : 0)" /> 
-                                 <input type="hidden" id="hidchckincrecv" name="hidchckincrecv" value='<s:property value="hidchckincrecv"/>'/>
-                                 <label class="branch">Including Received</label></td>
-                                 </tr>
-   <tr><td colspan="2"></td></tr>
 
-		 <tr>
+<div class="master-container">
 
-	<td colspan="2" ><div id="Readygrid"><jsp:include page="subgrid.jsp"></jsp:include>
-	</div></td>
-	</tr> 
-<tr><td colspan="2">&nbsp;</td></tr>
-<%--  	 <tr>
-	<td colspan="2" ><div id="posgrid"><jsp:include page="subposting.jsp"></jsp:include>
-	</div></td>
-	</tr> --%>
+    <!-- Sidebar filters (Bug 2: no <table> wrapper, flex: 0 0 330px) -->
+    <div class="sidebar-filters">
+        <div class="sidebar-scroll-content">
 
- 
-	</table>
-	</fieldset>
-</td>
-<td width="80%">
-<div  >
-	<table width="100%" id="grid1">
-			<tr>
-			  <td ><div  id="fleetdiv"><jsp:include page="detailsgrid.jsp"></jsp:include></div> 
-			</td></tr>
-	</table>
+            <div class="filter-card">
+                <table class="filter-table">
+                    <!--  <tr><td colspan="2" align="center"><label class="branch">Detail</label><input type="checkbox" id="det_chk"  name="det_chk" value="0"   onclick="funsetaval()" >
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>  -->
+                    <tr>
+                        <td class="label-cell">From</td>
+                        <td align="left"><div id='fromdate' name='fromdate' value='<s:property value="fromdate"/>'></div></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">To</td>
+                        <td align="left"><div id='todate' name='todate' value='<s:property value="todate"/>'></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="checkbox" id="chckincrecv" name="chckincrecv" value="" onchange="increcvcheck();" onclick="$(this).attr('value', this.checked ? 1 : 0)" />
+                            <label class="branch">Including Received</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Readygrid kept in the sidebar exactly as in the source (subgrid.jsp results list
+                 alongside the filters, not the main content grid) -->
+            <div class="filter-card">
+                <div id="Readygrid"><jsp:include page="subgrid.jsp"></jsp:include></div>
+            </div>
+
+            <%--
+             <div class="filter-card">
+                <div id="posgrid"><jsp:include page="subposting.jsp"></jsp:include></div>
+             </div>
+            --%>
+
+        </div>
+    </div>
+
+    <!-- Main content: heading.jsp moved to top toolbar (Bug 1) -->
+    <div class="main-content-wrapper">
+        <div class="top-toolbar-container">
+            <jsp:include page="../../heading.jsp"></jsp:include>
+        </div>
+        <div class="scrollable-grid-area">
+            <div id="fleetdiv"><jsp:include page="detailsgrid.jsp"></jsp:include></div>
+
+            <!-- <table width="100%" id="chart">
+                <tr>
+                     <td width="50%">
+                    <div id='fleetStatus1' style="width: 100%; height: 250px;"></div>
+                      <div id='sec1' style="width: 100%; height: 250px;"></div>
+                       </td><td>  <div id='thr1' style="width: 100%; height: 250px;"></div>
+                       <div id='four1' style="width: 100%; height: 250px;"></div></td></tr>
+            </table> -->
+        </div>
+    </div>
+
 </div>
-<div >
-	<!-- <table width="100%" id="chart">
-		<tr>
-			 <td width="50%">
-			<div id='fleetStatus1' style="width: 100%; height: 250px;"></div>
-			  <div id='sec1' style="width: 100%; height: 250px;"></div>
-			   </td><td>  <div id='thr1' style="width: 100%; height: 250px;"></div>
-			   <div id='four1' style="width: 100%; height: 250px;"></div></td></tr>
-	</table> -->
+
+<!-- Hidden fields pulled out of layout flow (Bug 6) -->
+<div class="hidden-fields">
+    <input type="hidden" id="hidchckincrecv" name="hidchckincrecv" value='<s:property value="hidchckincrecv"/>'/>
+    <input type="hidden" id="chkdatails" name="chkdatails" value='<s:property value="chkdatails"/>'>
+    <input type="hidden" id="emptype" value='<s:property value="chkdatails"/>'>
+    <input type="hidden" id="empname" value='<s:property value="chkdatails"/>'>
 </div>
-</tr>
-</table>
- <input type="hidden" id="chkdatails" name="chkdatails" value='<s:property value="chkdatails"/>'>
-  <input type ="hidden" id="emptype" value='<s:property value="chkdatails"/>'>
-   <input type ="hidden" id="empname"  value='<s:property value="chkdatails"/>'>
+
 </div>
 </div>
 
