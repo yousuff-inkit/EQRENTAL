@@ -31,24 +31,141 @@
 	}
 
 </script>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:140px;
+}
+
+.large-input{
+    width:320px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%" >
-  <tr>
-    <td width="10%" align="right">Account No</td>
-    <td width="12%"><input type="text" name="txtaccountsno1" id="txtaccountsno1" style="width:85%;" value='<s:property value="txtaccountsno1"/>'></td>
-   <td align="left" width="68%"colspan="2">Account Name&nbsp;<input type="text" name="txtaccountsname1" id="txtaccountsname1" style="width:70%;" value='<s:property value="txtaccountsname1"/>'></td>
-    
-    <td width="10%"  align="center"><input type="button" name="btnAccountSearch1" id="btnAccountSearch1" class="myButton" value="Search"  onclick="loadAccountSearch();"></td>
-  </tr>
-<%--   <tr>
-    <td align="right">Account Name</td>
-    <td colspan="3"><input type="text" name="txtaccountsname1" id="txtaccountsname1" style="width:80%;" value='<s:property value="txtaccountsname1"/>'></td>
-  </tr> --%>
-  <tr>
-    <td colspan="5"><div id="findiv"><jsp:include page="finaccsubsearch.jsp"></jsp:include></div></td>
-  </tr>
-</table>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Account No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="txtaccountsno1"
+                           name="txtaccountsno1"
+                           class="search-input small-input"
+                           value='<s:property value="txtaccountsno1"/>'>
+                </td>
+
+                <td class="lbl-right">
+                    Account Name
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="txtaccountsname1"
+                           name="txtaccountsname1"
+                           class="search-input large-input"
+                           value='<s:property value="txtaccountsname1"/>'>
+                </td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="btnAccountSearch1"
+                        class="myButton"
+                        onclick="loadAccountSearch();"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#fff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="findiv">
+            <jsp:include page="finaccsubsearch.jsp"></jsp:include>
+        </div>
+
+    </div>
+
 </div>
+
 </body>
 </html>

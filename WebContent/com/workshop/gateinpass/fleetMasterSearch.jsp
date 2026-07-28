@@ -22,24 +22,166 @@ $('#btnsearchfleet').click(function(){
 
 </script>
 </head>	
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:130px;
+}
+
+.medium-input{
+    width:170px;
+}
+
+.large-input{
+    width:280px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
 <body>
-	<table width="100%" border="0">
-  		<tr>
-            <td align="right">Fleet No</td>
-            <td><input type="text" name="searchfleetno" id="searchfleetno"></td>
-            <td align="right">Asset id</td>
-            <td><input type="text" name="searchfleetregno" id="searchfleetregno"></td>
-            <td align="right">Date</td>
-            <td><div id="searchfleetdate" name="searchfleetdate"></div></td>
-  		</tr>
-  		<tr>
-            <td align="right">Fleet Name</td>
-            <td colspan="4"><input type="text" name="searchfleetname" id="searchfleetname" style="width:99%;"></td>
-            <td align="center"><button type="button" name="btnsearchfleet" id="btnsearchfleet" class="myButton">Search</button></td>
-  		</tr>
-  		<tr>
-    		<td colspan="6"><div id="searchfleetdiv"><jsp:include page="fleetSearchGrid.jsp"></jsp:include></div></td>
-    	</tr>
-	</table>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Fleet No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="searchfleetno"
+                           name="searchfleetno"
+                           class="search-input medium-input">
+                </td>
+
+                <td class="lbl-right">
+                    Asset Id
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="searchfleetregno"
+                           name="searchfleetregno"
+                           class="search-input medium-input">
+                </td>
+
+                <td class="lbl-right">
+                    Date
+                </td>
+
+                <td>
+                    <div id="searchfleetdate"
+                         name="searchfleetdate"></div>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Fleet Name
+                </td>
+
+                <td colspan="4">
+                    <input type="text"
+                           id="searchfleetname"
+                           name="searchfleetname"
+                           class="search-input large-input">
+                </td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="btnsearchfleet"
+                        class="myButton"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#ffffff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="searchfleetdiv">
+            <jsp:include page="fleetSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
