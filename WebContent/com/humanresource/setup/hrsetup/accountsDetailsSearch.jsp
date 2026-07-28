@@ -8,110 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GatewayERP(i)</title>
 <link href="<%=contextPath%>/css/body.css" media="screen" rel="stylesheet" type="text/css" />
-<style>
-/* =========================================================
-   SCOPED UI: Strict Pixel Grid Alignment & Modern Inputs
-========================================================= */
-body {
-    margin: 0;
-    background-color: #fff;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-}
 
-.modern-ui {
-    font-size: 12px;
-    color: #333;
-    padding: 10px;
-    box-sizing: border-box;
-    width: 100%;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-}
-
-/* Master Input Heights - Explicit Font Family Added */
-.modern-ui input[type="text"],
-.modern-ui select {
-    height: 24px !important;
-    border: 1px solid #b8c6d8;
-    border-radius: 3px;
-    padding: 2px 6px;
-    font-size: 12px;
-    font-weight: normal !important; 
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    box-sizing: border-box;
-    background-color: #fff;
-    color: #333;
-    width: 100%;
-}
-
-.modern-ui input[type="text"]:focus,
-.modern-ui select:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-/* Panel Styling - Pure White */
-.modern-ui .search-panel {
-    background-color: #fff !important; 
-    border: 1px solid #c5d3e0;
-    border-radius: 4px;
-    padding: 15px 10px;
-    margin-bottom: 10px;
-}
-
-/* Table Alignment - STRICT PERCENTAGE GRID */
-.modern-ui table {
-    border-collapse: separate;
-    border-spacing: 5px 8px; 
-    width: 100%;
-    table-layout: fixed; /* Locks columns from squishing */
-}
-
-.modern-ui td {
-    vertical-align: middle;
-    padding: 0;
-}
-
-.modern-ui .lbl-right { 
-    text-align: right; 
-    color: #444;
-    font-size: 12px; 
-    font-weight: 600;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    white-space: nowrap; 
-    padding-right: 5px;
-}
-
-/* Modern Search Button */
-.modern-ui .myButton {
-    height: 26px !important; 
-    line-height: 24px !important;
-    padding: 0 30px;
-    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
-    color: #fff !important;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold; 
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
-    transition: all 0.2s;
-    text-transform: uppercase;
-}
-
-.modern-ui .myButton:hover {
-    background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%);
-    transform: translateY(-1px);
-}
-
-/* Data Grid Container */
-.modern-ui .grid-container {
-    border: 1px solid #c5d3e0;
-    border-radius: 4px;
-    background: #fff;
-    overflow: hidden;
-}
-</style>
 <script type="text/javascript">
 	
 	
@@ -134,26 +31,141 @@ body {
 	}
 
 </script>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:140px;
+}
+
+.large-input{
+    width:300px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%" >
-  <tr>
-    <td width="10%" align="right">Account No</td>
-    <td width="20%"><input type="text" name="txtaccountsno" id="txtaccountsno" style="width:85%;" value='<s:property value="txtaccountsno"/>'></td>
-   <%--  <td width="10%" align="right">Currency</td>
-    <td width="27%"><input type="text" name="txtaccountcurrency" id="txtaccountcurrency" style="width:50%;" value='<s:property value="txtaccountcurrency"/>'> --%>
-     <%-- <input type="hidden" name="txtsearchtype" id="txtsearchtype" value='<s:property value="txtsearchtype"/>'></td> --%>
-      <td width="10%" align="right">Account Name</td>
-    <td width="40%"  ><input type="text" name="txtaccountsname" id="txtaccountsname" style="width:80%;" value='<s:property value="txtaccountsname"/>'></td>
-    <td width="20%" rowspan="2" align="center"><input type="button" name="btnAccountSearch" id="btnAccountSearch" class="myButton" value="Search"  onclick="loadAccountSearch();"></td>
-  </tr>
-  <tr>
-   
-  </tr>
-  <tr>
-    <td colspan="6"><div id="refreshAccountDetailsDiv"><jsp:include page="accountsDetailsFromGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Account No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="txtaccountsno"
+                           name="txtaccountsno"
+                           class="search-input small-input"
+                           value='<s:property value="txtaccountsno"/>'>
+                </td>
+
+                <td class="lbl-right">
+                    Account Name
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="txtaccountsname"
+                           name="txtaccountsname"
+                           class="search-input large-input"
+                           value='<s:property value="txtaccountsname"/>'>
+                </td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="btnAccountSearch"
+                        class="myButton"
+                        onclick="loadAccountSearch();"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#fff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshAccountDetailsDiv">
+            <jsp:include page="accountsDetailsFromGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
 </div>
+
 </body>
 </html>

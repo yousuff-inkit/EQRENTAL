@@ -31,27 +31,177 @@ $('#btnsearchdriver').click(function(){
 
 </script>
 </head>	
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:130px;
+}
+
+.medium-input{
+    width:170px;
+}
+
+.large-input{
+    width:280px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
 <body>
-	<table width="100%" border="0">
-  		<tr>
-            <td width="14%" align="right">Doc No</td>
-            <td width="14%"><input type="text" name="searchdrvdocno" id="searchdrvdocno"></td>
-            <td width="20%" align="right">Driver Name</td>
-            <td colspan="4"><input type="text" name="searchdrvname" id="searchdrvname" style="width:99%;"></td>
-        </tr>
-  		<tr>
-            <td align="right">License No</td>
-            <td><input type="text" name="searchdrvlicense" id="searchdrvlicense"></td>
-            <td align="right">License Expiry</td>
-            <td width="15%"><div id="searchdrvlicensedate" name="searchdrvlicensedate"></div></td>
-            <td width="11%" align="right">Mobile</td>
-            <td width="16%"><input type="text" name="searchdrvmobile" id="searchdrvmobile"></td>
-            <td width="10%" align="center"><button type="button" name="btnsearchdriver" id="btnsearchdriver" class="myButton">Search</button></td>
-  		</tr>
-  		<tr>
-    		<td colspan="7"><div id="searchdriverdiv"><jsp:include page="driverSearchGrid.jsp"></jsp:include></div></td>
-    	</tr>
-  		
-	</table>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Doc No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="searchdrvdocno"
+                           name="searchdrvdocno"
+                           class="search-input small-input">
+                </td>
+
+                <td class="lbl-right">
+                    Driver Name
+                </td>
+
+                <td colspan="4">
+                    <input type="text"
+                           id="searchdrvname"
+                           name="searchdrvname"
+                           class="search-input large-input">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="lbl-right">
+                    License No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="searchdrvlicense"
+                           name="searchdrvlicense"
+                           class="search-input medium-input">
+                </td>
+
+                <td class="lbl-right">
+                    License Expiry
+                </td>
+
+                <td>
+                    <div id="searchdrvlicensedate"
+                         name="searchdrvlicensedate"></div>
+                </td>
+
+                <td class="lbl-right">
+                    Mobile
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="searchdrvmobile"
+                           name="searchdrvmobile"
+                           class="search-input medium-input">
+                </td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="btnsearchdriver"
+                        class="myButton"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#ffffff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="searchdriverdiv">
+            <jsp:include page="driverSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

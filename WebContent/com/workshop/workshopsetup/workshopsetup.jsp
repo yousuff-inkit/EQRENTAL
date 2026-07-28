@@ -1,57 +1,23 @@
 <% String contextPath=request.getContextPath();%>
 
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
-
 <title>GatewayERP(i)</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="../../../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../../../css/body.css" media="screen" rel="stylesheet" type="text/css" />
 <link href="../../../css/myButton.css" rel="stylesheet" type="text/css"/>
 <jsp:include page="../../../includes.jsp"></jsp:include>
-<style>
-#whole
-{
-width:100%;
-}
-#header
-{
-background-color: #E0ECF8;
-color:black;
-text-align:left;
-height:7%;
-width:3%
-padding:0px;
-}
-#nav
-{
-   line-height:30px;
-    background-color: #E0ECF8;
-    height:90.5%;
-    width:5%;
-    float:left;
-    position:absolute;
-    
-    
-}
 
-#comiframe
-{
-float:right;
-width:98.5%;
-height:98%;
-color:#eeeeee;
-
-}
-</style>
 <style>
 /* =========================================================
 SCOPED UI: Modern Layout (Matches Client Master)
 ========================================================= */
 body {
-    background: #ffffff !important; 
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
     color: #222;
     margin: 0;
@@ -61,12 +27,12 @@ body {
 }
 
 #mainBG {
-    background: #ffffff !important;
-    border-radius: 4px;
+    background: #fff;
+    border-radius: 16px;
     padding: 15px;
     max-width: 100%;
     margin: 0 auto;
-    box-shadow: none; 
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 .modern-ui {
@@ -210,63 +176,103 @@ form label.error { color:red; font-weight:bold; }
 /* Scrollbar Logic */
 .hidden-scrollbar {
     overflow-y: auto;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 80px);
     padding-right: 5px;
 }
 .hidden-scrollbar::-webkit-scrollbar { width: 6px; }
 .hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
 
-/* Page Specific Original CSS */
-#convformula { text-transform: uppercase; }
-#normalrate { text-transform: uppercase; }
-#ot { text-transform: uppercase; }
-#holidayot { text-transform: uppercase; }
-
-/* Sub-panel layout (from tables) */
-.sub-panel-flex {
+/* =========================================================
+Page Specific Layout (Replaces absolute positioning)
+========================================================= */
+.workshop-layout {
     display: flex;
     gap: 15px;
-    flex-wrap: wrap;
+    height: calc(100vh - 140px);
+    width: 100%;
 }
-.sub-panel-flex > div {
+
+.workshop-sidebar {
+    width: 120px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.workshop-sidebar .myButton {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+
+.workshop-content {
     flex: 1;
-    min-width: 300px;
+    border: 1px solid #c5d3e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.workshop-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
 }
 </style>
 
 <script type="text/javascript">
-	
-	$(document).ready(function() {
-		//document.getElementById("btnproject").disabled="true";
-		$('#branchid').val(window.parent.branchid.value); 
-	});
-	<%-- String a=<% String contextPatht=request.getContextPath();%>
-	 --%>
-	</script>
+    $(document).ready(function() {
+        //document.getElementById("btnproject").disabled="true";
+        $('#branchid').val(window.parent.branchid.value); 
+    });
+    <%-- String a=<% String contextPatht=request.getContextPath();%> --%>
+</script>
 </head>
 <body>
 
 <div id="mainBG" class="homeContent" data-type="background">
-<h3>Workshop Setup</h3>
-
-
-<div id="nav">
-<table >
-<%-- <tr><td><input type="button" name="btnsalesman" class="myButton" value="Salesman" style="width:90px;outline:none;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/salesManMaster.jsp";'></td></tr>
-<tr><td><input type="button" name="btnsalesagent" class="myButton" value="Sales Agent" style="width:90px;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/salesAgent.jsp";'></td></tr>
-<tr><td><input type="button" name="btnrentalagent" class="myButton" value="Rental Agent" style="width:90px;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/rentalAgent.jsp";'></td></tr>
-<tr><td><input type="button" name="btndriver" class="myButton" value="Driver" style="width:90px;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/driver.jsp";'></td></tr> --%>
-<tr><td><input type="button" name="btntechnition" class="myButton" value="Technician" style="width:90px;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/workshop/workshopsetup/technician.jsp";'></td></tr>
-<tr><td><input type="button" name="btnbay" class="myButton" value="Bay" style="width:90px;" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/workshop/workshopsetup/bay.jsp";'></td></tr>
-</table>
+    <div class="modern-ui hidden-scrollbar">
+        
+        <div class="middle-panel" style="padding-top: 25px; margin-bottom: 0;">
+            <span class="middle-panel-title">Workshop Setup</span>
+            
+            <!-- Flexbox Layout replacing old floats/absolute positioning -->
+            <div class="workshop-layout">
+                
+                <!-- Navigation Sidebar -->
+                <div class="workshop-sidebar">
+                    <%-- 
+                    <input type="button" name="btnsalesman" class="myButton" value="Salesman" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/salesManMaster.jsp";'>
+                    <input type="button" name="btnsalesagent" class="myButton" value="Sales Agent" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/salesAgent.jsp";'>
+                    <input type="button" name="btnrentalagent" class="myButton" value="Rental Agent" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/rentalAgent.jsp";'>
+                    <input type="button" name="btndriver" class="myButton" value="Driver" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/controlcentre/masters/salesmanmaster/driver.jsp";'> 
+                    --%>
+                    <input type="button" name="btntechnition" class="myButton" value="Technician" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/workshop/workshopsetup/technician.jsp";'>
+                    <input type="button" name="btnbay" class="myButton" value="Bay" onclick='document.getElementById("iframe2").src="<%=contextPath%>/com/workshop/workshopsetup/bay.jsp";'>
+                </div>
+                
+                <!-- Content Iframe -->
+                <div class="workshop-content">
+                    <iframe id="iframe2" name="iframe2" scrolling="auto" src="<%=contextPath%>/com/workshop/workshopsetup/technician.jsp"></iframe>
+                </div>
+                
+            </div>
+            
+            <!-- Hidden Fields -->
+            <div style="display:none;">
+                <input type="hidden" id="formName" name="formName" value='000'/>
+                <input type="hidden" id="formCode" name="formCode" value='SAP'/> 
+                <input type="hidden" id="branchid" name="branchid" value=''/>
+                <input type="hidden" id="mode" name="mode" />
+            </div>
+            
+        </div>
+        
+    </div>
 </div>
-<input type="hidden" id="formName" name="formName"  value='000'/>
-<input type="hidden" id="formCode" name="formCode"  value='SAP'/> 
-<input type="hidden" id="branchid" name="branchid"  value=''/>
-<input type="hidden" id="mode" name="mode"  />
-<div id="comiframe">
-	<iframe width="100%" height="100%" id="iframe2" align="right" frameborder="0" marginwidth="100%" scrolling="no" src="<%=contextPath%>/com/workshop/workshopsetup/technician.jsp"></iframe>
-</div>
+
 <!-- <script>
 function resizeIframeToFitContent(iframe) {
     // This function resizes an IFrame object
@@ -277,6 +283,5 @@ function resizeIframeToFitContent(iframe) {
 }
 </script> -->
 
-</div>
 </body>
 </html>

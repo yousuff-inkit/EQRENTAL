@@ -38,43 +38,183 @@
 		}
 
 	</script>
-<body bgcolor="#E0ECF8">
-<div id=search>
-<table width="100%" >
-  <tr>
-   <td>                         
-   <table>
-   <tr>
-   <td align="right">Docno</td>
-    <td align="left" width="2%"><input type="text" name="msdocno" id="msdocno"  value='<s:property value="msdocno"/>'></td>
-    <td align="right" >Fleet No</td>
-    <td align="left" width="70%" ><input type="text" name="Fleet No" id="Fleet No"  style="width:90%;" value='<s:property value="Fleet No"/>'></td>
-    <td align="right" >Driver</td>
-    <td align="left" width="28%"><input type="text" name="Driver" id="Driver" value='<s:property value="Driver"/>'></td>
-   </tr>
-   <tr>
-    <td width="35" align="right">Date</td>
-    <td width="144" align="left"><div id="searchdate" name="searchdate"></div></td>
-    <td align="right" >Asset id</td>  
-	<td align="left" ><input type="text" name="reg_nos" id="reg_nos"  style="width:90%;" value='<s:property value="reg_nos"/>'></td>
-	<td></td>
-    <td><input type="button" name="enqbtnrasearch" id="enqbtnrasearch" class="myButton" value="Search"  onclick="loadSearch1()"></td>
-    <tr>
-    </table>
-    </td>
-</tr>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
 
-  <tr>
-    <td colspan="8" align="right">
-    
-    <div id="refreshdivmas">
-      
-   <jsp:include  page="searchGrid.jsp"></jsp:include> 
-   
-   </div>
-    </td>
-  </tr>
-</table>
-  </div>
+#search{
+    padding:10px;
+    background:#fff;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.search-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.search-panel td{
+    padding:6px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+}
+
+.search-input{
+    height:26px;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+}
+
+.small-input{
+    width:120px;
+}
+
+.medium-input{
+    width:170px;
+}
+
+.large-input{
+    width:260px;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+}
+</style>
+
+<body>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <table>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Doc No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="msdocno"
+                           name="msdocno"
+                           class="search-input small-input"
+                           value='<s:property value="msdocno"/>'>
+                </td>
+
+                <td class="lbl-right">
+                    Fleet No
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="Fleet No"
+                           name="Fleet No"
+                           class="search-input medium-input"
+                           value='<s:property value="Fleet No"/>'>
+                </td>
+
+                <td class="lbl-right">
+                    Driver
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="Driver"
+                           name="Driver"
+                           class="search-input medium-input"
+                           value='<s:property value="Driver"/>'>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="lbl-right">
+                    Date
+                </td>
+
+                <td>
+                    <div id="searchdate" name="searchdate"></div>
+                </td>
+
+                <td class="lbl-right">
+                    Asset Id
+                </td>
+
+                <td>
+                    <input type="text"
+                           id="reg_nos"
+                           name="reg_nos"
+                           class="search-input medium-input"
+                           value='<s:property value="reg_nos"/>'>
+                </td>
+
+                <td></td>
+
+                <td align="center">
+
+                    <button
+                        type="button"
+                        id="enqbtnrasearch"
+                        class="myButton"
+                        onclick="loadSearch1();"
+                        style="
+                            width:100px;
+                            height:28px;
+                            background:#205fd3;
+                            color:#fff;
+                            border:1px solid #205fd3;
+                            border-radius:4px;
+                            font-size:12px;
+                            font-weight:600;
+                            cursor:pointer;">
+                        Search
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdivmas">
+            <jsp:include page="searchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

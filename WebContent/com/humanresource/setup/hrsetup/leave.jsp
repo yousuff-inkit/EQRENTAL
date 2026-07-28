@@ -7,18 +7,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <jsp:include page="../../../../includes.jsp"></jsp:include>
-<style>
-form label.error {
-  color:red;
-  font-weight:bold;
-}
-</style>
+
 <style>
 /* =========================================================
 SCOPED UI: Modern Layout (Matches Client Master)
 ========================================================= */
 body {
-    background: #ffffff !important; 
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
     color: #222;
     margin: 0;
@@ -28,12 +23,12 @@ body {
 }
 
 #mainBG {
-    background: #ffffff !important;
-    border-radius: 4px;
+    background: #fff;
+    border-radius: 16px;
     padding: 15px;
     max-width: 100%;
     margin: 0 auto;
-    box-shadow: none; 
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 .modern-ui {
@@ -168,26 +163,22 @@ body {
     border-radius: 4px;
     background: #fff;
     overflow: hidden;
+    width: 100%;
 }
 
 /* Validation Label */
 .modern-ui .val-error { color: red; font-size: 11px; font-weight:bold; }
 form label.error { color:red; font-weight:bold; }
+#errormsg { color:red; font-weight:bold; text-align:center; margin-bottom: 10px; }
 
 /* Scrollbar Logic */
 .hidden-scrollbar {
     overflow-y: auto;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 120px);
     padding-right: 5px;
 }
 .hidden-scrollbar::-webkit-scrollbar { width: 6px; }
 .hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
-
-/* Page Specific Original CSS */
-#convformula { text-transform: uppercase; }
-#normalrate { text-transform: uppercase; }
-#ot { text-transform: uppercase; }
-#holidayot { text-transform: uppercase; }
 
 /* Sub-panel layout (from tables) */
 .sub-panel-flex {
@@ -205,174 +196,200 @@ form label.error { color:red; font-weight:bold; }
 <% ClsLeaveDAO showDAO = new ClsLeaveDAO(); %>  
 
 <script type="text/javascript">
-	$(document).ready(function () {    
-	    document.getElementById("formdet").innerText="Leave(LEV)";
-		document.getElementById("formdetail").value="Leave";
-		document.getElementById("formdetailcode").value="LEV";
-		window.parent.formCode.value="LEV";
-		window.parent.formName.value="Leave";
-		
-	    $("#leavedate").jqxDateTimeInput({ width: '125px', height: '15px' ,formatString : "dd.MM.yyyy" });
+    $(document).ready(function () {    
+        document.getElementById("formdet").innerText="Leave(LEV)";
+        document.getElementById("formdetail").value="Leave";
+        document.getElementById("formdetailcode").value="LEV";
+        window.parent.formCode.value="LEV";
+        window.parent.formName.value="Leave";
+        
+        $("#leavedate").jqxDateTimeInput({ width: '125px', height: 24, formatString : "dd.MM.yyyy", theme: 'energyblue' });
+
+        /* force internal alignment AFTER render for modern 24px height */
+        setTimeout(function () {
+            $("#leavedate").find("input").css({
+                "margin-top": "0px",
+                "line-height": "24px",
+                "font-size": "12px", 
+                "font-family": "Arial, sans-serif", 
+                "padding": "0 6px", 
+                "box-sizing":"border-box"
+            });
+            $("#leavedate").find(".jqx-action-button").css({
+                "top": "0px",
+                "height": "24px"
+            });
+        }, 0);
  
-	    $('#abbrevationDetailsWindow').jqxWindow({width: '31%', height: '38%',  maxHeight: '50%' ,maxWidth: '31%' , title: 'Abbreviation Search',position: { x: 600, y: 100 } , theme: 'energyblue', showCloseButton: true, keyboardCloseKey: 27});
-		$('#abbrevationDetailsWindow').jqxWindow('close'); 
-		 
-		$('#abbreviation').dblclick(function(){
-			abbrevationSearchContent("leaveAbbreviationSearch.jsp");
-		});
-		
-	        var leavedata='<%=showDAO.searchLeave()%>';
-             
-            var source =
-            {
-                datatype: "json",
-                datafields: [
-                          	{name : 'doc_no' , type: 'number' },
-     						{name : 'leave1', type: 'String'  },
-                          	{name : 'date', type: 'date'  },
-                          	{name : 'remarks', type: 'String'  },
-                        	{name : 'abbreviation', type: 'String'  }
-                          	
-                 ],
-                  localdata: leavedata,
-                
-                pager: function (pagenum, pagesize, oldpagenum) {
-                    // leavedata called when a page or page size is changed.
-                }
-            };
-            
-            var dataAdapter = new $.jqx.dataAdapter(source);
-    
-            $("#leavegrid").jqxGrid(
-                    {
-                    	width: "100%",
-                        source: dataAdapter,
-                        showfilterrow: true,
-                        filterable: true,
-                        selectionmode: 'singlerow',
-                        
-                        columns: [
-		        					{ text: 'Doc No',filtertype: 'number', datafield: 'doc_no', width: '10%' },
-		        					{ text: 'Date',columntype: 'textbox', filtertype: 'input', datafield: 'date', width: '12%',cellsformat:'dd.MM.yyyy' },
-		        					{ text: 'Leave',columntype: 'textbox', filtertype: 'input', datafield: 'leave1', width: '30%' },
-		        					{ text: 'Abbreviation',columntype: 'textbox', filtertype: 'input', datafield: 'abbreviation', width: '10%' },
-		        					{ text: 'Remarks',columntype: 'textbox', filtertype: 'input', datafield: 'remarks', width: '38%' },
-        	              ]
-                    });
-            
-           $('#leavegrid').on('rowdoubleclick', function (event) {
-                var rowindex1=event.args.rowindex;
-           
-                document.getElementById("docno").value= $('#leavegrid').jqxGrid('getcellvalue', rowindex1, "doc_no"); 
-                document.getElementById("leave").value = $("#leavegrid").jqxGrid('getcellvalue', rowindex1, "leave1");
-                $("#leavedate").jqxDateTimeInput('val', $("#leavegrid").jqxGrid('getcellvalue', rowindex1, "date"));
-                document.getElementById("remarks").value = $("#leavegrid").jqxGrid('getcellvalue', rowindex1, "remarks");
-                document.getElementById("abbreviation").value=$("#leavegrid").jqxGrid('getcellvalue', rowindex1, "abbreviation"); 
-            });   
+        $('#abbrevationDetailsWindow').jqxWindow({width: '31%', height: '38%',  maxHeight: '50%' ,maxWidth: '31%' , title: 'Abbreviation Search',position: { x: 600, y: 100 } , theme: 'energyblue', showCloseButton: true, keyboardCloseKey: 27});
+        $('#abbrevationDetailsWindow').jqxWindow('close'); 
+         
+        $('#abbreviation').dblclick(function(){
+            abbrevationSearchContent("leaveAbbreviationSearch.jsp");
         });
-	
-	
-	function abbrevationSearchContent(url) {
-	    $('#abbrevationDetailsWindow').jqxWindow('open');
-		$.get(url).done(function (data) {
-		$('#abbrevationDetailsWindow').jqxWindow('setContent', data);
-		$('#abbrevationDetailsWindow').jqxWindow('bringToFront');
-	}); 
-	}
-	
-	function funSearchLoad(){
-		 changeContent('leavesearch.jsp'); 
-	 }
-	
-	 function getAbbrevation(event){
+        
+        var leavedata='<%=showDAO.searchLeave()%>';
+             
+        var source = {
+            datatype: "json",
+            datafields: [
+                {name : 'doc_no' , type: 'number' },
+                {name : 'leave1', type: 'String'  },
+                {name : 'date', type: 'date'  },
+                {name : 'remarks', type: 'String'  },
+                {name : 'abbreviation', type: 'String'  }
+            ],
+            localdata: leavedata,
+            pager: function (pagenum, pagesize, oldpagenum) {
+                // leavedata called when a page or page size is changed.
+            }
+        };
+            
+        var dataAdapter = new $.jqx.dataAdapter(source);
+    
+        $("#leavegrid").jqxGrid(
+        {
+            width: "100%",
+            source: dataAdapter,
+            showfilterrow: true,
+            filterable: true,
+            selectionmode: 'singlerow',
+            columns: [
+                { text: 'Doc No',filtertype: 'number', datafield: 'doc_no', width: '10%' },
+                { text: 'Date',columntype: 'textbox', filtertype: 'input', datafield: 'date', width: '12%',cellsformat:'dd.MM.yyyy' },
+                { text: 'Leave',columntype: 'textbox', filtertype: 'input', datafield: 'leave1', width: '30%' },
+                { text: 'Abbreviation',columntype: 'textbox', filtertype: 'input', datafield: 'abbreviation', width: '10%' },
+                { text: 'Remarks',columntype: 'textbox', filtertype: 'input', datafield: 'remarks', width: '38%' },
+            ]
+        });
+            
+        $('#leavegrid').on('rowdoubleclick', function (event) {
+            var rowindex1=event.args.rowindex;
+       
+            document.getElementById("docno").value= $('#leavegrid').jqxGrid('getcellvalue', rowindex1, "doc_no"); 
+            document.getElementById("leave").value = $("#leavegrid").jqxGrid('getcellvalue', rowindex1, "leave1");
+            $("#leavedate").jqxDateTimeInput('val', $("#leavegrid").jqxGrid('getcellvalue', rowindex1, "date"));
+            document.getElementById("remarks").value = $("#leavegrid").jqxGrid('getcellvalue', rowindex1, "remarks");
+            document.getElementById("abbreviation").value=$("#leavegrid").jqxGrid('getcellvalue', rowindex1, "abbreviation"); 
+        });   
+    });
+    
+    function abbrevationSearchContent(url) {
+        $('#abbrevationDetailsWindow').jqxWindow('open');
+        $.get(url).done(function (data) {
+            $('#abbrevationDetailsWindow').jqxWindow('setContent', data);
+            $('#abbrevationDetailsWindow').jqxWindow('bringToFront');
+        }); 
+    }
+    
+    function funSearchLoad(){
+         changeContent('leavesearch.jsp'); 
+    }
+    
+    function getAbbrevation(event){
          var x= event.keyCode;
          if(x==114){
-        	 abbrevationSearchContent("leaveAbbreviationSearch.jsp");
+             abbrevationSearchContent("leaveAbbreviationSearch.jsp");
          }
-         else{}
-         }
+    }
  
-	function funReadOnly() {
-		$('#frmleave input').attr('readonly', true);
-		$('#leavedate').jqxDateTimeInput({ disabled: true});
-		 
-		/* 	$('#jqxDateTimeInput').jqxDateTimeInput({ disabled: true}); */
-	}
-	function funRemoveReadOnly() {
-		$('#frmleave input').attr('readonly', false);
-		$('#abbreviation').attr('readonly', true);
-		$('#leavedate').jqxDateTimeInput({ disabled: false});
-		$('#docno').attr('readonly', true);
-		
-		if ($("#mode").val() == "A") {
-			 $('#leavedate').val(new Date());
-		   }
-	}
- 
-	function setValues() {
-		if($('#datehidden').val()){
-			$("#leavedate").jqxDateTimeInput('val', $('#datehidden').val());
-		}
+    function funReadOnly() {
+        $('#frmleave input').attr('readonly', true);
+        $('#leavedate').jqxDateTimeInput({ disabled: true});
+    }
 
-		if($('#msg').val()!=""){
-			   $.messager.alert('Message',$('#msg').val());
-		}
-		
-		 //document.getElementById("formdet").innerText=$('#formdetail').val()+" ("+$('#formdetailcode').val().trim()+")";
-	}
-	
+    function funRemoveReadOnly() {
+        $('#frmleave input').attr('readonly', false);
+        $('#abbreviation').attr('readonly', true);
+        $('#leavedate').jqxDateTimeInput({ disabled: false});
+        $('#docno').attr('readonly', true);
+        
+        if ($("#mode").val() == "A") {
+             $('#leavedate').val(new Date());
+        }
+    }
  
-	     function funNotify(){
-	        	if(document.getElementById("leave").value=="") {
-	        		document.getElementById("errormsg").innerText=" Enter Leave";
-	        		document.getElementById("leave").focus();
-	        		return 0;
-        		}
-	    		return 1;
-		}
-	     
-	     function funFocus(){
-	    	 $('#leavedate').jqxDateTimeInput('focus');
-	     }
-	  
+    function setValues() {
+        if($('#datehidden').val()){
+            $("#leavedate").jqxDateTimeInput('val', $('#datehidden').val());
+        }
+        if($('#msg').val()!=""){
+               $.messager.alert('Message',$('#msg').val());
+        }
+    }
+    
+    function funNotify(){
+        if(document.getElementById("leave").value=="") {
+            document.getElementById("errormsg").innerText=" Enter Leave";
+            document.getElementById("leave").focus();
+            return 0;
+        }
+        return 1;
+    }
+         
+    function funFocus(){
+         $('#leavedate').jqxDateTimeInput('focus');
+    }
 </script>   
- 
 </head>
 <body onLoad="setValues();" >        
+<div id="mainBG" class="homeContent" data-type="background">
 
-<form id="frmleave" action="saveLeave" method="post" autocomplete="off">
-<jsp:include page="../../../../header.jsp" /> <br/>
- 
-<fieldset><legend>Leave Details</legend>
-<table width="100%">
-	<tr><td width="10%" align="right">Date</td>  
-    <td width="15%" align="left"><div id="leavedate" name="leavedate" value='<s:property value="leavedate"/>'></div></td>
-	<td width="6%" align="right">Leave</td>
-	<td width="34%"><input type="text" name="leave" id="leave" style="width:97%;" placeholder="Leave" value='<s:property value="leave"/>'></td>
-	<td width="6%" align="right">Abbreviation</td>
-	<td width="10%" ><input type="text" name="abbreviation" id="abbreviation" style="width:100%;" placeholder="Press F3 to Search" onkeydown="getAbbrevation(event);" readonly="readonly" value='<s:property value="abbreviation"/>'></td>
-	<td width="10%" align="right">Doc No</td>
-	<td width="10%"><input type="text" name="docno" id="docno" value='<s:property value="docno"/>' readonly="readonly" tabindex="-1"></td>
-	<td  width="9%" >&nbsp;</td></tr> 
-	<tr><td align="right">Remarks</td>
-	<td colspan="5"><input type="text" name="remarks" id="remarks" style="width:100%;" placeholder="Remarks" value='<s:property value="remarks"/>' ></td></tr>
-</table>
-	 
-<input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>' />
-<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/> 
-<input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/> 
-<input type="hidden" id="datehidden" name="datehidden" value='<s:property value="datehidden"/>'/> 
+    <jsp:include page="../../../../header.jsp" />
 
-</fieldset> 
-</form>
+    <div class="modern-ui hidden-scrollbar">
+        <div id="errormsg"></div>
 
-<table width="100%">
-    <tr><td><div id="leavegrid"></div></td></tr>
-</table><br/>
-		 
-<div id="abbrevationDetailsWindow">
-	<div></div>
-</div> 	
+        <form id="frmleave" action="saveLeave" method="post" autocomplete="off">
+            <div class="middle-panel">
+                <span class="middle-panel-title">Leave Details</span>
+                
+                <div class="field-row">
+                    <label class="lbl-right" style="width:80px;">Date</label>
+                    <div style="width: 125px;">
+                        <div id="leavedate" name="leavedate" value='<s:property value="leavedate"/>'></div>
+                    </div>
+                    
+                    <label class="lbl-right" style="width:80px; margin-left:15px;">Leave</label>
+                    <input type="text" name="leave" id="leave" style="width:250px;" placeholder="Leave" value='<s:property value="leave"/>'>
+                    
+                    <label class="lbl-right" style="width:80px; margin-left:15px;">Abbreviation</label>
+                    <div class="input-search-container" style="width:125px;">
+                        <input type="text" name="abbreviation" id="abbreviation" placeholder="Press F3" onkeydown="getAbbrevation(event);" readonly="readonly" value='<s:property value="abbreviation"/>'>
+                        <svg class="magnifier-icon" onclick="$('#abbreviation').dblclick();" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    
+                    <label class="lbl-right" style="width:80px; margin-left:auto;">Doc No</label>
+                    <input type="text" name="docno" id="docno" style="width:125px;" value='<s:property value="docno"/>' readonly="readonly" tabindex="-1">
+                </div>
+                
+                <div class="field-row" style="margin-bottom:0;">
+                    <label class="lbl-right" style="width:80px;">Remarks</label>
+                    <input type="text" name="remarks" id="remarks" style="flex:1;" placeholder="Remarks" value='<s:property value="remarks"/>' >
+                </div>
+            </div>
 
+            <!-- Hidden logic fields -->
+            <div style="display:none;">
+                <input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>' />
+                <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'/> 
+                <input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/> 
+                <input type="hidden" id="datehidden" name="datehidden" value='<s:property value="datehidden"/>'/> 
+            </div>
+        </form>
+
+        <div class="middle-panel">
+            <span class="middle-panel-title">Leave List</span>
+            <div class="grid-container">
+                <div id="leavegrid"></div>
+            </div>
+        </div>
+                 
+        <div id="abbrevationDetailsWindow">
+            <div></div><div></div>
+        </div>  
+
+    </div>
+</div>
 </body>
 </html>

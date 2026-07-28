@@ -7,18 +7,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <jsp:include page="../../../../includes.jsp"></jsp:include>
-<style>
-form label.error {
-  color:red;
-  font-weight:bold;
-}
-</style>
+
 <style>
 /* =========================================================
 SCOPED UI: Modern Layout (Matches Client Master)
 ========================================================= */
 body {
-    background: #ffffff !important; 
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
     color: #222;
     margin: 0;
@@ -28,12 +23,12 @@ body {
 }
 
 #mainBG {
-    background: #ffffff !important;
-    border-radius: 4px;
+    background: #fff;
+    border-radius: 16px;
     padding: 15px;
     max-width: 100%;
     margin: 0 auto;
-    box-shadow: none; 
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 .modern-ui {
@@ -168,16 +163,18 @@ body {
     border-radius: 4px;
     background: #fff;
     overflow: hidden;
+    width: 100%;
 }
 
 /* Validation Label */
 .modern-ui .val-error { color: red; font-size: 11px; font-weight:bold; }
 form label.error { color:red; font-weight:bold; }
+#errormsg { color:red; font-weight:bold; text-align:center; margin-bottom: 10px; }
 
 /* Scrollbar Logic */
 .hidden-scrollbar {
     overflow-y: auto;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 120px);
     padding-right: 5px;
 }
 .hidden-scrollbar::-webkit-scrollbar { width: 6px; }
@@ -205,168 +202,196 @@ form label.error { color:red; font-weight:bold; }
 <% ClsPayrollcategoryDAO showDAO = new ClsPayrollcategoryDAO();%> 
 
 <script type="text/javascript">
-	$(document).ready(function () {    
-	    document.getElementById("formdet").innerText="Payroll Category(PCT)";
-		document.getElementById("formdetail").value="Payroll Category";
-		document.getElementById("formdetailcode").value="PCT";
-		window.parent.formCode.value="PCT";
-		window.parent.formName.value="Payroll Category";
-	    
-		$("#parrolldate").jqxDateTimeInput({ width: '125px', height: '15px' ,formatString : "dd.MM.yyyy" });
+    $(document).ready(function () {    
+        document.getElementById("formdet").innerText="Payroll Category(PCT)";
+        document.getElementById("formdetail").value="Payroll Category";
+        document.getElementById("formdetailcode").value="PCT";
+        window.parent.formCode.value="PCT";
+        window.parent.formName.value="Payroll Category";
+        
+        $("#parrolldate").jqxDateTimeInput({ width: '125px', height: 24, formatString: "dd.MM.yyyy", theme: 'energyblue' });
+        
+        /* force internal alignment AFTER render for modern 24px height */
+        setTimeout(function () {
+            $("#parrolldate").find("input").css({
+                "margin-top": "0px",
+                "line-height": "24px",
+                "font-size": "12px", 
+                "font-family": "Arial, sans-serif", 
+                "padding": "0 6px", 
+                "box-sizing":"border-box"
+            });
+            $("#parrolldate").find(".jqx-action-button").css({
+                "top": "0px",
+                "height": "24px"
+            });
+        }, 0);
  
-		var catdata='<%=showDAO.searchcategory()%>';
+        var catdata='<%=showDAO.searchcategory()%>';
          
-            var source =
-            {
-                datatype: "json",
-                datafields: [
-                          	{name : 'doc_no' , type: 'number' },
-     						{name : 'category', type: 'String'  },
-                          	{name : 'date', type: 'date'  },
-                          	{name : 'remarks', type: 'String'  },
-                        	{name : 'timesheet', type: 'Int'  },
-                 ],
-                 localdata: catdata,
-                
-                pager: function (pagenum, pagesize, oldpagenum) {
-                    // callback called when a page or page size is changed.
-                }
-            };
+        var source = {
+            datatype: "json",
+            datafields: [
+                {name : 'doc_no' , type: 'number' },
+                {name : 'category', type: 'String'  },
+                {name : 'date', type: 'date'  },
+                {name : 'remarks', type: 'String'  },
+                {name : 'timesheet', type: 'Int'  },
+            ],
+            localdata: catdata,
+            pager: function (pagenum, pagesize, oldpagenum) {
+                // callback called when a page or page size is changed.
+            }
+        };
             
-            var dataAdapter = new $.jqx.dataAdapter(source);
-    
-            $("#categorygrid").jqxGrid(
-                    {
-                    	width: "100%",
-                        source: dataAdapter,
-                        showfilterrow: true,
-                        filterable: true,
-                        selectionmode: 'singlerow',
-                        
-                        columns: [
-		        					{ text: 'Doc No',filtertype: 'number', datafield: 'doc_no', width: '10%' },
-		        					{ text: 'Date',columntype: 'textbox', filtertype: 'input', datafield: 'date', width: '12%',cellsformat:'dd.MM.yyyy' },
-		        					{ text: 'Category',columntype: 'textbox', filtertype: 'input', datafield: 'category', width: '38%' },
-		        					{ text: 'Remarks',columntype: 'textbox', filtertype: 'input', datafield: 'remarks', width: '40%' },
-		        					{ text: 'timesheet',filtertype: 'number', datafield: 'timesheet', width: '10%',hidden:true },
-        	              ]
-                    });
+        var dataAdapter = new $.jqx.dataAdapter(source);
 
-            $('#categorygrid').on('rowdoubleclick', function (event) {
-                var rowindex1=event.args.rowindex;
- 
-                document.getElementById("docno").value= $('#categorygrid').jqxGrid('getcellvalue', rowindex1, "doc_no"); 
-                document.getElementById("category").value = $("#categorygrid").jqxGrid('getcellvalue', rowindex1, "category");
-                $("#parrolldate").jqxDateTimeInput('val', $("#categorygrid").jqxGrid('getcellvalue', rowindex1, "date"));
-                document.getElementById("remarks").value = $("#categorygrid").jqxGrid('getcellvalue', rowindex1, "remarks");
-                
-                $('#timesheet').attr('disabled', false);
-                
-                var timesheet=$("#categorygrid").jqxGrid('getcellvalue', rowindex1, "timesheet");
-	            if(parseInt(timesheet)==1) {
-	            	 document.getElementById("timesheet").checked = true;
-	       		     document.getElementById("timesheet").value=1;
-	            	} else {
-	           	     document.getElementById("timesheet").checked = false;
-	       		     document.getElementById("timesheet").value=0;
-	            	}
-	            
-	            if ($("#mode").val() == "view") {
-	            	$('#timesheet').attr('disabled', true);
-	            }
-
-	            /// parrolldate category
-            });  
+        $("#categorygrid").jqxGrid({
+            width: "100%",
+            source: dataAdapter,
+            showfilterrow: true,
+            filterable: true,
+            selectionmode: 'singlerow',
+            columns: [
+                { text: 'Doc No',filtertype: 'number', datafield: 'doc_no', width: '10%' },
+                { text: 'Date',columntype: 'textbox', filtertype: 'input', datafield: 'date', width: '12%',cellsformat:'dd.MM.yyyy' },
+                { text: 'Category',columntype: 'textbox', filtertype: 'input', datafield: 'category', width: '38%' },
+                { text: 'Remarks',columntype: 'textbox', filtertype: 'input', datafield: 'remarks', width: '40%' },
+                { text: 'timesheet',filtertype: 'number', datafield: 'timesheet', width: '10%',hidden:true },
+            ]
         });
 
-	function funSearchLoad(){
-		 changeContent('payrollcategorysearch.jsp'); 
-	 }
- 
-	function funReadOnly() {
-		$('#frmpayrollcategory input').attr('readonly', true);
-		$('#timesheet').attr('disabled', true);
-		$('#parrolldate').jqxDateTimeInput({ disabled: true});
-		 
-		/* 	$('#jqxDateTimeInput').jqxDateTimeInput({ disabled: true}); */
-	}
-	
-	function funRemoveReadOnly() {
-		$('#frmpayrollcategory input').attr('readonly', false);
-		$('#timesheet').attr('disabled', false);
-		$('#parrolldate').jqxDateTimeInput({ disabled: false});
-		$('#docno').attr('readonly', true);
-		
-		if ($("#mode").val() == "A") {
-			 $('#parrolldate').val(new Date());
-		}
-	}
- 
-	function setValues() {
-		if($('#datehidden').val()){
-			$("#parrolldate").jqxDateTimeInput('val', $('#datehidden').val());
-		}
-		 if($('#msg').val()!=""){
-			   $.messager.alert('Message',$('#msg').val());
-			  }
+        $('#categorygrid').on('rowdoubleclick', function (event) {
+            var rowindex1=event.args.rowindex;
 
-		 //document.getElementById("formdet").innerText=$('#formdetail').val()+" ("+$('#formdetailcode').val().trim()+")";
-		var hidtimesheet=$('#hidtimesheet').val();
-		if(parseInt(hidtimesheet)==1) {
-       	 	document.getElementById("timesheet").checked = true;
-  		    document.getElementById("timesheet").value=1;
-       	} else {
-      	    document.getElementById("timesheet").checked = false;
-  		    document.getElementById("timesheet").value=0;
-       	}
-	}
- 
-	     function funNotify(){
-	        	if(document.getElementById("category").value=="") {
-        			document.getElementById("errormsg").innerText=" Enter Category";
-        			document.getElementById("category").focus();
-        			return 0;
-        		}
-	    		return 1;
-		} 
+            document.getElementById("docno").value= $('#categorygrid').jqxGrid('getcellvalue', rowindex1, "doc_no"); 
+            document.getElementById("category").value = $("#categorygrid").jqxGrid('getcellvalue', rowindex1, "category");
+            $("#parrolldate").jqxDateTimeInput('val', $("#categorygrid").jqxGrid('getcellvalue', rowindex1, "date"));
+            document.getElementById("remarks").value = $("#categorygrid").jqxGrid('getcellvalue', rowindex1, "remarks");
+            
+            $('#timesheet').attr('disabled', false);
+            
+            var timesheet=$("#categorygrid").jqxGrid('getcellvalue', rowindex1, "timesheet");
+            if(parseInt(timesheet)==1) {
+                 document.getElementById("timesheet").checked = true;
+                 document.getElementById("timesheet").value=1;
+            } else {
+                 document.getElementById("timesheet").checked = false;
+                 document.getElementById("timesheet").value=0;
+            }
+            
+            if ($("#mode").val() == "view") {
+                $('#timesheet').attr('disabled', true);
+            }
+        });  
+    });
 
-	     function funFocus(){
-	    	 $('#parrolldate').jqxDateTimeInput('focus');
-	     }
-	  
+    function funSearchLoad(){
+         changeContent('payrollcategorysearch.jsp'); 
+    }
+ 
+    function funReadOnly() {
+        $('#frmpayrollcategory input').attr('readonly', true);
+        $('#timesheet').attr('disabled', true);
+        $('#parrolldate').jqxDateTimeInput({ disabled: true});
+    }
+    
+    function funRemoveReadOnly() {
+        $('#frmpayrollcategory input').attr('readonly', false);
+        $('#timesheet').attr('disabled', false);
+        $('#parrolldate').jqxDateTimeInput({ disabled: false});
+        $('#docno').attr('readonly', true);
+        
+        if ($("#mode").val() == "A") {
+             $('#parrolldate').val(new Date());
+        }
+    }
+ 
+    function setValues() {
+        if($('#datehidden').val()){
+            $("#parrolldate").jqxDateTimeInput('val', $('#datehidden').val());
+        }
+        if($('#msg').val()!=""){
+            $.messager.alert('Message',$('#msg').val());
+        }
+
+        var hidtimesheet=$('#hidtimesheet').val();
+        if(parseInt(hidtimesheet)==1) {
+            document.getElementById("timesheet").checked = true;
+            document.getElementById("timesheet").value=1;
+        } else {
+            document.getElementById("timesheet").checked = false;
+            document.getElementById("timesheet").value=0;
+        }
+    }
+ 
+    function funNotify(){
+        if(document.getElementById("category").value=="") {
+            document.getElementById("errormsg").innerText=" Enter Category";
+            document.getElementById("category").focus();
+            return 0;
+        }
+        return 1;
+    } 
+
+    function funFocus(){
+        $('#parrolldate').jqxDateTimeInput('focus');
+    }
 </script>   
- 
 </head>
 <body onLoad="setValues();" >
+<div id="mainBG" class="homeContent" data-type="background">
 
-<form id="frmpayrollcategory" action="savePayrollcategory" method="post" autocomplete="off">
-<jsp:include page="../../../../header.jsp" /><br/>
- 
-<fieldset><legend>Payroll Category Details</legend> 
-<table width="100%"  >
-	<tr><td width="10%" align="right">Date</td> 
-	<td width="15%" align="left"><div id="parrolldate" name="parrolldate" value='<s:property value="parrolldate"/>'> </div></td>
-	<td width="12%" align="right">Category</td>
-	<td width="34%"><input type="text" name="category" id="category" style="width:99%;" placeholder="Category" value='<s:property value="category"/>'></td>
-	<td width="9%" >&nbsp;&nbsp;<input type="checkbox" id="timesheet"  name="timesheet" value="0" onclick="$(this).attr('value', this.checked ? 1 : 0)" >&nbsp;Time Sheet </td>
-	<td width="10%"  align="right">Doc No</td>
-	<td width="10%"><input type="text" name="docno" id="docno" value='<s:property value="docno"/>' readonly="readonly" tabindex="-1"></td></tr> 
-	<tr><td align="right">Remarks</td>
-	<td colspan="4"><input type="text" name="remarks" id="remarks" style="width:86.2%;" placeholder="Remarks" value='<s:property value="remarks"/>' ></td></tr>
-</table>
-	 
-<input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>' />
-<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/> 
-<input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/> 
-<input type="hidden" id="datehidden" name="datehidden" value='<s:property value="datehidden"/>'/> 
-<input type="hidden" id="hidtimesheet" name="hidtimesheet" value='<s:property value="hidtimesheet"/>'/> 
-	
-</fieldset> 
-</form>
-		 
-<table width="100%">
-    <tr><td><div id="categorygrid"></div></td></tr>
-</table><br/>	
+    <jsp:include page="../../../../header.jsp" />
 
+    <div class="modern-ui hidden-scrollbar">
+        <div id="errormsg"></div>
+
+        <form id="frmpayrollcategory" action="savePayrollcategory" method="post" autocomplete="off">
+            <div class="middle-panel">
+                <span class="middle-panel-title">Payroll Category Details</span>
+                
+                <div class="field-row">
+                    <label class="lbl-right" style="width:80px;">Date</label>
+                    <div style="width: 125px;">
+                        <div id="parrolldate" name="parrolldate" value='<s:property value="parrolldate"/>'> </div>
+                    </div>
+                    
+                    <label class="lbl-right" style="width:80px; margin-left:15px;">Category</label>
+                    <input type="text" name="category" id="category" style="flex:1;" placeholder="Category" value='<s:property value="category"/>'>
+                    
+                    <label class="lbl-right" style="display:flex; align-items:center; margin-left:15px; cursor:pointer;">
+                        <input type="checkbox" id="timesheet" name="timesheet" value="0" onclick="$(this).attr('value', this.checked ? 1 : 0)" style="margin:0 5px 0 0;"> Time Sheet
+                    </label>
+                    
+                    <label class="lbl-right" style="width:80px; margin-left:auto;">Doc No</label>
+                    <input type="text" name="docno" id="docno" style="width:125px;" value='<s:property value="docno"/>' readonly="readonly" tabindex="-1">
+                </div>
+                
+                <div class="field-row" style="margin-bottom:0;">
+                    <label class="lbl-right" style="width:80px;">Remarks</label>
+                    <input type="text" name="remarks" id="remarks" style="flex:1;" placeholder="Remarks" value='<s:property value="remarks"/>'>
+                </div>
+            </div>
+            
+            <!-- Hidden Fields -->
+            <div style="display:none;">
+                <input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>' />
+                <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'/> 
+                <input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/> 
+                <input type="hidden" id="datehidden" name="datehidden" value='<s:property value="datehidden"/>'/> 
+                <input type="hidden" id="hidtimesheet" name="hidtimesheet" value='<s:property value="hidtimesheet"/>'/> 
+            </div>
+        </form>
+
+        <div class="middle-panel">
+            <span class="middle-panel-title">Category List</span>
+            <div class="grid-container">
+                <div id="categorygrid"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

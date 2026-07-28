@@ -1,6 +1,6 @@
-<% String contextPath=request.getContextPath();%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
+<% String contextPath=request.getContextPath();%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -8,7 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GatewayERP(i)</title>
 <jsp:include page="../../../includes.jsp"></jsp:include>
- <style>
+
+<style>
 /* =========================================================
 SCOPED UI: Modern Layout (Matches Client Master)
 ========================================================= */
@@ -168,6 +169,7 @@ body {
 /* Validation Label */
 .modern-ui .val-error { color: red; font-size: 11px; font-weight:bold; }
 form label.error { color:red; font-weight:bold; }
+#errormsg { color:red; font-weight:bold; text-align:center; margin-bottom: 10px; }
 
 /* Scrollbar Logic */
 .hidden-scrollbar {
@@ -197,173 +199,199 @@ form label.error { color:red; font-weight:bold; }
 </style>
  
 <script type="text/javascript">
-
 $(document).ready(function () {     
-	 $("#fgmdate").jqxDateTimeInput({width : '125px',height : '15px',formatString : "dd.MM.yyyy"});
+    /* Formatted jqxDateTimeInput heights to match modern UI 24px */
+    $("#fgmdate").jqxDateTimeInput({width : '125px', height : 24, formatString : "dd.MM.yyyy", theme: 'energyblue'});
+    
+    /* force internal alignment AFTER render */
+    setTimeout(function () {
+        $("#fgmdate").find("input").css({
+            "margin-top": "0px",
+            "line-height": "24px",
+            "font-size": "12px", 
+            "font-family": "Arial, sans-serif", 
+            "padding": "0 6px", 
+            "box-sizing":"border-box"
+        });
+        $("#fgmdate").find(".jqx-action-button").css({
+            "top": "0px",
+            "height": "24px"
+        });
+    }, 0);
 	
-	 //$('#jqxgroupgrid').jqxGrid({ disabled: true}); 
-	 
-	 $('#accountWindow').jqxWindow({width: '51%', height: '58%',  maxHeight: '70%' ,maxWidth: '51%' , title: 'Accounts Search',position: { x: 300, y: 87 } , theme: 'energyblue', showCloseButton: true, keyboardCloseKey: 27});
-	 $('#accountWindow').jqxWindow('close');
+    $('#accountWindow').jqxWindow({width: '51%', height: '58%',  maxHeight: '70%' ,maxWidth: '51%' , title: 'Accounts Search',position: { x: 300, y: 87 } , theme: 'energyblue', showCloseButton: true, keyboardCloseKey: 27});
+    $('#accountWindow').jqxWindow('close');
 		
-      		 $('#txtaccno').dblclick(function(){
-		  	    $('#accountWindow').jqxWindow('open');
-			    var url=document.URL;
-			    var reurl=url.split("com/");
-				  accountSearchContent(reurl[0]+'com/search/accountsearch/accountsEmployee.jsp');
-      		 }); 
-      		document.getElementById("formdet").innerText="Group Master(FGM)";
-    		document.getElementById("formdetail").value="Group Master";
-    		document.getElementById("formdetailcode").value="FGM";
-    		window.parent.formCode.value="FGM";
-    		window.parent.formName.value="Group Master";
-    		
-  });
+    $('#txtaccno').dblclick(function(){
+        $('#accountWindow').jqxWindow('open');
+        var url=document.URL;
+        var reurl=url.split("com/");
+        accountSearchContent(reurl[0]+'com/search/accountsearch/accountsEmployee.jsp');
+    }); 
+    
+    document.getElementById("formdet").innerText="Group Master(FGM)";
+    document.getElementById("formdetail").value="Group Master";
+    document.getElementById("formdetailcode").value="FGM";
+    window.parent.formCode.value="FGM";
+    window.parent.formName.value="Group Master";
+});
 	
-	function funFocus(){
-		document.getElementById("fgmcode").focus();
-	}
-	
-	function funReadOnly() {
-		$('#frmgrp input').attr('readonly', true);
-		$('#fgmdate').jqxDateTimeInput({ disabled: true}); 
-	}
-	
-	function funRemoveReadOnly() {
-		$('#frmgrp input').attr('readonly', false);
-		$('#fgmdate').jqxDateTimeInput({ disabled: false}); 
-		$('#docno').attr('readonly', true);
-		
-	}
-	
-	function setValues() {
-		if($('#hidfgmdate').val()){
-			$("#fgmdate").jqxDateTimeInput('val', $('#hidfgmdate').val());
-		}
-		
-		if($('#msg').val()!=""){
-			$.messager.alert('Message',$('#msg').val());
-		}
-		
-		getConfigs();
-		
-		if($('#docno').val()!=''){
-			if($('#hidchkopasset').val()=="1"){
-				document.getElementById("chkopasset").checked=true;
-			}
-			else{
-				document.getElementById("chkopasset").checked=false;
-			}
-		}
-	}
-	
-	$(function(){
-	    $('#frmgrp').validate({
-	             rules: {
-	             salesmanid: {required:true,maxlength:4},
-	             salesmanname: {required:true,maxlength:40},
-	             txtaccname:{required:true},
-	             telephone:{required:true,digits:true,minlength:12,maxlength:12},
-	             salesmanmail:{email:true}
-	             },
-	             messages: {
-	              salesmanid:{required:" *",maxlength:"Max 4 Chars."},
-	              salesmanname:{required:" *",maxlength:"Max 40 Chars."},
-	              txtaccname:{required:" *"},
-	              telephone:{required:" *",digits:"Digits only.",minlength:"Min 12 Chars.",maxlength:'Max 12 Chars.'},
-	              salesmanmail:{email:"Not a valid Email."}
-	             }
-	    });});
-	    
-	function funNotify(){
-		if(document.getElementById("fgmname").value==''){
-			document.getElementById("errormsg").innerText="Group Name is Mandatory.";
-			return false;
-		}
-		document.getElementById("errormsg").innerText="";
-		return 1;
-	}
-	
-	function funChkButton() {
-		   /* funReset(); */
-		  }
-		  
-	function funSearchLoad(){
-		changeContent('groupSearchGrid.jsp'); 
-	 }
- 	function getConfigs(){
- 		$.get('getConfigs.jsp',function(data){
- 			data=JSON.parse(data);
- 			if(data.OPAssetConfig=="1"){
- 				$('.opasset-section').show();
- 			}
- 			else{
- 				$('.opasset-section').hide();
- 			}
- 			if($('#docno').val()==''){
- 				funSetOPAsset();
- 			}
- 		});
- 	}
- 	
- 	function funSetOPAsset(){
- 		if(document.getElementById("chkopasset").checked==true){
- 			document.getElementById("hidchkopasset").value="1";
- 		}
- 		else{
- 			document.getElementById("hidchkopasset").value="0";
- 		}
- 	}
+function funFocus(){
+    document.getElementById("fgmcode").focus();
+}
+
+function funReadOnly() {
+    $('#frmgrp input').attr('readonly', true);
+    $('#fgmdate').jqxDateTimeInput({ disabled: true}); 
+}
+
+function funRemoveReadOnly() {
+    $('#frmgrp input').attr('readonly', false);
+    $('#fgmdate').jqxDateTimeInput({ disabled: false}); 
+    $('#docno').attr('readonly', true);
+}
+
+function setValues() {
+    if($('#hidfgmdate').val()){
+        $("#fgmdate").jqxDateTimeInput('val', $('#hidfgmdate').val());
+    }
+    
+    if($('#msg').val()!=""){
+        $.messager.alert('Message',$('#msg').val());
+    }
+    
+    getConfigs();
+    
+    if($('#docno').val()!=''){
+        if($('#hidchkopasset').val()=="1"){
+            document.getElementById("chkopasset").checked=true;
+        } else {
+            document.getElementById("chkopasset").checked=false;
+        }
+    }
+}
+
+$(function(){
+    $('#frmgrp').validate({
+        rules: {
+            salesmanid: {required:true,maxlength:4},
+            salesmanname: {required:true,maxlength:40},
+            txtaccname:{required:true},
+            telephone:{required:true,digits:true,minlength:12,maxlength:12},
+            salesmanmail:{email:true}
+        },
+        messages: {
+            salesmanid:{required:" *",maxlength:"Max 4 Chars."},
+            salesmanname:{required:" *",maxlength:"Max 40 Chars."},
+            txtaccname:{required:" *"},
+            telephone:{required:" *",digits:"Digits only.",minlength:"Min 12 Chars.",maxlength:'Max 12 Chars.'},
+            salesmanmail:{email:"Not a valid Email."}
+        }
+    });
+});
+    
+function funNotify(){
+    if(document.getElementById("fgmname").value==''){
+        document.getElementById("errormsg").innerText="Group Name is Mandatory.";
+        return false;
+    }
+    document.getElementById("errormsg").innerText="";
+    return 1;
+}
+
+function funChkButton() {
+   /* funReset(); */
+}
+  
+function funSearchLoad(){
+    changeContent('groupSearchGrid.jsp'); 
+}
+
+function getConfigs(){
+    $.get('getConfigs.jsp',function(data){
+        data=JSON.parse(data);
+        if(data.OPAssetConfig=="1"){
+            $('.opasset-section').show();
+        } else {
+            $('.opasset-section').hide();
+        }
+        if($('#docno').val()==''){
+            funSetOPAsset();
+        }
+    });
+}
+
+function funSetOPAsset(){
+    if(document.getElementById("chkopasset").checked==true){
+        document.getElementById("hidchkopasset").value="1";
+    } else {
+        document.getElementById("hidchkopasset").value="0";
+    }
+}
 </script>
 </head>
-<!-- onload="setValues();" -->
+
 <body onload="setValues();">
-	<div id="mainBG" class="homeContent" data-type="background">
-		<form id="frmgrp" action="saveActiongrp" method="post" autocomplete="off" >
-			<jsp:include page="../../../header.jsp" />
-			<br/> 
-			<fieldset><legend>Group Details</legend>
-				<table width="100%" border="0">
-  					<tr>
-    					<td width="5%" align="right">Date</td>
-    					<td width="16%"><div id="fgmdate" name="fgmdate" value='<s:property value="fgmdate"/>'></div></td>
-    					<td colspan="3" align="right">Doc No.</td>
-    					<td width="30%"><input type="text" id="docno" name="docno" value='<s:property value="docno"/>' readonly tabindex="-1"></td>
-  					</tr>
-  					<tr>
-    					<td align="right">Code</td>
-    					<td><input type="text" name="fgmcode" id="fgmcode" placeholder="Group Code" value='<s:property value="fgmcode"/>' ></td>
-   						<%--  <td width="11%" align="right">Name</td>
-    						<td width="33%"><input type="text" name="salesmanname" id="salesmanname" placeholder="Code Name" value='<s:property value="salesmanname"/>' style="width:59%;"></td> --%>
-    					<td width="5%" align="right">Name</td>
-    					<td colspan="2"><input type="text" name="fgmname" id="fgmname" style="width:80%;" placeholder="Group Name" value='<s:property value="fgmname"/>' ></td>
-  						<td class="opasset-section" >
-  							<input type="checkbox" id="chkopasset" name="chkopasset" onchange="funSetOPAsset();">OP Asset
-  							<input type="hidden" name="hidchkopasset" id="hidchkopasset" value='<s:property value="hidchkopasset"/>'>	
-  						</td>
-  					</tr>
-				</table>
-			</fieldset>
+    <div id="mainBG" class="homeContent" data-type="background">
+        <form id="frmgrp" action="saveActiongrp" method="post" autocomplete="off" >
+            <jsp:include page="../../../header.jsp" />
+            
+            <div class="modern-ui hidden-scrollbar">
+                <div id="errormsg"></div>
+                
+                <!-- Group Details Panel -->
+                <div class="middle-panel">
+                    <span class="middle-panel-title">Group Details</span>
+                    
+                    <div class="field-row">
+                        <label class="lbl-right" style="width: 80px;">Date</label>
+                        <div style="width: 125px;">
+                            <div id="fgmdate" name="fgmdate" value='<s:property value="fgmdate"/>'></div>
+                        </div>
+                        
+                        <label class="lbl-right" style="width: 80px; margin-left: auto;">Doc No.</label>
+                        <input type="text" id="docno" name="docno" style="width: 150px;" value='<s:property value="docno"/>' readonly tabindex="-1">
+                    </div>
+                    
+                    <div class="field-row" style="margin-bottom:0;">
+                        <label class="lbl-right" style="width: 80px;">Code</label>
+                        <input type="text" name="fgmcode" id="fgmcode" style="width: 125px;" placeholder="Group Code" value='<s:property value="fgmcode"/>'>
+                        
+                        <label class="lbl-right" style="width: 80px; margin-left: 20px;">Name</label>
+                        <input type="text" name="fgmname" id="fgmname" style="flex:1; max-width: 300px;" placeholder="Group Name" value='<s:property value="fgmname"/>'>
+                        
+                        <div class="opasset-section" style="margin-left: 20px; display: flex; align-items: center; gap: 6px;">
+                            <input type="checkbox" id="chkopasset" name="chkopasset" onchange="funSetOPAsset();">
+                            <label style="font-weight: bold; font-size: 12px; color: #444;">OP Asset</label>
+                            <input type="hidden" name="hidchkopasset" id="hidchkopasset" value='<s:property value="hidchkopasset"/>'>	
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grid Panel -->
+                <div class="middle-panel">
+                    <span class="middle-panel-title">Group Records</span>
+                    <div class="grid-container">
+                        <div id="grpgrid"><jsp:include page="groupGrid.jsp"></jsp:include></div> 
+                    </div>
+                </div>
 
-			<table width="100%">
-	  			<tr>
-	   				<td>
-	   					<div id="grpgrid"><jsp:include page="groupGrid.jsp"></jsp:include></div> 
-	   				</td>
-	  			</tr>
-			</table>
-
-			<input type="hidden" name="hidfgmdate" id="hidfgmdate" value='<s:property value="hidfgmdate"/>'/>
-			<input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'/>
-			<input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/>
-			<input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
-		</form>
-	</div>
-	<br/>
-	<div id="jqxSalesmanSearch1"></div>
-	<div id="accountWindow">
-		<div></div>
-		<div></div>
-	</div>
+                <!-- Hidden Fields -->
+                <div style="display:none;">
+                    <input type="hidden" name="hidfgmdate" id="hidfgmdate" value='<s:property value="hidfgmdate"/>'/>
+                    <input type="hidden" name="mode" id="mode" value='<s:property value="mode"/>'/>
+                    <input type="hidden" name="deleted" id="deleted" value='<s:property value="deleted"/>'/>
+                    <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'/>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Dialog Windows -->
+    <div id="jqxSalesmanSearch1"></div>
+    <div id="accountWindow">
+        <div></div>
+        <div></div>
+    </div>
 </body>
 </html>
