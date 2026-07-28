@@ -1,8 +1,21 @@
 <jsp:include page="../../../../includes.jsp"></jsp:include>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GatewayERP(i)</title>
+        
+        <style type="text/css">
+        /* ===== MASTER LAYOUT (Modern Flexbox) ===== */
+        html, body, #mainBG {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f4f7f9;
+        }
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
