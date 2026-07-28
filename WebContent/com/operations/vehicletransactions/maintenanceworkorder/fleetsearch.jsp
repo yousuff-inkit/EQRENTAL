@@ -36,50 +36,200 @@
 		}
 
 	</script>
-<body bgcolor="#E0ECF8">
-<div id=search>
-<table width="100%" >
-  <tr >
-   <td>
-   <table >
-   <tr>
-    <td align="right" width="6%">Fleet</td> 
-    <td align="left" ><input type="text" name="fleetno" id="fleetno"  style="width:90%;" value='<s:property value="fleetno"/>'></td>
-    <td align="right" width="14%">Reg No</td>
-    <td align="left"><input type="text" name="regno" id="regno" value='<s:property value="regno"/>'></td>
-    
-   <td align="right"  width="14%">Name</td>
-    <td align="left"  width="30%"><input type="text" name="flname" style="width:90%;" id="flname" value='<s:property value="flname"/>'></td>
-    
-    <tr>
-    </table>
-    </td>
-  </tr>
-  <tr>
-  <td>
-  <table >
-  <tr>
-   <td align="right" width="6%">Color</td>
-    <td align="left" ><input type="text" name="color"  style="width:90%;" id="color" value='<s:property value="color"/>'>
-    <td align="right" width="14%">Group</td>
-    <td align="left"><input type="text" name="group" id="group" value='<s:property value="group"/>'></td>
-    <td align="right"  width="14%">&nbsp;</td>
-    <td align="left"  width="30%"><input type="button" name="btnrasearch" id="btnrasearch" class="myButton" value="Search"  onclick="loadSearchs();"></td>
-  </tr>
-  </table>
-  </td>
+<style>
+/* =========================================================
+   SCOPED UI: Segoe UI Font & Clean White Search Panel
+========================================================= */
+body {
+    margin: 0;
+    background-color: #fff;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
 
-  <tr>
-    <td colspan="8" align="right">
-    
-    <div id="refreshdivs">
-      
-   <jsp:include  page="subvehinfo.jsp"></jsp:include> 
-   
-   </div>
-    </td>
-  </tr>
-</table>
-  </div>
+.modern-ui {
+    font-size: 12px;
+    color: #333;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Master Input Styles */
+.modern-ui input[type="text"],
+.modern-ui select {
+    height: 24px !important;
+    border: 1px solid #BDBDBD;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+    width: 100%;
+}
+
+.modern-ui input[type="text"]:focus,
+.modern-ui select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Search Panel */
+.modern-ui .search-panel {
+    background: #fff;
+    border: 1px solid #BDBDBD;
+    border-radius: 4px;
+    padding: 12px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Table */
+.modern-ui table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 8px 10px;
+    table-layout: fixed;
+}
+
+.modern-ui td {
+    vertical-align: middle;
+}
+
+.modern-ui .lbl-right {
+    text-align: right;
+    color: #222;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    white-space: nowrap;
+    padding-right: 6px;
+}
+
+/* Button */
+.modern-ui .myButton {
+    height: 26px;
+    padding: 0 20px;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    transition: all 0.2s;
+}
+
+.modern-ui .myButton:hover {
+    background-color: #004494;
+}
+
+/* Grid */
+.modern-ui .grid-container {
+    border: 1px solid #BDBDBD;
+    background: #fff;
+    overflow: hidden;
+    width: 100%;
+}
+</style>
+
+<body style="background:#fff; margin:0;">
+
+<div id="search" class="modern-ui">
+
+    <div class="search-panel">
+
+        <table border="0" cellspacing="0" cellpadding="0">
+
+            <!-- Uniform Master Layout : 3 Label-Field Pairs -->
+            <colgroup>
+                <col width="10%">
+                <col width="23%">
+                <col width="10%">
+                <col width="23%">
+                <col width="10%">
+                <col width="24%">
+            </colgroup>
+
+            <!-- Row 1 -->
+            <tr>
+
+                <td class="lbl-right">Fleet</td>
+                <td>
+                    <input type="text"
+                           name="fleetno"
+                           id="fleetno"
+                           value='<s:property value="fleetno"/>'>
+                </td>
+
+                <td class="lbl-right">Reg No</td>
+                <td>
+                    <input type="text"
+                           name="regno"
+                           id="regno"
+                           value='<s:property value="regno"/>'>
+                </td>
+
+                <td class="lbl-right">Name</td>
+                <td>
+                    <input type="text"
+                           name="flname"
+                           id="flname"
+                           value='<s:property value="flname"/>'>
+                </td>
+
+            </tr>
+
+            <!-- Row 2 -->
+            <tr>
+
+                <td class="lbl-right">Color</td>
+                <td>
+                    <input type="text"
+                           name="color"
+                           id="color"
+                           value='<s:property value="color"/>'>
+                </td>
+
+                <td class="lbl-right">Group</td>
+                <td>
+                    <input type="text"
+                           name="group"
+                           id="group"
+                           value='<s:property value="group"/>'>
+                </td>
+
+                <td></td>
+
+                <td align="center">
+                    <input type="button"
+                           name="btnrasearch"
+                           id="btnrasearch"
+                           class="myButton"
+                           value="Search"
+                           onclick="loadSearchs();">
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdivs">
+
+            <jsp:include page="subvehinfo.jsp"></jsp:include>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

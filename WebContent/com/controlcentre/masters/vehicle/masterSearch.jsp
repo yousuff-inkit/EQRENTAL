@@ -13,110 +13,7 @@
 <%-- <link href="<%=contextPath%>/css/body.css" media="screen" rel="stylesheet" type="text/css" />
  --%>
 </style>
-<style>
-/* =========================================================
-   SCOPED UI: Strict Pixel Grid Alignment & Modern Inputs
-========================================================= */
-body {
-    margin: 0;
-    background-color: #fff;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-}
 
-.modern-ui {
-    font-size: 12px;
-    color: #333;
-    padding: 10px;
-    box-sizing: border-box;
-    width: 100%;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-}
-
-/* Master Input Heights - Explicit Font Family Added */
-.modern-ui input[type="text"],
-.modern-ui select {
-    height: 24px !important;
-    border: 1px solid #b8c6d8;
-    border-radius: 3px;
-    padding: 2px 6px;
-    font-size: 12px;
-    font-weight: normal !important; 
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    box-sizing: border-box;
-    background-color: #fff;
-    color: #333;
-    width: 100%;
-}
-
-.modern-ui input[type="text"]:focus,
-.modern-ui select:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-/* Panel Styling - Pure White */
-.modern-ui .search-panel {
-    background-color: #fff !important; 
-    border: 1px solid #c5d3e0;
-    border-radius: 4px;
-    padding: 15px 10px;
-    margin-bottom: 10px;
-}
-
-/* Table Alignment - STRICT PERCENTAGE GRID */
-.modern-ui table {
-    border-collapse: separate;
-    border-spacing: 5px 8px; 
-    width: 100%;
-    table-layout: fixed; /* Locks columns from squishing */
-}
-
-.modern-ui td {
-    vertical-align: middle;
-    padding: 0;
-}
-
-.modern-ui .lbl-right { 
-    text-align: right; 
-    color: #444;
-    font-size: 12px; 
-    font-weight: 600;
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    white-space: nowrap; 
-    padding-right: 5px;
-}
-
-/* Modern Search Button */
-.modern-ui .myButton {
-    height: 26px !important; 
-    line-height: 24px !important;
-    padding: 0 30px;
-    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
-    color: #fff !important;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold; 
-    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-    box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
-    transition: all 0.2s;
-    text-transform: uppercase;
-}
-
-.modern-ui .myButton:hover {
-    background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%);
-    transform: translateY(-1px);
-}
-
-/* Data Grid Container */
-.modern-ui .grid-container {
-    border: 1px solid #c5d3e0;
-    border-radius: 4px;
-    background: #fff;
-    overflow: hidden;
-}
-</style>
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$("#searchdate").jqxDateTimeInput({ width: '100%', height: '15px',formatString:"dd.MM.yyyy",value:null});
@@ -144,39 +41,216 @@ body {
 		}
  
 	</script>
-<body bgcolor="#E0ECF8">
-<div id=search>
-  <table width="100%" >
-    <tr>
-    <td width="6%" align="right">Fleet No</td>
-    <td width="19%" align="left"><input type="text" name="searchfleet" id="searchfleet" value='<s:property value="searchfleet"/>'></td>
-    <td width="9%" align="right">Fleet Name</td>
-    <td align="left"><input type="text" name="searchfleetname" id="searchfleetname" value='<s:property value="searchfleetname"/>' style="width:99%;"></td>
-    <td align="right">Engine No</td>
-    <td align="left"><input type="text" name="searchengine" id="searchengine" value='<s:property value="searchengine"/>'></td>
-    <td align="right">Chassis No</td>
-    <td align="left"><input type="text" name="searchchassis" id="searchchassis" value='<s:property value="searchchassis"/>'></td>
-    </tr>
-  <tr>
-    <td align="right">Doc No</td>
-    <td align="left"><input type="text" name="searchdocno" id="searchdocno"  value='<s:property value="searchdocno"/>'></td>
-    <td align="right">Date</td>
-    <td width="19%" align="left"><div id="searchdate" name="searchdate"></div></td>
-    <td width="12%" align="right">Reg No</td>
-    <td width="11%" align="left"><input type="text" name="searchregno" id="searchregno"></td>
-    <td width="24%" colspan="2" align="center"><input type="button" name="btninvsearch" id="btninvsearch" class="myButton" value="Search"  onClick="mainloadSearch();"></td>
-    
-  </tr>
-  <tr>
-    <td colspan="8" align="right"> 
-    <div id="srefreshdiv">
-      
-   <jsp:include  page="subMainSearch.jsp"></jsp:include> 
-   
-   </div></td>
-    </tr>
-</table>
+<style>
+/* =========================================================
+   SCOPED UI: Segoe UI Font & Clean White Search Panel
+========================================================= */
+body {
+    margin: 0;
+    background-color: #fff;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
 
-  </div>
+.modern-ui {
+    font-size: 12px;
+    color: #333;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Inputs */
+.modern-ui input[type="text"],
+.modern-ui select {
+    height: 24px !important;
+    border: 1px solid #BDBDBD;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: 'Segoe UI','Roboto','Arial',sans-serif;
+    box-sizing: border-box;
+    background: #fff;
+    color: #333;
+    width: 100%;
+}
+
+.modern-ui input[type="text"]:focus,
+.modern-ui select:focus{
+    border-color:#007bff;
+    outline:none;
+}
+
+/* Search Panel */
+.modern-ui .search-panel{
+    background:#fff;
+    border:1px solid #BDBDBD;
+    border-radius:4px;
+    padding:12px 10px;
+    margin-bottom:10px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+/* Table */
+.modern-ui table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:8px 10px;
+    table-layout:fixed;
+}
+
+.modern-ui td{
+    vertical-align:middle;
+}
+
+.modern-ui .lbl-right{
+    text-align:right;
+    font-size:12px;
+    font-weight:600;
+    color:#222;
+    white-space:nowrap;
+    padding-right:6px;
+}
+
+/* Button */
+.modern-ui .myButton{
+    height:26px;
+    padding:0 22px;
+    background:#0056b3;
+    color:#fff;
+    border:none;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    font-family:'Segoe UI','Roboto','Arial',sans-serif;
+}
+
+.modern-ui .myButton:hover{
+    background:#004494;
+}
+
+/* Grid */
+.modern-ui .grid-container{
+    border:1px solid #BDBDBD;
+    background:#fff;
+    overflow:hidden;
+    width:100%;
+}
+</style>
+
+<body style="background:#fff;margin:0;">
+
+<div id="search" class="modern-ui">
+
+    <div class="search-panel">
+
+        <table border="0" cellspacing="0" cellpadding="0">
+
+            <colgroup>
+                <col width="10%">
+                <col width="23%">
+                <col width="10%">
+                <col width="23%">
+                <col width="10%">
+                <col width="24%">
+            </colgroup>
+
+            <!-- Row 1 -->
+            <tr>
+
+                <td class="lbl-right">Fleet No</td>
+                <td>
+                    <input type="text"
+                           name="searchfleet"
+                           id="searchfleet"
+                           value='<s:property value="searchfleet"/>'>
+                </td>
+
+                <td class="lbl-right">Fleet Name</td>
+                <td>
+                    <input type="text"
+                           name="searchfleetname"
+                           id="searchfleetname"
+                           value='<s:property value="searchfleetname"/>'>
+                </td>
+
+                <td class="lbl-right">Engine No</td>
+                <td>
+                    <input type="text"
+                           name="searchengine"
+                           id="searchengine"
+                           value='<s:property value="searchengine"/>'>
+                </td>
+
+            </tr>
+
+            <!-- Row 2 -->
+            <tr>
+
+                <td class="lbl-right">Chassis No</td>
+                <td>
+                    <input type="text"
+                           name="searchchassis"
+                           id="searchchassis"
+                           value='<s:property value="searchchassis"/>'>
+                </td>
+
+                <td class="lbl-right">Doc No</td>
+                <td>
+                    <input type="text"
+                           name="searchdocno"
+                           id="searchdocno"
+                           value='<s:property value="searchdocno"/>'>
+                </td>
+
+                <td class="lbl-right">Date</td>
+                <td>
+                    <div id="searchdate" name="searchdate"></div>
+                </td>
+
+            </tr>
+
+            <!-- Row 3 -->
+            <tr>
+
+                <td class="lbl-right">Reg No</td>
+                <td>
+                    <input type="text"
+                           name="searchregno"
+                           id="searchregno">
+                </td>
+
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <td align="center">
+                    <input type="button"
+                           name="btninvsearch"
+                           id="btninvsearch"
+                           class="myButton"
+                           value="Search"
+                           onclick="mainloadSearch();">
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="srefreshdiv">
+
+            <jsp:include page="subMainSearch.jsp"></jsp:include>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
