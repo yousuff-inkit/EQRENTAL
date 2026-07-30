@@ -44,44 +44,196 @@
 		}
 
 	</script>
-<body bgcolor="#E0ECF8">
-<div id=search>
-<table width="100%" >
-  <tr >
-   <td>
-   <table width="100%" >
-   <tr>
-    <td align="right" width="9%"><label style="font-size:9px;">Doc No</label></td>
-    <td align="left" width="20%"><input type="text" name="docnoss" id="docnoss"  style="width:90%;height:20px;" value='<s:property value="docnoss"/>'></td>
-    <td align="right" width="10%"><label style="font-size:9px;">Ref No</label></td>
-    <td align="left"  width="20%"><input type="text" name="refnoss" id="refnoss" style="width:100%;height:20px;"  value='<s:property value="refnoss"/>'></td>
-     <td align="right" width="6%"><label style="font-size:9px;">Date</label> </td>
-    <td align="left" width="20%"><div id="datess1" name="datess1"  value='<s:property value="datess1"/>'></div></td>
-    <tr>
-     
-        <tr> 
-        <td align="right"  width="9%"><label style="font-size:9px;">Description</label></td>
-    <td align="left" colspan="4" width="30%"><input type="text" name="descriptionss" style="width:89%;height:20px;" id="descriptionss" value='<s:property value="descriptionss"/>'></td>  
-    
-   
-     <td  width="20%"><input type="button" name="searchs" id="searchs" class="myButton" value="Search"  onclick="loadSearchs()">
-</td>
-    
-    <tr>
-    </table>
-  </td>
+<style>
+/* =========================================================
+   SCOPED UI : Segoe UI Font & Clean White Search Panel
+========================================================= */
+body{
+    margin:0;
+    background:#fff;
+    font-family:'Segoe UI','Roboto','Arial',sans-serif;
+}
 
-  <tr>
-    <td colspan="8" align="right">
-    
-    <div id="refreshdivs">
-      
-   <jsp:include  page="Subsearch.jsp"></jsp:include> 
-   
-   </div>
-    </td>
-  </tr>
-</table>
-  </div>
+.modern-ui{
+    font-size:12px;
+    color:#333;
+    padding:10px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+/* Master Input Styles */
+.modern-ui input[type="text"],
+.modern-ui select{
+    width:100%;
+    height:24px !important;
+    border:1px solid #BDBDBD;
+    border-radius:3px;
+    padding:2px 6px;
+    box-sizing:border-box;
+    font-size:12px;
+    font-family:'Segoe UI','Roboto','Arial',sans-serif;
+    background:#fff;
+    color:#333;
+}
+
+.modern-ui input[type="text"]:focus,
+.modern-ui select:focus{
+    border-color:#007bff;
+    outline:none;
+}
+
+/* Search Panel */
+.modern-ui .search-panel{
+    background:#fff;
+    border:1px solid #BDBDBD;
+    border-radius:4px;
+    padding:12px 10px;
+    margin-bottom:10px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+/* Table */
+.modern-ui table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:8px 10px;
+    table-layout:fixed;
+}
+
+.modern-ui td{
+    vertical-align:middle;
+}
+
+.modern-ui .lbl-right{
+    text-align:right;
+    font-weight:600;
+    color:#222;
+    font-size:12px;
+    white-space:nowrap;
+    padding-right:6px;
+}
+
+/* Button */
+.modern-ui .myButton{
+    height:26px;
+    padding:0 20px;
+    background:#0056b3;
+    color:#fff;
+    border:none;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
+    font-family:'Segoe UI','Roboto','Arial',sans-serif;
+    transition:all .2s;
+}
+
+.modern-ui .myButton:hover{
+    background:#004494;
+}
+
+/* Grid */
+.modern-ui .grid-container{
+    border:1px solid #BDBDBD;
+    background:#fff;
+    overflow:hidden;
+    width:100%;
+}
+</style>
+
+<body style="background:#fff;margin:0;">
+
+<div id="search" class="modern-ui">
+
+    <div class="search-panel">
+
+        <table border="0" cellspacing="0" cellpadding="0">
+
+            <!-- Dynamic layout for Description -->
+            <colgroup>
+                <col width="10%">
+                <col width="20%">
+
+                <col width="10%">
+                <col width="20%">
+
+                <col width="10%">
+                <col width="30%">
+            </colgroup>
+
+            <!-- Row 1 -->
+            <tr>
+
+                <td class="lbl-right">Doc No</td>
+
+                <td>
+                    <input type="text"
+                           name="docnoss"
+                           id="docnoss"
+                           value='<s:property value="docnoss"/>'>
+                </td>
+
+                <td class="lbl-right">Ref No</td>
+
+                <td>
+                    <input type="text"
+                           name="refnoss"
+                           id="refnoss"
+                           value='<s:property value="refnoss"/>'>
+                </td>
+
+                <td class="lbl-right">Date</td>
+
+                <td>
+                    <div id="datess1"
+                         name="datess1"
+                         value='<s:property value="datess1"/>'></div>
+                </td>
+
+            </tr>
+
+            <!-- Row 2 -->
+            <tr>
+
+                <td class="lbl-right">Description</td>
+
+                <td colspan="3">
+                    <input type="text"
+                           name="descriptionss"
+                           id="descriptionss"
+                           value='<s:property value="descriptionss"/>'>
+                </td>
+
+                <td></td>
+
+                <td align="center">
+                    <input type="button"
+                           name="searchs"
+                           id="searchs"
+                           class="myButton"
+                           value="Search"
+                           onclick="loadSearchs();">
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdivs">
+
+            <jsp:include page="Subsearch.jsp"></jsp:include>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
