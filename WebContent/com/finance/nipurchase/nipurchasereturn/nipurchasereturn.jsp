@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <jsp:include page="../../../../includeso.jsp"></jsp:include>
+  <jsp:include page="../../../../includes.jsp"></jsp:include>
 
 <style>
 /* =========================================================

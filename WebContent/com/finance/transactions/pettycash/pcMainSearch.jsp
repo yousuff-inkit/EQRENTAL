@@ -1,4 +1,4 @@
- <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
  <% String contextPath=request.getContextPath();%>
 <!DOCTYPE html>
 <html>
@@ -12,7 +12,7 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 	 $("#paydate").jqxDateTimeInput({ width: '110px', height: '15px',formatString:"dd.MM.yyyy",value:null});
-	}); 
+	});
 
  	function loadSearch() {
 
@@ -21,7 +21,7 @@
  		var date=document.getElementById("paydate").value;
  		var amount=document.getElementById("txtpettyamount").value;
 	    var check = 1;
-	    
+
 		getdata(partyname,docNo,date,amount,check);
 	}
 	function getdata(partyname,docNo,date,amount,check){
@@ -29,27 +29,162 @@
 		}
 
 	</script>
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td width="6%" align="right">Date</td>
-    <td width="14%"><div id="paydate" name="paydate"  value='<s:property value="paydate"/>'></div>
-        <input type="hidden" name="hidpaydate" id="hidpaydate" value='<s:property value="hidpaydate"/>'></td>
-    <td width="21%" align="right">Doc No</td>
-    <td width="32%"><input type="text" name="txtpettydocno" id="txtpettydocno" value='<s:property value="txtpettydocno"/>'></td>
-    <td width="27%" align="center"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr>
-    <td align="right">Name</td>
-    <td colspan="2"><input type="text" name="txtpartyname" id="txtpartyname" style="width:100%" value='<s:property value="txtpartyname"/>'></td>
-    <td align="right">Amount</td>
-    <td><input type="text" name="txtpettyamount" id="txtpettyamount" value='<s:property value="txtpettyamount"/>'></td>
-  </tr>
-  <tr>
-    <td colspan="5"><div id="refreshdiv"><jsp:include page="pcMainSearchGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <div class="field-group">
+            <span class="lbl-right">Date</span>
+            <div id="paydate"
+                 name="paydate"
+                 value='<s:property value="paydate"/>'></div>
+            <input type="hidden"
+                   id="hidpaydate"
+                   name="hidpaydate"
+                   value='<s:property value="hidpaydate"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Doc No</span>
+            <input type="text"
+                   id="txtpettydocno"
+                   name="txtpettydocno"
+                   class="search-input"
+                   value='<s:property value="txtpettydocno"/>'>
+        </div>
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">Name</span>
+            <input type="text"
+                   id="txtpartyname"
+                   name="txtpartyname"
+                   class="search-input"
+                   value='<s:property value="txtpartyname"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Amount</span>
+            <input type="text"
+                   id="txtpettyamount"
+                   name="txtpettyamount"
+                   class="search-input"
+                   value='<s:property value="txtpettyamount"/>'>
+        </div>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="btnsearch"
+                name="btnsearch"
+                class="myButton"
+                onclick="loadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdiv">
+            <jsp:include page="pcMainSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

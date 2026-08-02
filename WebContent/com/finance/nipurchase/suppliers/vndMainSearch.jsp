@@ -1,4 +1,4 @@
- <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
  <% String contextPath=request.getContextPath();%>
 <!DOCTYPE html>
 <html>
@@ -10,11 +10,11 @@
 <title>GatewayERP(i)</title>
 
 <script type="text/javascript">
-	
-	$(document).ready(function () {}); 
+
+	$(document).ready(function () {});
 
  	function loadSearch() {
- 		
+
  		var vndname=document.getElementById("txtvendorsname").value;
  		var vndaccno=document.getElementById("txtaccountno").value;
  		var vndmob=document.getElementById("txtmobile").value;
@@ -23,31 +23,165 @@
  		getdata(vndname,vndaccno,vndmob,vndtel);
 	}
 	function getdata(vndname,vndaccno,vndmob,vndtel){
-		
+
 		 $("#refreshdiv").load('vndMainSearchGrid.jsp?vndname='+vndname.replace(/ /g, "%20")+'&vndaccno='+vndaccno+'&vndmob='+vndmob+'&vndtel='+vndtel);
 		}
 
 	</script>
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td width="6%" align="right">Name</td>
-    <td colspan="4"><input type="text" name="txtvendorsname" id="txtvendorsname" style="width:80%" value='<s:property value="txtvendorsname"/>'></td>
-    <td width="24%" align="center"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr>
-    <td align="right">A/C No.</td>
-    <td width="21%"><input type="text" name="txtaccountno" id="txtaccountno" value='<s:property value="txtaccountno"/>'></td>
-    <td width="7%" align="right">Mob No.</td>
-    <td width="36%"><input type="text" name="txtmobile" id="txtmobile" value='<s:property value="txtmobile"/>'></td>
-    <td width="6%" align="right">Tel No.</td>
-    <td><input type="text" name="txttelephone" id="txttelephone" value='<s:property value="txttelephone"/>'></td>
-  </tr>
-  <tr>
-    <td colspan="6"><div id="refreshdiv"><jsp:include  page="vndMainSearchGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">Name</span>
+            <input type="text"
+                   id="txtvendorsname"
+                   name="txtvendorsname"
+                   class="search-input"
+                   value='<s:property value="txtvendorsname"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">A/C No.</span>
+            <input type="text"
+                   id="txtaccountno"
+                   name="txtaccountno"
+                   class="search-input"
+                   value='<s:property value="txtaccountno"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Mob No.</span>
+            <input type="text"
+                   id="txtmobile"
+                   name="txtmobile"
+                   class="search-input"
+                   value='<s:property value="txtmobile"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Tel No.</span>
+            <input type="text"
+                   id="txttelephone"
+                   name="txttelephone"
+                   class="search-input"
+                   value='<s:property value="txttelephone"/>'>
+        </div>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="btnsearch"
+                name="btnsearch"
+                class="myButton"
+                onclick="loadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdiv">
+            <jsp:include page="vndMainSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
