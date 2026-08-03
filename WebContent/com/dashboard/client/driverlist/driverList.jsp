@@ -11,7 +11,6 @@
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 
 <style type="text/css">
-    /* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
     .master-container {
         display: flex;
         height: 100%;
@@ -22,7 +21,7 @@
         flex: 0 0 330px;
         width: 330px;
         height: 100%;
-        background: #ECF8E0;
+        background: #fff;
         box-sizing: border-box;
         overflow-y: auto;
     }
@@ -115,8 +114,13 @@
         width: 2.5em;
         height: 2em;
         border: none;
-        background-color: #ECF8E0;
+        background-color: #fff;
     }
+    
+    .branc{
+    background:#fff !important;
+    }
+    
 </style>
 
 <script type="text/javascript">
@@ -471,14 +475,14 @@
         <div class="sidebar-scroll-content">
 
             <div class="filter-card">
-                <fieldset><legend><b><label class="branch">Report Type</label></b></legend>
+                <fieldset><legend><b><label class="branch branc">Report Type</label></b></legend>
                     <table width="100%">
                         <tr>
-                            <td width="48%" align="center"><input type="radio" id="rddriverlist" name="rdo" onchange="radioClick();" value="rddriverlist"><label for="rddriverlist" class="branch">Driver List</label></td>
-                            <td width="52%" align="center"><input type="radio" id="rddeletedriver" name="rdo" onchange="radioClick();" value="rddeletedriver"><label for="rddeletedriver" class="branch">Delete Driver</label></td>
+                            <td width="48%" align="center"><input type="radio" id="rddriverlist" name="rdo" onchange="radioClick();" value="rddriverlist"><label for="rddriverlist" class="branch branc">Driver List</label></td>
+                            <td width="52%" align="center"><input type="radio" id="rddeletedriver" name="rdo" onchange="radioClick();" value="rddeletedriver"><label for="rddeletedriver" class="branch branc">Delete Driver</label></td>
                         </tr>
                         <tr>
-                            <td colspan="2" align="center"><input type="radio" id="rdadditionaldriver" name="rdo" onchange="radioClick();" value="rdadditionaldriver"><label for="rdadditionaldriver" class="branch">Add Additional Driver</label></td>
+                            <td colspan="2" align="center"><input type="radio" id="rdadditionaldriver" name="rdo" onchange="radioClick();" value="rdadditionaldriver"><label for="rdadditionaldriver" class="branch branc">Add Additional Driver</label></td>
                         </tr>
                     </table>
                 </fieldset>

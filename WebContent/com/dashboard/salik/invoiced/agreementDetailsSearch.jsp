@@ -1,99 +1,216 @@
- <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<% String contextPath=request.getContextPath();%>
 <!DOCTYPE html>
 <html>
 <head>
- 
-<% String contextPath=request.getContextPath();%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GatewayERP(i)</title>
-<%--   <jsp:include page="../../../../includes.jsp"></jsp:include>   --%> 
 <link href="<%=contextPath%>/css/body.css" media="screen" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        // Initialization if needed
+    }); 
+
+    function mainloadSearch() {
+        var sclname = document.getElementById("SCl_name").value;
+        var smob = document.getElementById("Sl_mob").value;
+        var rno = document.getElementById("rno").value;
+        var flno = document.getElementById("flno").value;
+        var sregno = document.getElementById("sregno").value;
+        
+        // Safely fetch rentaltype value to prevent JS errors
+        var rentalTypeElem = document.getElementById("rentaltype");
+        var rentaltype = rentalTypeElem ? rentalTypeElem.value : "";
+        
+        getdata(sclname, smob, rno, flno, sregno, rentaltype);
+    }
+    
+    function getdata(sclname, smob, rno, flno, sregno, rentaltype){
+        // Upgraded to use encodeURIComponent for safe parameter passing
+        var url = 'agreementDetailsSearchGrid.jsp' +
+                  '?sclname=' + encodeURIComponent(sclname) +
+                  '&smob=' + encodeURIComponent(smob) +
+                  '&rno=' + encodeURIComponent(rno) +
+                  '&flno=' + encodeURIComponent(flno) +
+                  '&sregno=' + encodeURIComponent(sregno) +
+                  '&rentaltype=' + encodeURIComponent(rentaltype);
+                  
+         $("#srefreshdiv").load(url);
+    }
+    </script>
+
 <style>
-.textdetail {
-	color: black;
-	background-color: #E0ECF8;
-	width: 100%;
-	font-family: Tahoma;
-	font-size: 10px;
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
 }
 </style>
+</head>
+<body>
 
-	<script type="text/javascript">
-	$(document).ready(function () {
-	
-	}); 
+<div id="search">
 
- 	function mainloadSearch() {
- 		
- 		var sclname=document.getElementById("SCl_name").value;
- 		var smob=document.getElementById("Sl_mob").value;
- 		var rno=document.getElementById("rno").value;
- 		var flno=document.getElementById("flno").value;
- 		var sregno=document.getElementById("sregno").value;
- 		
- 		var rentaltype=document.getElementById("rentaltype").value;
- 		
+    <div class="search-panel">
+        
+        <div class="field-group grow-2">
+            <span class="lbl-right">Name</span>
+            <input type="text"
+                   id="SCl_name"
+                   name="SCl_name"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="SCl_name"/>'>
+        </div>
 
-	
-		getdata(sclname,smob,rno,flno,sregno,rentaltype);
+        <div class="field-group">
+            <span class="lbl-right">Mob</span>
+            <input type="text"
+                   id="Sl_mob"
+                   name="Sl_mob"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="Sl_mob"/>'>
+        </div>
 
-	}
-	 function getdata(sclname,smob,rno,flno,sregno,rentaltype){
-		 $("#srefreshdiv").load('agreementDetailsSearchGrid.jsp?sclname='+sclname+'&smob='+smob+'&rno='+rno+'&flno='+flno+'&sregno='+sregno+'&rentaltype='+rentaltype);
-		}
- 
-	</script>
-<body bgcolor="#E0ECF8">
-<div id=search>
-<table width="100%" >
-  <tr >
-   <td>
-   <table >
-   <tr>
-    <td align="left" width="6.5%"><label class="textdetail">Name</label></td>
-    <td align="left" width="54%"><input type="text" name="SCl_name" id="SCl_name"  style="width:96.5%;height:20px;" value='<s:property value="SCl_name"/>'></td>
-    <td align="right"><label class="textdetail">Mob</label></td>
-    <td align="left"><input type="text" name="Sl_mob" id="Sl_mob" style="height:20px;" value='<s:property value="Sl_mob"/>'></td>
-      <td align="right" width="10%"><label class="textdetail">Reg No</label></td>
-    <td align="left"><input type="text" id="sregno" name="sregno" style="height:20px;" value='<s:property value="sregno"/>'></td>
-    <tr>
-    </table>
-    </td>
-  </tr>
- <tr>
- <td>
-		
-  <table >
-  <tr>
- 
-     <td align="left" width="7%"><label class="textdetail">Doc No</label></td>
-    <td align="left" width="54%"><input type="text" name="rno" id="rno" style="height:20px;" value='<s:property value="rno"/>'>
-  &nbsp;<label class="textdetail">Fleet No</label>
-    <input type="text" name="flno" id="flno" style="width:34%;height:20px;" value='<s:property value="flno"/>'></td>
-<!--     <td align="right"><label class="textdetail"></label></td>
-    <td align="left"></td> -->
-    
-    <td  align="left">&nbsp;&nbsp;<input type="button" name="mbtnrasearch" id="mbtnrasearch" class="myButton" value="Search"  onclick="mainloadSearch();"></td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
-  </tr>
-  </table>
-  </td>
+        <div class="field-group">
+            <span class="lbl-right">Reg No</span>
+            <input type="text"
+                   id="sregno"
+                   name="sregno"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="sregno"/>'>
+        </div>
 
-  <tr>
-    <td colspan="8" align="right">
-    
-    <div id="srefreshdiv">
-      
-   <jsp:include  page="agreementDetailsSearchGrid.jsp"></jsp:include> 
-   
-   </div>
-    </td>
-  </tr>
-</table>
-  </div>
+        <div class="field-group">
+            <span class="lbl-right">Doc No</span>
+            <input type="text"
+                   id="rno"
+                   name="rno"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="rno"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Fleet No</span>
+            <input type="text"
+                   id="flno"
+                   name="flno"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="flno"/>'>
+        </div>
+
+        <!-- Added gracefully to prevent JS errors based on your original script -->
+        <input type="hidden" id="rentaltype" name="rentaltype" value='<s:property value="rentaltype"/>'>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="mbtnrasearch"
+                name="mbtnrasearch"
+                class="myButton"
+                onclick="mainloadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+        <div id="srefreshdiv">
+           <jsp:include page="agreementDetailsSearchGrid.jsp"></jsp:include> 
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>

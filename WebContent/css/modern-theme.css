@@ -92,14 +92,7 @@ textarea:focus {
   border-color: var(--c-primary) !important;
   box-shadow: 0 0 0 3px var(--c-primary-ring) !important;
 }
-input[readonly],
-input[disabled],
-textarea[readonly],
-textarea[disabled] {
-  background: #f8fafc !important;
-  color: var(--c-text-muted) !important;
-  cursor: default !important;
-}
+
 
 select {
   border: 1.5px solid var(--c-border) !important;
@@ -124,9 +117,7 @@ label {
   color: var(--c-text) !important;
 }
 
-/* ============================================================
-   TABLES  (skip jqx grid internal tables)
-   ============================================================ */
+
 table:not([class*="jqx"]):not([class*="easyui"]) {
   border-collapse: collapse !important;
 }

@@ -16,41 +16,29 @@ font-size:12px;
 
 }
 .myButtons {
-	display: inline-block;
-	margin-right:4px;
-	margin-left:4px; 
-  margin-bottom: 0;
-  font-weight: normal;
-  line-height: 1.3;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: #fff;
-  background-color: #31b0d5;
+	 height: 30px !important;
+    padding: 0 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 30px;
+    background: #1d4ed8 !important;
+    color: #fff;
+    border: none;
+    cursor: pointer;
 }
 .myButtons:hover {
 	  color: #fff;
-  background-color: #31b0d5;
+     background: #1d4ed8;
   
 }
 .myButtons:active {
   color: #fff;
-  background-color: #31b0d5;
+      background: #1d4ed8;
   
 }
 .myButtons:focus {
   color: #fff;
-  background-color: grey;
+      background: #1d4ed8;
 }
 
 /* ===== MASTER LAYOUT ===== */
@@ -139,13 +127,7 @@ input[type="text"], select,
     height: 50px !important;
 }
 
-/* Readonly fields override */
-input[readonly],
-input:disabled {
-    background-color: #f3f6f9 !important;
-    color: #555;
-    border-color: #e1e8ed;
-}
+
 
 /* jqx Date/Time Container Mapping Rules */
 .filter-table div[id^="periodupto"],

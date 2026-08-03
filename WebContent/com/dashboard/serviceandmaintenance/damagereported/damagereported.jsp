@@ -65,7 +65,6 @@ function findis()
 </script>
 
 <style type="text/css">
-/* ===== MASTER LAYOUT ===== */
 html, body, #mainBG, .hidden-scrollbar {
     height: 100%;
     margin: 0;
@@ -80,9 +79,8 @@ html, body, #mainBG, .hidden-scrollbar {
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
 
-/* ===== LEFT SIDEBAR ===== */
 .sidebar-filters {
-    width: 250px; /* Kept slightly narrower since it has limited controls */
+    width: 250px; 
     flex: 0 0 250px; 
     background: #fff;
     border-right: 1px solid #e1e8ed;
@@ -99,7 +97,6 @@ html, body, #mainBG, .hidden-scrollbar {
     padding: 15px 15px 25px; 
 }
 
-/* Cards Layout Rules */
 .filter-card {
     background: #f8fafc;
     border: 1px solid #e3e8ee;
@@ -108,7 +105,6 @@ html, body, #mainBG, .hidden-scrollbar {
     margin-bottom: 12px;
 }
 
-/* ===== MASTER 30px BUTTON SYSTEM ===== */
 .btn-submit, .myButton {
     width: 100%;
     height: 30px !important;            
@@ -133,13 +129,8 @@ html, body, #mainBG, .hidden-scrollbar {
     background: #1d4ed8 !important;
 }
 
-.btn-submit:disabled, .myButton:disabled {
-    background: #9ca3af !important;
-    color: #f3f4f6 !important;
-    cursor: not-allowed;
-}
 
-/* ===== RIGHT CONTENT AREA (Horizontally Aligned Heading) ===== */
+
 .main-content-wrapper {
     flex: 1; 
     display: flex;
@@ -171,7 +162,6 @@ html, body, #mainBG, .hidden-scrollbar {
 
 <div class="master-container">
 
-    <!-- ================= LEFT PANEL (SIDEBAR) ================= -->
     <div class="sidebar-filters">
         <div class="sidebar-scroll-content">
             
