@@ -10,9 +10,7 @@
 <jsp:include page="../../../../includes.jsp"></jsp:include>
 
 <style>
-/* =========================================================
-   SCOPED UI: Modern Layout Adapted for Table Structure
-========================================================= */
+
 body {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;

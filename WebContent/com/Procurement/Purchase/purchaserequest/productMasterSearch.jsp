@@ -1,4 +1,4 @@
- <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
  <% String contextPath=request.getContextPath();%>
 <!DOCTYPE html>
 <html>
@@ -38,34 +38,190 @@
 		}
 
 	</script>
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td width="5%" align="right">Product</td> <!-- partno -->
-    <td width="13%"><input type="text" name="txtproductsname" id="txtproductsname" style="width:90%" value='<s:property value="txtproductsname"/>'></td>
-    <td width="11%" align="right">Product Name</td>
-    <td width="30%"><input type="text" name="txtgridprdname" id="txtgridprdname" style="width:80%" value='<s:property value="txtgridprdname"/>'></td>
-    <td width="12%" align="right">Brand</td>
-    <td width="18%"><div id="brandDiv"><jsp:include page="brandInputSearch.jsp"></jsp:include></div>
-    <input type="hidden" name="txtcldocnos" id="txtcldocnos" style="width:80%" value='<s:property value="txtcldocnos"/>'>
-    <input type="hidden" name="txtestdates" id="txtestdates" style="width:80%" value='<s:property value="txtestdates"/>'>
-    <input type="hidden" name="txtgridscopeids" id="txtgridscopeids" style="width:80%" value='<s:property value="txtgridscopeids"/>'>
-    <input type="hidden" name="txtgridscopeproducts" id="txtgridscopeproducts" style="width:80%" value='<s:property value="txtgridscopeproducts"/>'></td>
-    <td width="18%" rowspan="2" align="left"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr>
-    <td align="right">Unit</td>
-    <td><input type="text" name="txtgridunit" id="txtgridunit" style="width:80%" value='<s:property value="txtgridunit"/>'>
-    <td align="right">Category</td>
-    <td><input type="text" name="txtgridscategory" id="txtgridscategory" style="width:70%" value='<s:property value="txtgridscategory"/>'></td>
-    <td align="right">Sub Category</td>
-    <td><div id="subCategoryDiv"><jsp:include page="subCategoryInputSearch.jsp"></jsp:include></div></td>
-  </tr>
-  <tr>
-    <td colspan="7"><div id="refreshProductDiv"><jsp:include  page="productSearch.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <div class="field-group">
+            <span class="lbl-right">Product</span>
+            <input type="text"
+                   id="txtproductsname"
+                   name="txtproductsname"
+                   class="search-input"
+                   value='<s:property value="txtproductsname"/>'>
+        </div>
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">Product Name</span>
+            <input type="text"
+                   id="txtgridprdname"
+                   name="txtgridprdname"
+                   class="search-input"
+                   value='<s:property value="txtgridprdname"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Brand</span>
+            <div id="brandDiv">
+                <jsp:include page="brandInputSearch.jsp"></jsp:include>
+            </div>
+            <input type="hidden"
+                   id="txtcldocnos"
+                   name="txtcldocnos"
+                   value='<s:property value="txtcldocnos"/>'>
+            <input type="hidden"
+                   id="txtestdates"
+                   name="txtestdates"
+                   value='<s:property value="txtestdates"/>'>
+            <input type="hidden"
+                   id="txtgridscopeids"
+                   name="txtgridscopeids"
+                   value='<s:property value="txtgridscopeids"/>'>
+            <input type="hidden"
+                   id="txtgridscopeproducts"
+                   name="txtgridscopeproducts"
+                   value='<s:property value="txtgridscopeproducts"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Unit</span>
+            <input type="text"
+                   id="txtgridunit"
+                   name="txtgridunit"
+                   class="search-input"
+                   value='<s:property value="txtgridunit"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Category</span>
+            <input type="text"
+                   id="txtgridscategory"
+                   name="txtgridscategory"
+                   class="search-input"
+                   value='<s:property value="txtgridscategory"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Sub Category</span>
+            <div id="subCategoryDiv">
+                <jsp:include page="subCategoryInputSearch.jsp"></jsp:include>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="btnsearch"
+                name="btnsearch"
+                class="myButton"
+                onclick="loadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshProductDiv">
+            <jsp:include page="productSearch.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

@@ -10,30 +10,197 @@
  <jsp:include page="../../../../includes.jsp"></jsp:include>
 
 <style>
-form label.error {
-color:red;
-  font-weight:bold;
+/* =========================================================
+   SCOPED UI: Modern Layout Adapted for Table Structure
+========================================================= */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 24px 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+}
 
+#mainBG {
+    background: #fff;
+    border-radius: 16px;
+    padding: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
-.iconss {
-	width: 2.5em;
-	height: 2em;
-	border: none;
-	background-color: #E0ECF8;
+
+#purchaseInv input[type="text"],
+#purchaseInv select,
+.textbox { 
+    height: 24px !important; 
+    border: 1px solid #b8c6d8; 
+    border-radius: 3px; 
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; 
+    background-color: #fff; 
+    color: #333;
+    box-shadow: none !important;
+    outline: none;
+    width: 100%;
 }
-.textbox {
-    border: 0;
-    height: 25px;
-    width: 20%;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    box-shadow: 1px 1px 0 0 #E0ECF8, 5px 5px 40px 2px #E0ECF8 inset;
-    -moz-box-shadow: 1px 1px 0 0 #E0ECF8, 5px 5px 40px 2px #E0ECF8 inset;
-    -webkit-box-shadow: 1px 1px 0 0 #E0ECF8, 5px 5px 40px 2px #E0ECF8 inset;
-    -webkit-background-clip: padding-box;
-    outline: 0;
+
+#purchaseInv input[type="text"]:focus,
+#purchaseInv select:focus,
+.textbox:focus { 
+    border-color: #007bff; 
 }
+
+#purchaseInv input[readonly],
+#purchaseInv input:disabled,
+#purchaseInv select:disabled,
+.textbox[readonly] { 
+    background-color: #f8f9fa; 
+    color: #6b7280;
+}
+
+form label.error {
+    color: red;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+}
+
+.myButton, .btn {
+    height: 24px !important;
+    line-height: 22px !important;
+    padding: 0 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: pointer;
+    text-shadow: none;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border: none;
+    background: linear-gradient(135deg, #0b45a2 0%, #2563eb 100%);
+    color: #ffffff;
+    white-space: nowrap;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.myButton:hover, .btn:hover { 
+    background: linear-gradient(135deg, #083a8a 0%, #1d4ed8 100%); 
+}
+
+.icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+.icon:hover {
+    transform: scale(1.1);
+}
+
+.hidden-scrollbar {
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    padding-right: 5px;
+    overflow-x: hidden;
+}
+.hidden-scrollbar::-webkit-scrollbar { width: 6px; }
+.hidden-scrollbar::-webkit-scrollbar-thumb { background: #c5d3e0; border-radius: 3px; }
+
+/* Grid Containers */
+.grid-container {
+    border: 1px solid #c5d3e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* JQX Widget Overrides for 24px Alignment */
+.jqx-datetimeinput-input { 
+    height: 24px !important; 
+    line-height: 24px !important; 
+    margin-top: 0px !important; 
+    padding-top: 0px !important;
+    box-sizing: border-box !important;
+    font-size: 12px !important;
+}
+.jqx-action-button {
+    height: 24px !important;
+}
+
+/* Middle Section Panels */
+.modern-ui .middle-panel {
+    border: 1px solid #c5d3e0; 
+    padding: 20px 10px 10px 10px; 
+    background: #ffffff; 
+    position: relative; 
+    border-radius: 4px; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.modern-ui .middle-panel-title { 
+    position: absolute; 
+    top: -12px;
+    left: 10px; 
+    background: #ffffff; 
+    padding: 0 8px; 
+    color: #0056b3;
+    font-weight: bold; 
+    font-size: 14px; 
+    border-left: 3px solid #0056b3;
+    z-index: 2; 
+    line-height: normal; 
+}
+
+.modern-ui .field-row { 
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+    margin-bottom: 10px; 
+    flex-wrap: nowrap; 
+}
+
+.modern-ui .lbl-right { 
+    text-align: right; 
+    color: #444;
+    font-size: 12px; 
+    font-weight: bold;
+    white-space: nowrap; 
+    padding-right: 5px;
+    flex-shrink: 0; 
+}
+
+.modern-ui .input-search-container {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+}
+.modern-ui .input-search-container input {
+    padding-right: 25px !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+.modern-ui .magnifier-icon {
+    position: absolute;
+    right: 6px; 
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #64748b; 
+    z-index: 10;
+}
+.modern-ui .magnifier-icon:hover { color: #2563eb; }
 </style>
 
 <script type="text/javascript">
@@ -1500,202 +1667,191 @@ function getCurrencyIds(){
  
 </script>
 
-<style>
-.hidden-scrollbar {
-  /* // overflow: auto; */
-  height: 530px;
-    overflow-x: hidden;
-    
-} 
 
-</style>  
 </head>
 <body onLoad="setValues();getCurrencyIds();">
+
+<!-- JQX input alignment fix -->
 
 
 <div id="mainBG" class="homeContent" data-type="background">
 <form id="purchaseInv" action="saveActionpurInvret" method="post" autocomplete="off"> 
-<jsp:include page="../../../../header.jsp" />    
-<jsp:include page="multiqty.jsp"></jsp:include><br/>
-	<br/> 
-	<div class='hidden-scrollbar'>
-	<fieldset>
-	
-	   	     <table width="100%"  >
-  <tr>
-    <td width="6%" align="right">Date</td>
-    <td width="12%"><div id="masterdate" name="masterdate" value='<s:property value="masterdate"/>'></div>
-      <input type="hidden" name="hidmasterdate" id="hidmasterdate" value='<s:property value="hidmasterdate"/>'></td>
-            <td align="right" width="6%">Location</td> 
-    <td colspan="3"  ><input type="text" id="txtlocation" name="txtlocation" style="width:40.5%;" placeholder="Press F3 to Search" value='<s:property value="txtlocation"/>'  onkeydown="getloc(event);"/>
-      <input type="hidden" id="txtlocationid" name="txtlocationid" value='<s:property value="txtlocationid"/>'/>
-      
-       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-      <label id="billname">Bill Type</label> &nbsp;<select id="cmbbilltype" name="cmbbilltype" onchange="gettaxaccounts()"  style="width:13%;" value='<s:property value="cmbbilltype"/>'>
-      <option value="1">ST</option>
- <option value="2">RCM</option>
-      
-      </select>
-      <input type="hidden" id="hidcmbbilltype" name="hidcmbbilltype" value='<s:property value="hidcmbbilltype"/>'/>
-      
-      </td>
-    <td width="3%" align="right">Ref No</td>
-    <td width="18%"><input type="text" name="refno" id="refno" style="width:50%;" value='<s:property value="refno"/>'></td>
-    <td width="5%" align="right">Doc No</td>
-    <td width="14%"><input type="text" name="docno" id="docno" tabindex="-1" value='<s:property value="docno"/>' readonly></td>
-  </tr>
+    <jsp:include page="../../../../header.jsp" />    
+    <jsp:include page="multiqty.jsp"></jsp:include>
 
-  <tr>
-    <td align="right">Vendor</td>  
-    <td colspan="3"><input type="text" name="puraccid" id="puraccid" value='<s:property value="puraccid"/>' placeholder="Press F3 To Search"   style="width:25%;" onKeyDown="getaccountdetails(event);" >  
-      <input type="text" id="puraccname" name="puraccname" value='<s:property value="puraccname"/>'  style="width:72%;"></td>
-      
-      <td align="right">&nbsp;</td>
-    <td colspan="5">&nbsp;</td>
-      
-    
-  </tr>
-    <tr>
-     <td   align="right">Currency</td>
-    <td  ><select name="cmbcurr" id="cmbcurr" style="width:73%;"  value='<s:property value="cmbcurr"/>' onload="getRatevalue(this.value);">
-      <option value="-1" >--Select--</option>
-    </select><input type="hidden" id="hidcmbcurr" name="hidcmbcurr" value='<s:property value="hidcmbcurr"/>'/></td>
-    <td align="right">Rate</td>
-    <td  ><input type="text" name="currate" id="currate"  value='<s:property value="currate"/>'></td>
-    
- 
-      <td align="right">Ref Type</td>
-    <td colspan="3"><select name="reftype" id="reftype" style="width:17%;"  value='<s:property value="reftype"/>' onchange="funrefdisslno();">
-      <option value="PIV">PIV</option>
-    </select>&nbsp;&nbsp;<input type="text" name="rrefno" id="rrefno" placeholder="Press F3 To Search" style="width:39%;" value='<s:property value="rrefno"/>' onfocus="funcheckaccinvendor();" onKeyDown="getrefno(event);"></td>
-  
-  <tr>
-    <td align="right">Delivery Date</td>
-    <td><div id="deliverydate" name="deliverydate" value='<s:property value="deliverydate"/>'></div>
-    <input type="hidden" name="hiddeliverydate" id="hiddeliverydate" value='<s:property value="hiddeliverydate"/>'></td>
-    <td align="right">Delivery Terms</td>
-    <td colspan="7"><input type="text" name="delterms" id="delterms" value='<s:property value="delterms"/>' style="width:63.5%;"></td>
-  </tr>
-  <tr>
-    <td align="right">Payment Terms</td>
-    <td colspan="9"><input type="text" name="payterms" id="payterms" value='<s:property value="payterms"/>' style="width:70.4%;"></td>
-  </tr>
-  <tr>
-    <td align="right">Description</td>
-    <td colspan="7"><input type="text" name="purdesc" id="purdesc" value='<s:property value="purdesc"/>' style="width:88.2%;"></td>
-    <td colspan="2" align="center"><button class="myButton" type="button" id="btnvaluechange" name="btnvaluechange" onclick="funwarningopen();">Value Change</button></td>
-  </tr>
-</table>
-<%-- 	 <button type="button"  title="Show data" class="iconss"   id="FixedDiv"  style="position:fixed;z-index:1000;right:130px;top:6px; " value='<s:property value="FixedDiv" /> '>
-					 <img alt="Show data" src="<%=contextPath%>/icons/reportpurchase.png" width="33" height="36" > 
-					</button> --%>
- <input type="hidden" name="netTotaldown" readonly="readonly" id="netTotaldown" value='<s:property value="netTotaldown"/>'  onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber (event);"  style="width:50%;text-align: right;">
-<input type="hidden" name="finaltotal" readonly="readonly" id="finaltotal" value='<s:property value="finaltotal"/>'  onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber (event);"  style="width:50%;text-align: right;">
-<input type="hidden" name="productTotal" readonly="readonly" id="productTotal" value='<s:property value="productTotal"/>'    style="width:50%;text-align: right;">
-<input type="hidden" name="prddiscount" id="prddiscount" value='<s:property value="prddiscount"/>'   onkeypress="javascript:return isNumber (event);"  style="width:51%;text-align: right;">
-
-  </fieldset>
- <br>
-  <input type="text" name="gridtext" id="gridtext"  style="width:0%;height:0%;"  class="textbox"  value='<s:property value="gridtext"/>'  />   
-  
-    <input type="text" name="gridtext1" id="gridtext1"  style="width:0%;height:0%;"  class="textbox" value='<s:property value="gridtext1"/>' />   
-    <div id="sevdesc" ><jsp:include page="serviecgrid.jsp"></jsp:include></div>  
-  
-  
-  <div id="tax">
-<fieldset> 
- <legend>Tax Details</legend> 
-<table width="100%">
-
-<tr>
-
-<td align="right">Total Tax</td><td align="left"><input type="text" id="st" name="st" style="width:50%;"   value='<s:property value="st"/>'  ></td>
-
-<td><button type="button" class="icon" id="process1" title="Process1" onclick="funcalutax();">
-							<img alt="process" src="<%=contextPath%>/icons/process2.png" width="18" height="18">
-						   </button></td>
-
-<td align="right"><label id="labeltax1"></label></td><td  align="left"><input type="text" id="taxontax1" name="taxontax1" style="width:50%;"   value='<s:property value="taxontax1"/>'  ></td>
-<td align="right"><label id="labeltax2"></label></td><td  align="left"><input type="text" id="taxontax2" name="taxontax2" style="width:50%;"   value='<s:property value="taxontax2"/>'  >
-<td align="right"><label id="labeltax3"></label></td><td  align="left"><input type="text" id="taxontax3" name="taxontax3" style="width:50%;"   value='<s:property value="taxontax3"/>'  >
- </td>
-
-<td  align="right">Net Tax Total</td><td  align="left"><input type="text" id="taxtotal" name="taxtotal" style="width:50%;"   value='<s:property value="taxtotal"/>'  ></td>
-
-</table>
-
-</fieldset>
-</div>
-    
-<input type="hidden" id="expencenettotal" name="expencenettotal"  value='<s:property value="expencenettotal"/>'/>    
-
-   <input type="hidden" id="nettotal" name="nettotal"  value='<s:property value="nettotal"/>'/>   
-
-<input type="hidden" id="chkdiscountval" name="chkdiscountval"  value='<s:property value="chkdiscountval"/>'/>      
-
-<input type="hidden" id="masterdoc_no" name="masterdoc_no"  value='<s:property value="masterdoc_no"/>'/>  
-           <input type="hidden" id="msg" name="msg"  value='<s:property value="msg"/>'/>
-             <input type="hidden" id="mode" name="mode"  value='<s:property value="mode"/>'/>   
-             
-          
-             
-              <input type="hidden" id="descgridlenght" name="descgridlenght"  value='<s:property value="descgridlenght"/>'/>   
-                   <input type="hidden" id="serviecGridlength" name="serviecGridlength"  value='<s:property value="serviecGridlength"/>'/>    
+    <div class='modern-ui hidden-scrollbar'>
+        
+        <!-- General Info Panel -->
+        <div class="middle-panel">
+            <span class="middle-panel-title">General Info</span>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Date</label>
+                <div style="width: 125px; flex-shrink:0;">
+                    <div id="masterdate" name="masterdate" value='<s:property value="masterdate"/>'></div>
+                    <input type="hidden" name="hidmasterdate" id="hidmasterdate" value='<s:property value="hidmasterdate"/>'>
+                </div>
                 
-         <input type="hidden" id="cmbcurrval" name="cmbcurrval"  value='<s:property value="cmbcurrval"/>'/>    
-          <input type="hidden" id="acctypeval" name="acctypeval"  value='<s:property value="acctypeval"/>'/>  
-           <input type="hidden" id="accdocno" name="accdocno"  value='<s:property value="accdocno"/>'/>    
-           
-           <input type="hidden" id="deleted" name="deleted"  value='<s:property value="deleted"/>'/>
-           
-           
-          <!--  req search docno -->
-           
-               <input type="hidden" id="reftypeval" name="reftypeval"  value='<s:property value="reftypeval"/>'/>
-            <input type="hidden" id="reqmasterdocno" name="reqmasterdocno"  value='<s:property value="reqmasterdocno"/>'/>
+                <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left: 15px;">Location</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" id="txtlocation" name="txtlocation" placeholder="Press F3" value='<s:property value="txtlocation"/>' onkeydown="getloc(event);"/>
+                    <svg class="magnifier-icon" onclick="if($('#mode').val()=='A' || $('#mode').val()=='E'){ $('#locationwindow').jqxWindow('open'); locationsearchContent('searchlocation.jsp?'); }" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="hidden" id="txtlocationid" name="txtlocationid" value='<s:property value="txtlocationid"/>'/>
+                
+                <label class="lbl-right" id="billname" style="width:80px; flex-shrink:0; margin-left: 15px;">Bill Type</label>
+                <select id="cmbbilltype" name="cmbbilltype" onchange="gettaxaccounts()" style="width: 100px; flex-shrink:0;" value='<s:property value="cmbbilltype"/>'>
+                    <option value="1">ST</option>
+                    <option value="2">RCM</option>
+                </select>
+                <input type="hidden" id="hidcmbbilltype" name="hidcmbbilltype" value='<s:property value="hidcmbbilltype"/>'/>
+                
+                <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left: auto;">Ref No</label>
+                <input type="text" name="refno" id="refno" style="width: 120px; flex-shrink:0;" value='<s:property value="refno"/>'>
+                
+                <label class="lbl-right" style="width:60px; flex-shrink:0; margin-left: 15px;">Doc No</label>
+                <input type="text" name="docno" id="docno" tabindex="-1" value='<s:property value="docno"/>' readonly style="width: 120px; flex-shrink:0;">
+            </div>
+
+            <div class="field-row">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Vendor</label>
+                <div class="input-search-container" style="width: 150px; flex-shrink:0;">
+                    <input type="text" name="puraccid" id="puraccid" value='<s:property value="puraccid"/>' placeholder="Press F3" onKeyDown="getaccountdetails(event);">
+                    <svg class="magnifier-icon" onclick="if($('#mode').val()!='view'){ $('#accountSearchwindow').jqxWindow('open'); accountSearchContent('accountsDetailsSearch.jsp?'); }" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="text" id="puraccname" name="puraccname" value='<s:property value="puraccname"/>' style="flex:1; min-width:0; margin-left:8px;" readonly>
+            </div>
             
+            <div class="field-row">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Currency</label>
+                <select name="cmbcurr" id="cmbcurr" style="width: 150px; flex-shrink:0;" value='<s:property value="cmbcurr"/>' onload="getRatevalue(this.value);">
+                    <option value="-1">--Select--</option>
+                </select>
+                <input type="hidden" id="hidcmbcurr" name="hidcmbcurr" value='<s:property value="hidcmbcurr"/>'/>
+                
+                <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left: 15px;">Rate</label>
+                <input type="text" name="currate" id="currate" value='<s:property value="currate"/>' style="width: 100px; flex-shrink:0; text-align: right;">
+                
+                <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left: 15px;">Ref Type</label>
+                <select name="reftype" id="reftype" style="width: 100px; flex-shrink:0;" value='<s:property value="reftype"/>' onchange="funrefdisslno();">
+                    <option value="PIV">PIV</option>
+                </select>
+                
+                <div class="input-search-container" style="flex:1; min-width:0; margin-left: 8px;">
+                    <input type="text" name="rrefno" id="rrefno" placeholder="Press F3" value='<s:property value="rrefno"/>' onfocus="funcheckaccinvendor();" onKeyDown="getrefno(event);">
+                    <svg class="magnifier-icon" onclick="if($('#mode').val()=='A'){ if(document.getElementById('puraccid').value==''){ document.getElementById('errormsg').innerText='Search Vendor'; document.getElementById('puraccid').focus(); return 0; } $('#refnosearchwindow').jqxWindow('open'); refsearchContent('refnosearch.jsp?'); }" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+            </div>
             
-             <input type="hidden" id="producttype" name="producttype"  value='<s:property value="producttype"/>'/> <!-- no use -->
-             
-             
-               <input type="hidden" id="expgridlength" name="expgridlength"  value='<s:property value="expgridlength"/>'/>
-                         
-                         
-               <input type="hidden" id="editdata" name="editdata"  value='<s:property value="editdata"/>'/>
- 
-            <input type="hidden" id="typeoftaken"> <!-- valuebased -->
- <input type="hidden" id="tax1per"> <!-- first tax % -->
- <input type="hidden" id="tax2per"><!--  sec tax % -->
- <input type="hidden" id="tax3per"><!--  tird tax % -->
- <input type="hidden" id="productchk" name="productchk"  value='<s:property value="productchk"/>' />
- 
+            <div class="field-row">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Del. Date</label>
+                <div style="width: 125px; flex-shrink:0;">
+                    <div id="deliverydate" name="deliverydate" value='<s:property value="deliverydate"/>'></div>
+                    <input type="hidden" name="hiddeliverydate" id="hiddeliverydate" value='<s:property value="hiddeliverydate"/>'>
+                </div>
+                
+                <label class="lbl-right" style="width:80px; flex-shrink:0; margin-left: 15px;">Del. Terms</label>
+                <input type="text" name="delterms" id="delterms" value='<s:property value="delterms"/>' style="flex:1; min-width:0;">
+            </div>
+            
+            <div class="field-row">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Pay. Terms</label>
+                <input type="text" name="payterms" id="payterms" value='<s:property value="payterms"/>' style="flex:1; min-width:0;">
+            </div>
+            
+            <div class="field-row" style="margin-bottom:0;">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Description</label>
+                <input type="text" name="purdesc" id="purdesc" value='<s:property value="purdesc"/>' style="flex:1; min-width:0;">
+                
+                <button class="myButton" type="button" id="btnvaluechange" name="btnvaluechange" onclick="funwarningopen();" style="margin-left: 15px; flex-shrink:0;">Value Change</button>
+            </div>
+        </div>
+
+        <div style="display:none;">
+            <input type="hidden" name="netTotaldown" id="netTotaldown" value='<s:property value="netTotaldown"/>' onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber(event);">
+            <input type="hidden" name="finaltotal" id="finaltotal" value='<s:property value="finaltotal"/>' onblur="funRoundAmt(this.value,this.id);" onkeypress="javascript:return isNumber(event);">
+            <input type="hidden" name="productTotal" id="productTotal" value='<s:property value="productTotal"/>'>
+            <input type="hidden" name="prddiscount" id="prddiscount" value='<s:property value="prddiscount"/>' onkeypress="javascript:return isNumber(event);">
+            <input type="text" name="gridtext" id="gridtext" value='<s:property value="gridtext"/>'/>   
+            <input type="text" name="gridtext1" id="gridtext1" value='<s:property value="gridtext1"/>'/>   
+        </div>
+
+        <!-- Product Details Grid -->
+        <div class="middle-panel">
+            <span class="middle-panel-title">Product Details</span>
+            <div id="sevdesc" class="grid-container">
+                <jsp:include page="serviecgrid.jsp"></jsp:include>
+            </div> 
+        </div>  
+        
+        <!-- Tax Details Panel -->
+        <div class="middle-panel" id="tax">
+            <span class="middle-panel-title">Tax Details</span>
+            <div class="field-row" style="justify-content: flex-end; margin-bottom: 0;">
+                <label class="lbl-right" style="width:80px; flex-shrink:0;">Total Tax</label>
+                <input type="text" id="st" name="st" value='<s:property value="st"/>' style="width:100px; flex-shrink:0; text-align:right;">
+                
+                <button type="button" class="icon" id="process1" title="Process" onclick="funcalutax();" style="margin-left:8px; margin-right:15px; flex-shrink:0;">
+                    <img alt="process" src="<%=contextPath%>/icons/process2.png" width="18" height="18">
+                </button>
+                
+                <label class="lbl-right" id="labeltax1" style="width:80px; flex-shrink:0;"></label>
+                <input type="text" id="taxontax1" name="taxontax1" value='<s:property value="taxontax1"/>' style="width:80px; flex-shrink:0; text-align:right;">
+                
+                <label class="lbl-right" id="labeltax2" style="width:80px; flex-shrink:0;"></label>
+                <input type="text" id="taxontax2" name="taxontax2" value='<s:property value="taxontax2"/>' style="width:80px; flex-shrink:0; text-align:right;">
+                
+                <label class="lbl-right" id="labeltax3" style="width:80px; flex-shrink:0;"></label>
+                <input type="text" id="taxontax3" name="taxontax3" value='<s:property value="taxontax3"/>' style="width:80px; flex-shrink:0; text-align:right;">
+                
+                <label class="lbl-right" style="width:100px; flex-shrink:0; margin-left: auto;">Net Tax Total</label>
+                <input type="text" id="taxtotal" name="taxtotal" value='<s:property value="taxtotal"/>' style="width:120px; flex-shrink:0; text-align:right;">
+            </div>
+        </div>
+        
+        <!-- Hidden Variables -->
+        <div style="display:none;">
+            <input type="hidden" id="expencenettotal" name="expencenettotal" value='<s:property value="expencenettotal"/>'/>    
+            <input type="hidden" id="nettotal" name="nettotal" value='<s:property value="nettotal"/>'/>   
+            <input type="hidden" id="chkdiscountval" name="chkdiscountval" value='<s:property value="chkdiscountval"/>'/>      
+            <input type="hidden" id="masterdoc_no" name="masterdoc_no" value='<s:property value="masterdoc_no"/>'/>  
+            <input type="hidden" id="msg" name="msg" value='<s:property value="msg"/>'/>
+            <input type="hidden" id="mode" name="mode" value='<s:property value="mode"/>'/>   
+            <input type="hidden" id="descgridlenght" name="descgridlenght" value='<s:property value="descgridlenght"/>'/>   
+            <input type="hidden" id="serviecGridlength" name="serviecGridlength" value='<s:property value="serviecGridlength"/>'/>    
+            <input type="hidden" id="cmbcurrval" name="cmbcurrval" value='<s:property value="cmbcurrval"/>'/>    
+            <input type="hidden" id="acctypeval" name="acctypeval" value='<s:property value="acctypeval"/>'/>  
+            <input type="hidden" id="accdocno" name="accdocno" value='<s:property value="accdocno"/>'/>    
+            <input type="hidden" id="deleted" name="deleted" value='<s:property value="deleted"/>'/>
+            <input type="hidden" id="reftypeval" name="reftypeval" value='<s:property value="reftypeval"/>'/>
+            <input type="hidden" id="reqmasterdocno" name="reqmasterdocno" value='<s:property value="reqmasterdocno"/>'/>
+            <input type="hidden" id="producttype" name="producttype" value='<s:property value="producttype"/>'/>
+            <input type="hidden" id="expgridlength" name="expgridlength" value='<s:property value="expgridlength"/>'/>
+            <input type="hidden" id="editdata" name="editdata" value='<s:property value="editdata"/>'/>
+            <input type="hidden" id="typeoftaken">
+            <input type="hidden" id="tax1per">
+            <input type="hidden" id="tax2per">
+            <input type="hidden" id="tax3per">
+            <input type="hidden" id="productchk" name="productchk" value='<s:property value="productchk"/>' />
+        </div>
+
+    </div>
 </form>
+
+<div id="refnosearchwindow"><div></div></div>
+<div id="accountSearchwindow"><div></div></div>
+<div id="sidesearchwndow"><div></div></div>
+<div id="importwindow"><div></div></div>
+<div id="searchwndow"><div></div></div>
+<div id="expencewindow"><div></div></div>
+<div id="locationwindow"><div></div></div>
+<div id="calculationwindow"><div></div></div>
+
 </div>
-<div id="refnosearchwindow">
-   <div ></div>
-</div>
-  <div id="accountSearchwindow">
-	   <div ></div>
-	</div>
-	  <div id="sidesearchwndow">
-	   <div ></div>
-	</div>
-		  <div id="importwindow">
-	   <div ></div>
-	</div>
-		  <div id="searchwndow">
-	   <div ></div>
-	</div>
-	<div id="expencewindow">
-	   <div ></div>
-	</div>
-	
-		  <div id="locationwindow">
-	   <div ></div>
-	</div>
-			  <div id="calculationwindow">
-	   <div ></div>
-	</div>
- 
 </body>
+<ElicitationsGroup message="What would you like to do next?">
+<Elicitation label="Extract inline modern UI CSS to global stylesheet" query="Extract inline modern UI CSS to global stylesheet" query_intent="CLICKABLE_SUGGESTION" />
+<Elicitation label="Optimize JQX grid initialization scripts" query="Optimize JQX grid initialization scripts" query_intent="CLICKABLE_SUGGESTION" />
+<Elicitation label="Implement client side input sanitization" query="Implement client side input sanitization" query_intent="CLICKABLE_SUGGESTION" />
+</ElicitationsGroup>
 </html>

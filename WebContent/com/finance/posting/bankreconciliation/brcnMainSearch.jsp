@@ -12,7 +12,7 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 	 $("#reconciledate").jqxDateTimeInput({ width: '110px', height: '15px',formatString:"dd.MM.yyyy",value:null});
-	}); 
+	});
 
  	function loadSearch() {
  		var account=document.getElementById("txtpartyname").value;
@@ -21,7 +21,7 @@
  		var description=document.getElementById("txtdesc").value;
  		var reconcileDt=document.getElementById("reconciledate").value;
 	    var check = 1;
-	    
+
 		getdata(account,docNo,currency,description,reconcileDt,check);
 	}
 	function getdata(account,docNo,currency,description,reconcileDt,check){
@@ -29,29 +29,171 @@
 		}
 
 	</script>
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td width="10%" align="right">Account Name</td>
-    <td colspan="3"><input type="text" name="txtpartyname" id="txtpartyname" style="width:95%" value='<s:property value="txtpartyname"/>'></td>
-    <td width="15%" align="right">Doc No</td>
-    <td><input type="text" name="txtdocumentno" id="txtdocumentno" value='<s:property value="txtdocumentno"/>'></td>
-    <td width="17%" align="center"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr>
-    <td width="10%" align="right">Currency</td>
-    <td width="14%"><input type="text" name="txtcurrency" id="txtcurrency" style="width:50%" value='<s:property value="txtcurrency"/>'></td>
-    <td width="7%" align="right">Description</td>
-    <td colspan="2"><input type="text" id="txtdesc" name="txtdesc" style="width:100%" value='<s:property value="txtdesc"/>'></td>
-    <td width="14%" align="right">Reconcile Date</td>
-    <td><div id="reconciledate" name="reconciledate"  style="width:80%" value='<s:property value="reconciledate"/>'></div>
-        <input type="hidden" name="hidreconciledate" id="hidreconciledate" value='<s:property value="hidreconciledate"/>'></td>
-  </tr>
-  <tr>
-    <td colspan="7"><div id="refreshdiv"><jsp:include  page="brcnMainSearchGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">Account Name</span>
+            <input type="text"
+                   id="txtpartyname"
+                   name="txtpartyname"
+                   class="search-input"
+                   value='<s:property value="txtpartyname"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Doc No</span>
+            <input type="text"
+                   id="txtdocumentno"
+                   name="txtdocumentno"
+                   class="search-input"
+                   value='<s:property value="txtdocumentno"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Currency</span>
+            <input type="text"
+                   id="txtcurrency"
+                   name="txtcurrency"
+                   class="search-input"
+                   value='<s:property value="txtcurrency"/>'>
+        </div>
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">Description</span>
+            <input type="text"
+                   id="txtdesc"
+                   name="txtdesc"
+                   class="search-input"
+                   value='<s:property value="txtdesc"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Reconcile Date</span>
+            <div id="reconciledate"
+                 name="reconciledate"
+                 value='<s:property value="reconciledate"/>'></div>
+            <input type="hidden"
+                   id="hidreconciledate"
+                   name="hidreconciledate"
+                   value='<s:property value="hidreconciledate"/>'>
+        </div>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="btnsearch"
+                name="btnsearch"
+                class="myButton"
+                onclick="loadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdiv">
+            <jsp:include page="brcnMainSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

@@ -12,7 +12,7 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 	 $("#creditdate").jqxDateTimeInput({ width: '110px', height: '15px',formatString:"dd.MM.yyyy",value:null});
-	}); 
+	});
 
  	function loadSearch() {
 
@@ -23,7 +23,7 @@
  		var amount=document.getElementById("txtamounts").value;
  		var description=document.getElementById("txtdescriptions").value;
 	    var check = 1;
-	    
+
 		getdata(docNo,date,accId,accName,amount,description,check);
 	}
 	function getdata(docNo,date,accId,accName,amount,description,check){
@@ -31,31 +31,180 @@
 		}
 
 	</script>
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
+}
+</style>
+
 <body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td width="9%" align="right">Doc No</td>
-    <td width="23%"><input type="text" name="txtdocumentno" id="txtdocumentno" value='<s:property value="txtdocumentno"/>'></td>
-    <td width="6%" align="right">Date</td>
-    <td width="21%"><div id="creditdate" name="creditdate"  value='<s:property value="creditdate"/>'></div>
-        <input type="hidden" name="hidcreditdate" id="hidcreditdate" value='<s:property value="hidcreditdate"/>'></td>
-    <td width="7%" align="right">A/C No.</td>
-    <td width="23%"><input type="text" name="txtaccountid" id="txtaccountid" style="width:80%" value='<s:property value="txtaccountid"/>'></td>
-    <td width="11%" align="center"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr>
-    <td align="right">A/C Name</td>
-    <td><input type="text" name="txtaccountname" id="txtaccountname" style="width:80%" value='<s:property value="txtaccountname"/>'></td>
-    <td align="right">Amount</td>
-    <td><input type="text" name="txtamounts" id="txtamounts" value='<s:property value="txtamounts"/>'></td>
-    <td align="right">Description</td>
-    <td colspan="2"><input type="text" name="txtdescriptions" id="txtdescriptions" style="width:80%" value='<s:property value="txtdescriptions"/>'></td>
-  </tr>
-  <tr>
-    <td colspan="7"><div id="refreshdiv"><jsp:include  page="cnoMainSearchGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+
+<div id="search">
+
+    <div class="search-panel">
+
+        <div class="field-group">
+            <span class="lbl-right">Doc No</span>
+            <input type="text"
+                   id="txtdocumentno"
+                   name="txtdocumentno"
+                   class="search-input"
+                   value='<s:property value="txtdocumentno"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Date</span>
+            <div id="creditdate"
+                 name="creditdate"
+                 value='<s:property value="creditdate"/>'></div>
+            <input type="hidden"
+                   id="hidcreditdate"
+                   name="hidcreditdate"
+                   value='<s:property value="hidcreditdate"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">A/C No.</span>
+            <input type="text"
+                   id="txtaccountid"
+                   name="txtaccountid"
+                   class="search-input"
+                   value='<s:property value="txtaccountid"/>'>
+        </div>
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">A/C Name</span>
+            <input type="text"
+                   id="txtaccountname"
+                   name="txtaccountname"
+                   class="search-input"
+                   value='<s:property value="txtaccountname"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Amount</span>
+            <input type="text"
+                   id="txtamounts"
+                   name="txtamounts"
+                   class="search-input"
+                   value='<s:property value="txtamounts"/>'>
+        </div>
+
+        <div class="field-group grow-2">
+            <span class="lbl-right">Description</span>
+            <input type="text"
+                   id="txtdescriptions"
+                   name="txtdescriptions"
+                   class="search-input"
+                   value='<s:property value="txtdescriptions"/>'>
+        </div>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="btnsearch"
+                name="btnsearch"
+                class="myButton"
+                onclick="loadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+
+        <div id="refreshdiv">
+            <jsp:include page="cnoMainSearchGrid.jsp"></jsp:include>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

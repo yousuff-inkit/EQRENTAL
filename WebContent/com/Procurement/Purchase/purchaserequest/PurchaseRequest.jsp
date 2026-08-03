@@ -203,11 +203,11 @@ form label.error {
 }
 
 #psearch {
-    background:#FAEBD7;
+    
     border-color: #e0d0be;
 }
 #psearch .middle-panel-title {
-    background:#FAEBD7;
+   
     color: #856404;
     border-left-color: #856404;
 }
