@@ -9,9 +9,7 @@
 <title>GatewayERP(i)</title>
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <style type="text/css">
-/* kept as-is: not referenced in this file's own markup, but may be used by
-   included grid/header fragments (accidentHistoryGrid.jsp, serviceHistoryGrid.jsp,
-   heading.jsp) which aren't visible here — left in place rather than risk breaking them */
+
 .account {
 	color: black;
 	background-color: #E0ECF8;
@@ -27,7 +25,6 @@
 	font-family: comic sans ms;
 }
 
-/* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
 .master-container {
     display: flex;
     height: 100%;
@@ -38,7 +35,7 @@
     flex: 0 0 330px;
     width: 330px;
     height: 100%;
-    background: #ECF8E0;
+    background: #fff;
     box-sizing: border-box;
     overflow-y: auto;
 }

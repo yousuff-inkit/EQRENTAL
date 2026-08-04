@@ -14,7 +14,6 @@
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
 
 <style type="text/css">
-    /* ---- Master UI layout skeleton (checklist Bugs 1-3) ---- */
     .master-container {
         display: flex;
         height: 100%;
@@ -25,7 +24,7 @@
         flex: 0 0 330px;
         width: 330px;
         height: 100%;
-        background: #ECF8E0;
+        background: #fff;
         box-sizing: border-box;
         overflow-y: auto;
     }
@@ -53,7 +52,7 @@
         font-size: 12px;
         font-weight: 600;
         color: #4e5e71;
-        text-align: right;
+        text-align: center;
         white-space: nowrap;
     }
     .filter-table input[type="text"],
@@ -102,8 +101,8 @@ $(document).ready(function () {
      $("body").prepend("<div id='subPleaseWait' style='display: none;position:absolute; z-index: 1;top:280px;left:100px;'><img src='../../../../icons/31load.gif'/></div>");
 	
 	
-	 $("#fromdate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
-	 $("#todate").jqxDateTimeInput({ width: '100%', height: '24px',formatString:"dd.MM.yyyy"});
+	 $("#fromdate").jqxDateTimeInput({ width: '125px', height: '24px',formatString:"dd.MM.yyyy"});
+	 $("#todate").jqxDateTimeInput({ width: '125px', height: '24px',formatString:"dd.MM.yyyy"});
 	 var fromdates=new Date($('#fromdate').jqxDateTimeInput('getDate'));
 	 var onemounth=new Date(new Date(fromdates).setMonth(fromdates.getMonth()-1)); 
 	    

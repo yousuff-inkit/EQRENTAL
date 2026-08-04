@@ -1,5 +1,5 @@
- <%@ taglib prefix="s" uri="/struts-tags" %>
- <% String contextPath=request.getContextPath(); %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<% String contextPath=request.getContextPath(); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,46 +9,176 @@
 <link href="<%=contextPath%>/css/body.css" media="screen" rel="stylesheet" type="text/css" />
 <title>GatewayERP(i)</title>
 
-<style type="text/css">
-#search {
-    background-color: #E0ECF8;
+    <script type="text/javascript">
+    $(document).ready(function () {
+        // Initialization if needed
+    }); 
+
+    function loadSearch() {
+        var partyname = document.getElementById("txtpartyname").value;
+        var cldocno = document.getElementById("txtaccountno").value;
+        var contactNo = document.getElementById("txtcontactno").value;
+        
+        getdata(partyname, cldocno, contactNo);
+    }
+    
+    function getdata(partyname, cldocno, contactNo){
+        // Upgraded to use encodeURIComponent for safe parameter passing
+        var url = 'clientDetailsSearchGrid.jsp' + 
+                  '?partyname=' + encodeURIComponent(partyname) + 
+                  '&cldocno=' + encodeURIComponent(cldocno) + 
+                  '&contactNo=' + encodeURIComponent(contactNo);
+                  
+         $("#refreshdiv").load(url);
+    }
+    </script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    background:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    overflow-x:hidden;
+}
+
+#search{
+    padding:10px;
+    background:#fff;
+    width:100%;
+    max-width:100%;
+}
+
+.search-panel{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    padding:12px;
+    margin-bottom:10px;
+    width:100%;
+    max-width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px 14px;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 140px;
+    min-width:110px;
+    max-width:100%;
+}
+
+.field-group.grow-2{
+    flex:2 1 200px;
+}
+
+.lbl-right{
+    text-align:left;
+    font-size:12px;
+    font-weight:500;
+    color:#333;
+    margin-bottom:4px;
+    white-space:nowrap;
+}
+
+.search-input{
+    height:26px;
+    width:100%;
+    max-width:100%;
+    border:1px solid #cfcfcf;
+    border-radius:3px;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.btn-group{
+    flex:0 0 auto;
+}
+
+.grid-container{
+    background:#fff;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    overflow:hidden;
+    width:100%;
+    max-width:100%;
 }
 </style>
-
-	<script type="text/javascript">
-	$(document).ready(function () {}); 
-
- 	function loadSearch() {
-
- 		var partyname=document.getElementById("txtpartyname").value;
- 		var cldocno=document.getElementById("txtaccountno").value;
- 		var contactNo=document.getElementById("txtcontactno").value;
- 		
-		getdata(partyname,cldocno,contactNo);
-	}
-	function getdata(partyname,cldocno,contactNo){
-		 $("#refreshdiv").load('clientDetailsSearchGrid.jsp?partyname='+partyname.replace(/ /g, "%20")+'&cldocno='+cldocno+'&contactNo='+contactNo);
-		}
-
-	</script>
+</head>
 <body>
-<div id=search>
-<table width="100%">
-  <tr>
-    <td align="right" style="font-size:9px;">Name</td>
-    <td colspan="2"><input type="text" name="txtpartyname" id="txtpartyname" style="width:100%;height:20px;" value='<s:property value="txtpartyname"/>'></td>
-    <td width="49%" align="center"><input type="button" name="btnsearch" id="btnsearch" class="myButton" value="Search"  onclick="loadSearch();"></td>
-  </tr>
-  <tr>
-  <td width="7%" align="right" style="font-size:9px;">Doc No</td>
-    <td width="26%"><input type="text" name="txtaccountno" id="txtaccountno" style="width:70%;height:20px;" value='<s:property value="txtaccountno"/>'></td>
-    <td width="18%" align="right" style="font-size:9px;">Contact No.</td>
-    <td width="49%"><input type="text" name="txtcontactno" id="txtcontactno" style="width:50%;height:20px;" value='<s:property value="txtcontactno"/>'></td>   
-  </tr>
-  <tr>
-    <td colspan="5"><div id="refreshdiv"><jsp:include page="clientDetailsSearchGrid.jsp"></jsp:include></div></td>
-  </tr>
-</table>
-  </div>
+
+<div id="search">
+
+    <div class="search-panel">
+        
+        <div class="field-group grow-2">
+            <span class="lbl-right">Name</span>
+            <input type="text"
+                   id="txtpartyname"
+                   name="txtpartyname"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="txtpartyname"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Doc No</span>
+            <input type="text"
+                   id="txtaccountno"
+                   name="txtaccountno"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="txtaccountno"/>'>
+        </div>
+
+        <div class="field-group">
+            <span class="lbl-right">Contact No.</span>
+            <input type="text"
+                   id="txtcontactno"
+                   name="txtcontactno"
+                   class="search-input"
+                   autocomplete="off"
+                   value='<s:property value="txtcontactno"/>'>
+        </div>
+
+        <div class="btn-group">
+            <input
+                type="button"
+                id="btnsearch"
+                name="btnsearch"
+                class="myButton"
+                onclick="loadSearch();"
+                value="Search"
+                style="
+                    width:100px;
+                    height:28px;
+                    background:#205fd3;
+                    color:#fff;
+                    border:1px solid #205fd3;
+                    border-radius:4px;
+                    font-size:12px;
+                    font-weight:600;
+                    cursor:pointer;">
+        </div>
+
+    </div>
+
+    <div class="grid-container">
+        <div id="refreshdiv">
+           <jsp:include page="clientDetailsSearchGrid.jsp"></jsp:include> 
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>

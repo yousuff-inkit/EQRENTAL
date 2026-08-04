@@ -15,7 +15,6 @@
 <link href="../../../../css/dashboard.css" media="screen" rel="stylesheet" type="text/css" />  
 <%-- <script type="text/javascript" src="../../js/dashboard.js"></script> --%> 
 <style type="text/css">
-/* ===== MASTER LAYOUT ===== */
 html, body, #mainBG, .hidden-scrollbar {
     height: 100%;
     margin: 0;
@@ -30,7 +29,6 @@ html, body, #mainBG, .hidden-scrollbar {
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
 }
 
-/* ===== LEFT SIDEBAR ===== */
 .sidebar-filters {
     width: 280px;
     flex: 0 0 280px;
@@ -89,21 +87,13 @@ input[type="text"], select,
     outline: none;
 }
 
-/* Readonly fields override */
-input[readonly],
-input:disabled {
-    background-color: #f3f6f9 !important;
-    color: #555;
-    border-color: #e1e8ed;
-}
 
-/* jqx Date Container Mapping Rules */
+
 .filter-table div[id^="fromdate"],
 .filter-table div[id^="todate"] {
     width: 100%;
 }
 
-/* Checkbox & Radio layout */
 input[type="radio"] {
     margin: 0 4px 0 0;
     vertical-align: middle;
@@ -125,7 +115,6 @@ input[type="radio"] {
     cursor: pointer;
 }
 
-/* ===== MASTER 30px BUTTON SYSTEM ===== */
 .btn-submit, .myButton {
     height: 30px !important;
     padding: 0 12px !important;
@@ -410,7 +399,6 @@ function disitems()
 
 </div>
 
-<!-- Hidden Inputs Maintained Outside Layout Flow -->
 <div style="display:none;">
 	<input type="hidden" name="brach" id="brach" value='<s:property value="brach"/>' >
 	<input type="hidden" name="grp" id="grp" value='<s:property value="grp"/>' >
