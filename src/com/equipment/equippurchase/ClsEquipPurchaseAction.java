@@ -16,13 +16,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import com.common.ClsCommon;
+import com.opensymphony.xwork2.ActionSupport;
 import com.operations.vehicleprocurement.purchase.ClsvehpurchaseDAO;
 import com.operations.vehicleprocurement.purchaseorder.ClsvehpurchaseorderDAO;
 
 /**
  * Servlet implementation class ClsvehpurchaseAction
  */
-public class ClsEquipPurchaseAction extends HttpServlet {
+public class ClsEquipPurchaseAction extends ActionSupport {
 
 	ClsCommon ClsCommon=new ClsCommon();
 
