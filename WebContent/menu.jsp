@@ -622,6 +622,13 @@ label.licenceExpiry:hover{
                 $("#jqxMenu").jqxMenu({ width: '100%', height: '20', mode: 'horizontal', showTopLevelArrows: true});
                 // Set up the open directions.
                 $("#jqxMenu").css('visibility', 'visible');
+
+                // Top menu starts hidden; the toolbar button toggles it. Built first so jqxMenu still measures correctly.
+                $("#jqxMenu").hide();
+                $("#menuToggle").on('click', function () {
+                    $("#jqxMenu").slideToggle(120);
+                    $(this).toggleClass('menuOpen');
+                });
                 
             });
         </script>
@@ -676,6 +683,9 @@ label.licenceExpiry:hover{
 			<img alt="exit" src="icons/exit_new.png">
 		</button> -->
 		
+		<button type="button" class="bicon" id="menuToggle" title="Show or hide the top menu" style="font-size:15px;line-height:1;padding:2px 7px;">&#9776;</button>
+		<label class="user" style="margin-left:6px;"><%=session.getAttribute("COMPANYNAME")%></label>
+
 		<button type="button" class="bicon" id="qa" title="Quit Application" onClick="funexit();"> 
 							<img alt="qa" src="<%=contextPath%>/icons/exit_new.png">
 						</button>

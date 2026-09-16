@@ -52,6 +52,20 @@
         ClsConnection clsCon = new ClsConnection();
         conn = clsCon.getMyConnection();
 
+        // Not every build puts ROLEID in the session (PRJMAC's login doesn't), which left the page asking for
+        // role "0" and showing no tiles. Fall back to the role recorded on the logged-in user.
+        if(roleId == null || roleId.trim().equals("") || roleId.trim().equals("0")) {
+            String uid = (session.getAttribute("USERID") != null) ? session.getAttribute("USERID").toString() : "";
+            if(!uid.equals("")) {
+                PreparedStatement rolePs = conn.prepareStatement("select role_id from my_user where doc_no=?");
+                try {
+                    rolePs.setString(1, uid);
+                    ResultSet roleRs = rolePs.executeQuery();
+                    if(roleRs.next() && roleRs.getString(1) != null) roleId = roleRs.getString(1);
+                } finally { rolePs.close(); }
+            }
+        }
+
         // Forms (up to 3 levels deep) under every root menu, same tree the top menu bar walks
         String rootFilter = " WHERE m1.pmenu = 0 AND m1.GATE != 'N' ";
         String sql =
